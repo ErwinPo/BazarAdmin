@@ -12,6 +12,16 @@ class Usuario(models.Model):
     correo = models.CharField(max_length=50)
     ventas_semana = models.IntegerField(default=0)
     supermodel = models.BooleanField(default=False)
+    
+    def as_dict(self):
+        return {
+            "user_id": self.user_id,
+            "nombre": self.nombre,
+            "contraseña": self.contrasena,
+            "correo": self.correo,
+            "ventas_semana": self.ventas_semana,
+            "supermodel": self.supermodel
+        }
         
 class Venta(models.Model):
     #insertar campos
@@ -19,5 +29,14 @@ class Venta(models.Model):
     user_id = models.ForeignKey(Usuario, editable=False, on_delete=models.DO_NOTHING) ##
     monto = models.IntegerField(default=0)
     cantidad = models.IntegerField(default=0)
-    fecha = models.TimeField(default=now, editable=False)
+    fecha = models.DateField(default=now, editable=False)
+    
+    def as_dict(self):
+        return { 
+                "monto": self.monto,
+                "user_id": self.user_id.user_id,
+                "cantidad": self.cantidad,
+                "fecha": self.fecha,
+                "venta_id": self.venta_id
+                }
 

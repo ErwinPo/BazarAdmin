@@ -43,7 +43,7 @@ def ventas(request):
     # Get all data of venta table
     registros = Venta.objects.all()
     # Convertir objetos de modelo a diccionarios
-    registros_dict = [dict(registro) for registro in registros]
+    registros_dict = [registro.as_dict() for registro in registros]
 
     # Assuming you want to return the parsed JSON data
     response = { "message": "Consulta Exitosa" , "registros": registros_dict}
