@@ -6,7 +6,7 @@ from django.utils.timezone import now
 
 class Usuario(models.Model):
     #insertar campos  #hashear contraseña
-    user_id = models.IntegerField(primary_key=True)
+    user_id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     contrasena = models.CharField(max_length=50)
     correo = models.CharField(max_length=50)
