@@ -15,7 +15,7 @@ class Usuario(models.Model):
         
 class Venta(models.Model):
     #insertar campos
-    venta_id = models.IntegerField(primary_key=True)
+    venta_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Usuario, editable=False, on_delete=models.DO_NOTHING) ##
     monto = models.IntegerField(default=0)
     cantidad = models.IntegerField(default=0)
