@@ -1,19 +1,8 @@
-import React from "react";
+import SalesTable from "../components/SalesTable"
 
-const Registros = () => {
+const Registros = ( {ventas} ) => {
 	return (
-		<div
-			style={{
-				display: "flex",
-				justifyContent: "centre",
-				alignItems: "centre",
-				height: "100vh",
-			}}
-		>
-			<h1>
-				Registros
-			</h1>
-		</div>
+		<SalesTable ventas={ventas} />
 	);
 };
 
