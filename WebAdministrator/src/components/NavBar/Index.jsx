@@ -1,45 +1,42 @@
 import React from "react";
-import {
-	Nav,
-	NavLink,
-	Bars,
-	NavMenu,
-	NavBtn,
-	NavBtnLink,
-} from "./NavbarElements";
+import { FaBars } from "react-icons/fa";
+import { NavLink as Link } from "react-router-dom";
+import "./NavbarStyles.css";
 
-import logo from "../../assets/images/LogoHNP.png"
+import logo from "../../assets/images/LogoHNP.png";
 
 const Navbar = () => {
-	return (
-		<>
-			<Nav>
-				<div style={{ display: 'flex', alignItems: 'center', marginLeft: '0px' }}>
-                    <img src={logo} alt="Logo" style={{ height: '85px', width: 'auto' }} />
+
+    return (
+        <>
+            <nav className="nav">
+                <div className="logo-container">
+                    <img src={logo} alt="Logo" className="logo" />
                 </div>
-				<Bars />
-				<NavMenu>
-					<NavLink to="/Ventas" >
-						Ventas
-					</NavLink>
-					<NavLink to="/Usuarios" activeStyle>
-						Usuarios
-					</NavLink>
-					<NavLink to="/Estadisticas" activeStyle>
-						Estadisticas
-					</NavLink>
-					<NavLink to="/Registros" activeStyle>
-						Registros
-					</NavLink>
-				</NavMenu>
-				<NavBtn>
-					<NavBtnLink to="/logout">
-						Cerrar Sesión
-					</NavBtnLink>
-				</NavBtn>
-			</Nav>
-		</>
-	);
+
+                <FaBars className="bars" />
+                <div className="nav-menu">
+                    <Link to="/Ventas" className="nav-link" activeClassName="active">
+                        Ventas
+                    </Link>
+                    <Link to="/Usuarios" className="nav-link" activeClassName="active">
+                        Usuarios
+                    </Link>
+                    <Link to="/Estadisticas" className="nav-link" activeClassName="active">
+                        Estadisticas
+                    </Link>
+                    <Link to="/Registros" className="nav-link" activeClassName="active">
+                        Registros
+                    </Link>
+                </div>
+                <nav className="nav-btn">
+                    <Link to="/logout" className="nav-btn-link">
+                        Cerrar Sesión
+                    </Link>
+                </nav>
+            </nav>
+        </>
+    );
 };
 
 export default Navbar;
