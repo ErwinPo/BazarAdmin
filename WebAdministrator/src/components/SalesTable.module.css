@@ -1,16 +1,44 @@
-.tableCustom {
+/* Copyright 2024 BitBrothers
+ * File: SalesTable.module.css
+ * Type: css file */
+
+.buttons {
+	gap: 12px;
+}
+.checkBox {
+	height: 25px;
+	width: auto;
+}
+
+.emptyState td {
+	color: black !important;
+	font-weight: bold;
+	font-size: large;
+	padding: 25px;
+} 
+
+.image {
+	height: 25px;
+	width: auto;
+}
+
+ .table {
+	border-radius: 15px;
+	text-align: start;
+}
+
+.table td {
+	background-color: white;
+	color: black;
+}
+
+.table th {
+	background-color: #539165;
+	font-weight: normal;
+	justify-content: start !important;
+	align-content: start !important;
+}
+
+.tableCover {
 	margin: 30px;
-	background: #539165;
-	background-color: #539165;
-	color: red;
-}
-
-.tableHeadCustom {
-	background-color: #539165;
-	background: #539165;
-	color: #539165;
-}
-
-.estadoVacio {
-
 }
