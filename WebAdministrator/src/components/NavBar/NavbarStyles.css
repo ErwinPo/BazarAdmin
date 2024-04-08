@@ -1,4 +1,4 @@
-.nav {
+.nav-custom {
     background: #539165;
     height: 85px;
     display: flex;
@@ -60,6 +60,10 @@
 .nav-link.active {
     color: #F7C04A;
 	font-weight: bold;
+}
+
+.nav-link:hover {
+    color: #F7C04A;
 }
 
 .nav-btn {
