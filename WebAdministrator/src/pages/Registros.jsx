@@ -1,4 +1,4 @@
-import SalesTable from "../components/SalesTable"
+import SalesTable from "../components/Table/SalesTable"
 
 const Registros = ( {sales} ) => {
 	return (

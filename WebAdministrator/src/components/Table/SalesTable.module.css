@@ -22,41 +22,6 @@
 	width: auto;
 }
 
-.pagination {
-	justify-content: center;
-	padding-top: 15px;
-}
-
-.pagination a {
-	border:1.5px solid black;
-	color: black;
-	font-size: 20px;
-	font-weight: bold;
-}
-
-.pagination a:hover{
-	border:1.5px solid black;
-	background: #F7C04A;
-	color: white;
-}
-
-.pagination span {
-	color: black;
-	font-size: 20px;
-	font-weight: bold;
-}
-
-
-.paginationActive span {
-	background: #F7C04A !important;
-	font-size: 20px;
-	font-weight: bold;
-}
-
-.paginationCover {
-	justify-content: center;
-}
-
 .table {
 	border-radius: 15px;
 	margin: 0px;
