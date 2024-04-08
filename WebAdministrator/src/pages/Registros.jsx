@@ -1,8 +1,8 @@
 import SalesTable from "../components/SalesTable"
 
-const Registros = ( {ventas} ) => {
+const Registros = ( {sales} ) => {
 	return (
-		<SalesTable ventas={ventas} />
+		<SalesTable sales={sales} />
 	);
 };
 
