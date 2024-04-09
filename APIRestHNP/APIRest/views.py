@@ -160,3 +160,65 @@ def ventasusuario(request, user_id):
         response = {"message": str(e)}
         return JsonResponse(response, status="400", content_type="application/json")
     
+@csrf_exempt
+def actualizarusuario(request, usuario_id):
+    response = {}
+    
+    if request.method != "PUT":
+        response = {"message": "Operacion no valida"}
+        return JsonResponse(response, status=400, content_type="application/json")
+    
+    try:
+        info = json.loads(request.body)
+    except json.JSONDecodeError:
+        response = {"message": "Error de formato en los datos"}
+        return JsonResponse(response, status=400)  # Bad Request
+    
+    try:
+        usuario = Usuario.objects.get(usuario_id=usuario_id)
+        usuario.active = info["active"] 
+        usuario.nombre = info["nombre"]
+        usuario.contrasena = info["contrasena"]
+        usuario.correo = info["correo"]
+        usuario.ventas_semana = info["ventas_semana"]
+        usuario.supermodel = info["supermodel"]
+        usuario.save()
+        response = {"message": "Usuario Actualizado"}
+        return JsonResponse(response, status=200, content_type="application/json")
+    except ObjectDoesNotExist:
+        response = {"message": "El usuario a actualizar no existe"}
+        return JsonResponse(response, status="400", content_type="application/json")
+    except Exception as e:
+        response = {"message": str(e)}
+        return JsonResponse(response, status="400", content_type="application/json")
+    
+@csrf_exempt
+def actualizarVenta(request, venta_id):
+    response = {}
+    
+    if request.method != "PUT":
+        response = {"message": "Operacion no valida"}
+        return JsonResponse(response, status=400, content_type="application/json")
+    
+    try:
+        info = json.loads(request.body)
+    except json.JSONDecodeError:
+        response = {"message": "Error de formato en los datos"}
+        return JsonResponse(response, status=400)  # Bad Request
+    
+    try:
+        venta = Venta.objects.get(venta_id=venta_id)
+        venta.active = info["active"]
+        venta.monto = info["monto"]
+        venta.cantidad = info["cantidad"]
+        venta.fecha = info["fecha"]
+        venta.user_id = info["user_id"]
+        venta.save()
+        response = {"message": "Venta Actualizado"}
+        return JsonResponse(response, status=200, content_type="application/json")
+    except ObjectDoesNotExist:
+        response = {"message": "La venta a actualizar no existe"}
+        return JsonResponse(response, status="400", content_type="application/json")
+    except Exception as e:
+        response = {"message": str(e)}
+        return JsonResponse(response, status="400", content_type="application/json")
