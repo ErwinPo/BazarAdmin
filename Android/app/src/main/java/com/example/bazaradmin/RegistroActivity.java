@@ -14,6 +14,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,33 +34,29 @@ public class RegistroActivity extends AppCompatActivity{
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.seriesquotes.10cyrilc.me").addConverterFactory(GsonConverterFactory.create()).build();
+                .baseUrl("https://api.seriesquotes.10cyrilc.me")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         ApiService service = retrofit.create(ApiService.class);
 
-        Call<Quote> call = service.getPost();
+        Call<List<Quote>> call = service.getPost();
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                call.enqueue(new Callback<Quote>() {
+                call.clone().enqueue(new Callback<List<Quote>>() {
                     @Override
-                    public void onResponse(Call<Quote> call, Response<Quote> response) {
-
-                        Gson gson = new Gson();
-                        String json = response.body();
-                        JsonArray array = gson.fromJson(json, JsonArray.class);
-                        for (JsonElement element : array) {
-                            Quote qoute = gson.fromJson(element,Quote.class);
-                        }
+                    public void onResponse(Call<List<Quote>> call, Response<List<Quote>> response) {
 
                         if (response.isSuccessful()) {
-                            Quote quote = response.body();
-                            Log.i("QUOTE", quote.quote);
+                            List<Quote> quotes = response.body();
+                            Log.i("QUOTE", quotes.get(0).getQuote());
+
                         }
                     }
                     @Override
-                    public void onFailure(Call<Quote> call, Throwable t) {
+                    public void onFailure(Call<List<Quote>> call, Throwable t) {
                         Log.i("QUOTE", t.toString());
                         call.cancel();
                         };

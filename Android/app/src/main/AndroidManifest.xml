@@ -13,7 +13,7 @@
         android:theme="@style/Theme.BazarAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".RegistroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".RegistroActivity"
+            android:name=".Main"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 

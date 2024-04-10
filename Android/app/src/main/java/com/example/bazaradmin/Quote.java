@@ -1,16 +1,11 @@
 package com.example.bazaradmin;
 
-import com.google.gson.annotations.SerializedName;
 
 public class Quote {
 
-    @SerializedName("id")
     int id;
-    @SerializedName("author")
     String author;
-    @SerializedName("series")
     String series;
-    @SerializedName("quote")
     String quote;
 
     public Quote(int id, String author, String series, String quote) {
