@@ -5,7 +5,7 @@ import logo from "../../assets/images/LogoHNP.png";
 
 const Navbar = () => {
     return (
-        <>
+        <div className="nav-bar-container">
             <nav className="nav-custom">
                 <div className="logo-container">
                     <img src={logo} alt="Logo" className="logo" />
@@ -24,14 +24,14 @@ const Navbar = () => {
                     <Link to="/Registros" className="nav-link" activeclassname="active">
                         Registros
                     </Link>
-                </div>
-                <nav className="nav-btn">
+                    <nav className="nav-btn">
                     <Link to="/logout" className="nav-btn-link">
                         Cerrar Sesión
                     </Link>
-                </nav>
+                    </nav>
+                </div>
             </nav>
-        </>
+        </div>
     );
 };
 

@@ -1,9 +1,21 @@
+  *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  body{
+    display: grid;
+    place-content: center;
+    width: 100vw;
+    height: 100vh;
+  }
+  
   .Login-form-container {
     display: flex;
     justify-content: center;
-    align-items: center;
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
   }
   
   .Login-form {
@@ -61,13 +73,13 @@
 }
 
 
-.logo-container {
+.logo-containerL {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.logo {
+.logoL {
     height: 200px;
     width: auto;
     align-items: center;

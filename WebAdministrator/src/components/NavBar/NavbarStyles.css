@@ -1,10 +1,26 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+.nav-bar-container{
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
 .nav-custom {
     background: #539165;
-    height: 85px;
+    place-self: start;
+    height: 108px;
     display: flex;
+    width: 100vw;
     justify-content: space-between;
     padding: 0;
     z-index: 12;
+    border-bottom: 8px solid #F7C04A;
 }
 
 .logo-container {
@@ -14,8 +30,8 @@
 }
 
 .logo {
-    height: 85px;
-    width: auto;
+    height: 100px;
+    object-fit: fill;
 }
 
 .bars {
@@ -41,8 +57,8 @@
 
 .nav-menu {
     display: flex;
-    align-items: center;
-    margin-right: -24px;
+    align-items: left;
+    margin-right: 0px;
 }
 
 .nav-link {
@@ -51,6 +67,8 @@
     align-items: center;
     text-decoration: none;
     padding: 50px;
+    padding-left: 80px;
+    padding-right: 80px;
     font-size: 20px;
     height: 100%;
     cursor: pointer;
@@ -70,12 +88,14 @@
     display: flex;
     align-items: center;
     margin-right: 80px;
+    margin-left: 80px;
 }
 
 .nav-btn-link {
+    font-size: 16px;
     border-radius: 100px;
     background: #F7C04A;
-    padding: 10px 22px;
+    padding: 15px 22px;
     color: #000000;
     outline: none;
     border: none;
