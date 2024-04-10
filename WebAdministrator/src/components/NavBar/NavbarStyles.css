@@ -1,22 +1,7 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-
-.nav-bar-container{
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-}
-
 .nav-custom {
     background: #539165;
-    place-self: start;
     height: 108px;
     display: flex;
-    width: 100vw;
     justify-content: space-between;
     padding: 0;
     z-index: 12;
@@ -31,7 +16,7 @@
 
 .logo {
     height: 100px;
-    object-fit: fill;
+    width: auto;
 }
 
 .bars {
@@ -57,8 +42,8 @@
 
 .nav-menu {
     display: flex;
-    align-items: left;
-    margin-right: 0px;
+    align-items: center;
+    margin-right: -24px;
 }
 
 .nav-link {
@@ -69,11 +54,12 @@
     padding: 50px;
     padding-left: 80px;
     padding-right: 80px;
-    font-size: 20px;
+    font-size: 22px;
     height: 100%;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
 }
+
 
 .nav-link.active {
     color: #F7C04A;
@@ -87,7 +73,7 @@
 .nav-btn {
     display: flex;
     align-items: center;
-    margin-right: 80px;
+    margin-right: 100px;
     margin-left: 80px;
 }
 

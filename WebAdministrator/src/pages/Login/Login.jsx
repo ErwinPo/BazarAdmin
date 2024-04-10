@@ -1,9 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/NavBar/Index";
 import "./LoginStyle.css";
-import logo from "../assets/images/LogoHNP1.png";
+import logo from "../../assets/images/LogoHNP1.png";
 
 export default function Login(){
 
@@ -14,17 +13,13 @@ export default function Login(){
     const [password, setPassword] = useState("");
 
     function signIn(e){
-        setLogin("true")
-    }
-
-    /*function signIn(e){
         e.preventDefault();
         var txt_user = document.getElementById("txt_user").value;
         var txt_pswd = document.getElementById("txt_pswd").value;
         if(txt_user.length===0 || txt_pswd.length==0){
             alert("Completa los datos faltantes");
         } else{
-            if(user === "admin" && password === "hola"){
+            if(user === "admin" && password === "hola123"){
                 setLogin("true")
             } else{
                 setLogin("false")
@@ -34,7 +29,7 @@ export default function Login(){
                 document.getElementById("txt_user").focus();
             }
         }
-    }*/
+    }
 
 	return (
         <div className="Login-form-container">
@@ -73,10 +68,11 @@ export default function Login(){
                 Ingresar
               </button>
             </div>
+            <br></br>
           </div>
         </form>
 
-        { myLogin === "true" && navigate('/Home')}
+        { myLogin === "true" && navigate('/Ventas')}
 
       </div>
 	);

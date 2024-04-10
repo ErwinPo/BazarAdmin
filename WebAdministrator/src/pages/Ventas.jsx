@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../components/NavBar/Index";
 
 const Ventas = () => {
 	return (
@@ -6,13 +7,13 @@ const Ventas = () => {
 			style={{
 				display: "flex",
 				justifyContent: "centre",
+				flexDirection: "column",
 				alignItems: "centre",
 				height: "100vh",
 			}}
 		>
-			<h1>
-                Ventas
-			</h1>
+			<Navbar />
+			<h1>Ventas</h1>
 		</div>
 	);
 };
