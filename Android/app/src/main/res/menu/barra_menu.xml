@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/firstFragment"
-        android:icon="@drawable/home"
+        android:icon="@drawable/cajaicon"
         android:title="Inicio" />
     <item
         android:id="@+id/secondFragment"
-        android:icon="@drawable/sos"
-        android:title="AYUDA" />
+        android:icon="@drawable/receipt"
+        android:title="Historial" />
     <item
         android:id="@+id/thirdFragment"
-        android:icon="@drawable/usr"
-        android:title="Perfil"/>
+        android:icon="@drawable/bargraph"
+        android:title="Datos"/>
 
 </menu>
