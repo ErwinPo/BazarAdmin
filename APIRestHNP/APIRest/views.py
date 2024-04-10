@@ -1,13 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
 import json
-from django.views.decorators.csrf import csrf_exempt
 from .models import *
-from django.core import serializers
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 @csrf_exempt
+@require_http_methods(["POST"])
 def registrousuario(request):
     response = {}
     
@@ -37,6 +37,7 @@ def registrousuario(request):
     return JsonResponse(response, status=200, content_type="application/json")
 
 @csrf_exempt
+@require_http_methods(["GET"])
 def ventas(request):
     # Initialize response
     response = {}
@@ -57,6 +58,7 @@ def ventas(request):
     return JsonResponse(response, status=200, content_type="application/json")
 
 @csrf_exempt
+@require_http_methods(["POST"])
 def registroventa(request):
     # Initialize response
     response = {}
@@ -81,6 +83,7 @@ def registroventa(request):
     return JsonResponse(response, status=200, content_type="application/json")
 
 @csrf_exempt
+@require_http_methods(["GET"])
 def usuarios(request):
     
     response = {}
@@ -96,6 +99,7 @@ def usuarios(request):
     return JsonResponse(response, status=200, content_type="application/json")
 
 @csrf_exempt
+@require_http_methods(["DELETE"])
 def eliminarusuario(request, user_id):
     response = {}
     
@@ -117,6 +121,7 @@ def eliminarusuario(request, user_id):
         return JsonResponse(response, status="400", content_type="application/json")
     
 @csrf_exempt
+@require_http_methods(["DELETE"])
 def eliminarventa(request, venta_id):
     response = {}
     
@@ -129,16 +134,17 @@ def eliminarventa(request, venta_id):
         venta = Venta.objects.get(venta_id=venta_id)
         venta.active = False 
         venta.save()
-        response = {"message": "Usuario Eliminado"}
+        response = {"message": "Venta Eliminada"}
         return JsonResponse(response, status=200, content_type="application/json")
     except ObjectDoesNotExist:
-        response = {"message": "El usuario a eliminar no existe"}
+        response = {"message": "La venta a eliminar no existe"}
         return JsonResponse(response, status="400", content_type="application/json")
     except Exception as e:
         response = {"message": str(e)}
         return JsonResponse(response, status="400", content_type="application/json")
     
-@csrf_exempt    
+@csrf_exempt   
+@require_http_methods(["GET"]) 
 def ventasusuario(request, user_id):
     response = {}
     
@@ -161,6 +167,7 @@ def ventasusuario(request, user_id):
         return JsonResponse(response, status="400", content_type="application/json")
     
 @csrf_exempt
+@require_http_methods(["PUT"])
 def actualizarusuario(request, usuario_id):
     response = {}
     
@@ -193,6 +200,7 @@ def actualizarusuario(request, usuario_id):
         return JsonResponse(response, status="400", content_type="application/json")
     
 @csrf_exempt
+@require_http_methods(["PUT"])
 def actualizarVenta(request, venta_id):
     response = {}
     
@@ -211,10 +219,8 @@ def actualizarVenta(request, venta_id):
         venta.active = info["active"]
         venta.monto = info["monto"]
         venta.cantidad = info["cantidad"]
-        venta.fecha = info["fecha"]
-        venta.user_id = info["user_id"]
         venta.save()
-        response = {"message": "Venta Actualizado"}
+        response = {"message": "Venta Actualizada"}
         return JsonResponse(response, status=200, content_type="application/json")
     except ObjectDoesNotExist:
         response = {"message": "La venta a actualizar no existe"}
