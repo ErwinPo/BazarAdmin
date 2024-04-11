@@ -1,0 +1,38 @@
+/* Copyright 2024 BitBrothers
+ * File: DateRangePicker.module.css
+ * Type: css file */
+
+.dateRangePicker {
+    justify-content: center;
+}
+
+.datePicker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.dateInput {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dashContainer {
+    display: none;
+}
+
+.dashContainer span {
+    margin-top: 15px;
+}
+
+@media (min-width: 768px) {
+.dashContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+}
+
+

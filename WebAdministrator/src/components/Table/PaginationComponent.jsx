@@ -8,7 +8,7 @@ import { Pagination } from 'react-bootstrap';
 
 const PaginationComponent = ({ totalPages, page, handlePageChange }) => {
   const isSmallScreen = window.innerWidth <= 768; // Check if screen is small
-  const maxPageItems = isSmallScreen ? 4 : 10; // Maximum number of page items
+  const maxPageItems = isSmallScreen ? 2 : 10; // Maximum number of page items
   
   let startPage = 1;
   if (totalPages > maxPageItems) {
