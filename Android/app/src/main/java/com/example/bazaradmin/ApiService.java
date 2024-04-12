@@ -8,7 +8,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiService {
-    @GET("/quote")
-    Call<List<Quote>> getPost();
+    @GET("/ventas/")
+    Call<List<Venta>> getVentas();
 
 }

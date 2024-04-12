@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
@@ -24,6 +26,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegistroActivity extends AppCompatActivity{
     Button register;
+    EditText monto, cantidad;
+
+    int user_id = 5;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,36 +36,46 @@ public class RegistroActivity extends AppCompatActivity{
         setContentView(R.layout.activity_registro);
 
         register = findViewById(R.id.registrar);
-
+        monto = findViewById(R.id.monto);
+        cantidad = findViewById(R.id.cantidad);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.seriesquotes.10cyrilc.me")
+                .baseUrl("http://127.0.0.1:8000/BAZARAPI/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ApiService service = retrofit.create(ApiService.class);
 
-        Call<List<Quote>> call = service.getPost();
+        Call<List<Venta>> call = service.getVentas();
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                call.clone().enqueue(new Callback<List<Quote>>() {
+                int cantidadventa = Integer.parseInt(cantidad.getText().toString());
+                int montoventa = Integer.parseInt(monto.getText().toString());
+
+                Venta venta = new Venta(montoventa, cantidadventa, user_id);
+                Gson gson = new Gson();
+                String ventajson = gson.toJson(venta);
+                Log.i("JSONVENTA", ventajson);
+            }
+                /*
+                call.clone().enqueue(new Callback<List<Venta>>() {
                     @Override
-                    public void onResponse(Call<List<Quote>> call, Response<List<Quote>> response) {
+                    public void onResponse(Call<List<Venta>> call, Response<List<Venta>> response) {
 
                         if (response.isSuccessful()) {
-                            List<Quote> quotes = response.body();
-                            Log.i("QUOTE", quotes.get(0).getQuote());
+                            List<Venta> ventas = response.body();
+                            Log.i("VENTA", Integer.toString(ventas.get(0).getMonto()));
 
                         }
                     }
                     @Override
-                    public void onFailure(Call<List<Quote>> call, Throwable t) {
+                    public void onFailure(Call<List<Venta>> call, Throwable t) {
                         Log.i("QUOTE", t.toString());
                         call.cancel();
                         };
                 });
-            }
+            } */
         });
 }}

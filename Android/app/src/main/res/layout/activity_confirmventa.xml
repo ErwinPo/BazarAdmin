@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Venta Realizada!"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:textColor="@color/Green"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/subtitle"
+        android:text="Datos Registrados"
+        android:textStyle="bold"
+        android:textColor="@color/darkblue"
+        android:textSize="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/montolabel"
+        android:text="Monto total"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle"
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/price"
+        android:textStyle="bold"
+        android:text="$"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toBottomOf="@+id/montolabel"
+        android:textSize="25dp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toStartOf="@id/montolabel"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/monto"
+        android:textStyle="bold"
+        android:text="XXX"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toBottomOf="@+id/montolabel"
+        android:textSize="25dp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toEndOf="@+id/price"
+        android:layout_marginLeft="5dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cantidadlabel"
+        android:text="Número total de artículos"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toBottomOf="@+id/montolabel"
+        android:textSize="20dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="@id/montolabel"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cantidad"
+        android:textStyle="bold"
+        android:text="X"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toBottomOf="@+id/cantidadlabel"
+        android:textSize="25dp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toStartOf="@id/montolabel"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quantity"
+        android:textStyle="bold"
+        android:text="Artículos"
+        android:textColor="@color/darkblue"
+        app:layout_constraintTop_toBottomOf="@+id/cantidadlabel"
+        android:textSize="25dp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintStart_toEndOf="@+id/cantidad"
+        android:layout_marginLeft="5dp"
+        />
+
+    <Button
+        android:id="@+id/continuar"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ylwbtn"
+        android:text="Continuar"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cantidad"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        tools:ignore="TextSizeCheck,TextContrastCheck" />
+
+    <Button
+        android:id="@+id/deshacer"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:background="@drawable/graybtn"
+        android:text="Deshacer Venta"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/continuar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        tools:ignore="TextSizeCheck,TextContrastCheck" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/barra_Menu"
+        style="@style/barraMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:labelVisibilityMode="selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/barra_menu"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

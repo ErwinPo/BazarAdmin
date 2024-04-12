@@ -23,7 +23,7 @@ class Usuario(models.Model):
         return {
             "user_id": self.user_id,
             "nombre": self.nombre,
-            "contraseña": self.contrasena,
+            "contrasena": self.contrasena,
             "correo": self.correo,
             "ventas_semana": self.ventas_semana,
             "supermodel": self.supermodel,
