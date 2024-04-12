@@ -1,5 +1,5 @@
 import SalesTable from "../components/Table/SalesTable"
-import Navbar from "../components/NavBar/Index";
+import Navbar from "../components/NavBar/Navbar";
 
 const Registros = ( {sales} ) => {
 	return (
