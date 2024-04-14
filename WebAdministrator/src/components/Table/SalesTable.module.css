@@ -18,12 +18,16 @@
 } 
 
 .image {
-	height: 25px;
+	height: 20px;
 	width: auto;
 }
 
 .tableCover div {
 	border-radius: 15px !important;
+}
+
+.tableCover table {
+	border: 1px solid black;
 }
 
 .table td {

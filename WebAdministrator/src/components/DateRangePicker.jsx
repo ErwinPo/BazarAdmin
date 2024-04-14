@@ -14,13 +14,13 @@ registerLocale('es', es)
 const DateRangePicker = ({ startDate, endDate, handleStartDateChange, handleEndDateChange }) => {
 return (
     <Row className={classes.row}>
-      <Col>
+      <Col className={classes.col}>
         <Form.Label className={classes.label}>Fecha Inferior</Form.Label>
         <DatePicker
           selected={startDate}
           onChange={handleStartDateChange}
           dateFormat="dd/MM/yyyy"
-          className={classes.datePicker}
+          className={classes.dateInput}
           placeholderText="dd/mm/aaaa"
           wrapperClassName={classes.pickerWrapper}
           locale="es"
@@ -35,7 +35,7 @@ return (
           selected={endDate}
           onChange={handleEndDateChange}
           dateFormat="dd/MM/yyyy"
-          className={classes.datePicker}
+          className={classes.dateInput}
           placeholderText="dd/mm/aaaa"
           wrapperClassName={classes.pickerWrapper}
           locale="es"

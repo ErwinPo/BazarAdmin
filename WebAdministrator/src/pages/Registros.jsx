@@ -2,7 +2,7 @@
  * File: Registros.jsx
  * Type: component */
 
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import SalesTable from "../components/Table/SalesTable";
 import Navbar from "../components/NavBar/Index";
 import ValueRangePicker from "../components/ValueRangePicker";
@@ -12,61 +12,73 @@ import DateRangePicker from "../components/DateRangePicker";
 import moment from "moment";
 
 const Registros = ({ sales }) => {
-	const lowestDate = moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate();
-	const [startDate, setStartDate] = useState(lowestDate);
-	const [endDate, setEndDate] = useState(new Date());
-	const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(1000);
-  
-	const handleStartDateChange = (date) => {
-	  setStartDate(date);
-	};
-  
-	const handleEndDateChange = (date) => {
-	  setEndDate(date);
-	};
+    const lowestDate = moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate();
+	const highestAmount = Math.max(...sales.map(sale => sale.amount));
+    const [startDate, setStartDate] = useState(lowestDate);
+    const [endDate, setEndDate] = useState(new Date());
+    const [minValue, setMinValue] = useState(0);
+    const [maxValue, setMaxValue] = useState(highestAmount);
+    const [page, setPage] = useState(1);
 
-	const handleMinValueChange = (value) => {
-        setMinValue(value);
+    const handleStartDateChange = (date) => {
+        setStartDate(date);
+        setPage(1);
+    };
+
+    const handleEndDateChange = (date) => {
+        setEndDate(date);
+        setPage(1);
+    };
+
+    const handleMinValueChange = (value) => {
+		if (value < 0 || value > maxValue) {
+			return;
+		}
+		setMinValue(value);
+        setPage(1);
     };
 
     const handleMaxValueChange = (value) => {
-        setMaxValue(value);
+		if (value < 0 || value < minValue) {
+			return;
+		}
+		setMaxValue(value);
+        setPage(1);
     };
-  
-	const filteredSales = sales.filter(sale =>
-		moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrAfter(startDate, 'day') &&
-		moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrBefore(endDate, 'day') &&
+
+    const filteredSales = sales.filter(sale =>
+        moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrAfter(startDate, 'day') &&
+        moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrBefore(endDate, 'day') &&
         sale.amount >= minValue && sale.amount <= maxValue
-	  );
-  
-	return (
-	  <div className="salesLog">
-		<Navbar />
-		<Row className={classes.filters}>
-		  <Col>
-			<Button variant="warning">Exportar</Button>
-		  </Col>
-		  <Col className={classes.pickers} md={12} lg={5}>
-			<ValueRangePicker
-				minValue={minValue}
-				maxValue={maxValue}
-				handleMinValueChange={handleMinValueChange}
-				handleMaxValueChange={handleMaxValueChange}
-			/>
-		  </Col>
-		  <Col className={classes.pickers} md={12} lg={5}>
-			<DateRangePicker
-				startDate={startDate}
-				endDate={endDate}
-				handleStartDateChange={handleStartDateChange}
-				handleEndDateChange={handleEndDateChange}
-			/>
-		  </Col>
-		</Row>
-		<SalesTable sales={filteredSales} />
-	  </div>
-	);
-  };
-  
+    );
+
+    return (
+        <div className="salesLog">
+            <Navbar />
+            <Row className={classes.filters}>
+                <Col>
+                    <Button variant="warning">Exportar</Button>
+                </Col>
+                <Col className={classes.pickers} md={12} lg={5}>
+                    <ValueRangePicker
+                        minValue={minValue}
+                        maxValue={maxValue}
+                        handleMinValueChange={handleMinValueChange}
+                        handleMaxValueChange={handleMaxValueChange}
+                    />
+                </Col>
+                <Col className={classes.pickers} md={12} lg={5}>
+                    <DateRangePicker
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartDateChange={handleStartDateChange}
+                        handleEndDateChange={handleEndDateChange}
+                    />
+                </Col>
+            </Row>
+            <SalesTable sales={filteredSales} page={page} setPage={setPage} />
+        </div>
+    );
+};
+
 export default Registros;
