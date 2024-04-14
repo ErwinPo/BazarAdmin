@@ -7,7 +7,7 @@ import { Form, Col, Row } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import classes from './DateRangePicker.module.css';
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import { registerLocale } from  "react-datepicker";
 import { es } from 'date-fns/locale/es';
 registerLocale('es', es)
 

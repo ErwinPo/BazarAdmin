@@ -15,6 +15,8 @@ const Registros = ({ sales }) => {
 	const lowestDate = moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate();
 	const [startDate, setStartDate] = useState(lowestDate);
 	const [endDate, setEndDate] = useState(new Date());
+	const [minValue, setMinValue] = useState(0);
+    const [maxValue, setMaxValue] = useState(1000);
   
 	const handleStartDateChange = (date) => {
 	  setStartDate(date);
@@ -23,10 +25,19 @@ const Registros = ({ sales }) => {
 	const handleEndDateChange = (date) => {
 	  setEndDate(date);
 	};
+
+	const handleMinValueChange = (value) => {
+        setMinValue(value);
+    };
+
+    const handleMaxValueChange = (value) => {
+        setMaxValue(value);
+    };
   
 	const filteredSales = sales.filter(sale =>
 		moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrAfter(startDate, 'day') &&
-		moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrBefore(endDate, 'day')
+		moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrBefore(endDate, 'day') &&
+        sale.amount >= minValue && sale.amount <= maxValue
 	  );
   
 	return (
@@ -37,14 +48,19 @@ const Registros = ({ sales }) => {
 			<Button variant="warning">Exportar</Button>
 		  </Col>
 		  <Col className={classes.pickers} md={12} lg={5}>
-			<ValueRangePicker />
+			<ValueRangePicker
+				minValue={minValue}
+				maxValue={maxValue}
+				handleMinValueChange={handleMinValueChange}
+				handleMaxValueChange={handleMaxValueChange}
+			/>
 		  </Col>
 		  <Col className={classes.pickers} md={12} lg={5}>
 			<DateRangePicker
-			  startDate={startDate}
-			  endDate={endDate}
-			  handleStartDateChange={handleStartDateChange}
-			  handleEndDateChange={handleEndDateChange}
+				startDate={startDate}
+				endDate={endDate}
+				handleStartDateChange={handleStartDateChange}
+				handleEndDateChange={handleEndDateChange}
 			/>
 		  </Col>
 		</Row>
