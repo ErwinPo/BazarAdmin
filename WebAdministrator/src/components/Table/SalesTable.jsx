@@ -6,8 +6,8 @@
 import React from 'react';
 import classes from './SalesTable.module.css';
 import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
-import iconPencil from '../../assets/images/icono_pencil.png';
-import iconTrash from '../../assets/images/icono_trash.png';
+import iconPencil from '../../assets/images/icon_pencil.png';
+import iconTrash from '../../assets/images/icon_trash.png';
 import PaginationComponent from './PaginationComponent';
 
 const SalesTable = ({ sales, page, setPage }) => {

@@ -2,14 +2,16 @@
  * File: Registros.jsx
  * Type: component */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SalesTable from "../components/Table/SalesTable";
 import Navbar from "../components/NavBar/Index";
 import ValueRangePicker from "../components/ValueRangePicker";
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Image, Row } from 'react-bootstrap';
 import classes from './Registros.module.css';
 import DateRangePicker from "../components/DateRangePicker";
 import moment from "moment";
+import iconExport from '../assets/images/icon_export.png';
+import { useMediaQuery } from 'react-responsive';
 
 const Registros = ({ sales }) => {
     const lowestDate = moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate();
@@ -52,12 +54,19 @@ const Registros = ({ sales }) => {
         sale.amount >= minValue && sale.amount <= maxValue
     );
 
+	const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1110 });
+
     return (
         <div className="salesLog">
             <Navbar />
             <Row className={classes.filters}>
-                <Col>
-                    <Button variant="warning">Exportar</Button>
+                <Col lg={isLargeScreen ? 12 : 'auto'}>
+                    <Button className={classes.button} variant="warning" >
+						<Image className={classes.image} src={iconExport} />
+						<span>
+							Exportar
+						</span>
+					</Button>
                 </Col>
                 <Col className={classes.pickers} md={12} lg={5}>
                     <ValueRangePicker
