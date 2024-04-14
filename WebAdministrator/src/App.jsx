@@ -12,6 +12,16 @@ import Login from "./pages/Login/Login";
 
 function App() {
 
+    const users = [
+        { id: 1, username: "Lety", password: "*********", usertype: "Admin"},
+        { id: 2, username: "Daniel", password: "******", usertype: "Vendedor"},
+        { id: 3, username: "David", password: "********", usertype: "Vendedor"},
+        { id: 4, username: "Diego", password: "********", usertype: "Vendedor"},
+        { id: 5, username: "Erwin", password: "*******", usertype: "Vendedor"},
+        { id: 6, username: "Josafat", password: "********", usertype: "Vendedor"},
+        { id: 7, username: "Raúl", password: "**********", usertype: "Vendedor"},
+    ]
+
     const sales = [
         { id: 1, fecha: '2024-04-01', monto: 100, cantidad: 2, vendedor: 'John Doe' },
         { id: 2, fecha: '2024-04-02', monto: 150, cantidad: 3, vendedor: 'Jane Smith' },
@@ -45,7 +55,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/Ventas" element={<Ventas />} />
-                <Route path="/Usuarios" element={<Usuarios />} />
+                <Route path="/Usuarios" element={<Usuarios users={users}/>} />
                 <Route path="/Estadisticas" element={<Estadisticas />} />
                 <Route path="/Registros" element={<Registros sales={sales} />} />
             </Routes>
