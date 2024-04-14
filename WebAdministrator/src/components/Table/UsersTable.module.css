@@ -1,0 +1,67 @@
+/* Copyright 2024 BitBrothers
+ * File: UsersTable.module.css
+ * Type: css file */
+
+ .buttons {
+	gap: 12px;
+}
+.checkBox {
+	height: 25px;
+	width: auto;
+}
+
+.emptyState td {
+	color: black !important;
+	font-weight: bold;
+	font-size: large;
+	padding: 25px;
+} 
+
+.image {
+	height: 20px;
+	width: auto;
+}
+
+.table {
+	border-radius: 15px;
+	margin: 10px auto;
+	text-align: start;
+    width:85%;
+}
+
+.table td {
+	background-color: #E8E5E5;
+	color: black;
+    border-left: none; 
+    border-right: none;
+}
+
+.table th {
+	background-color: #539165;
+	font-weight: normal;
+    border-left: none; 
+    border-right: none;
+	justify-content: start !important;
+	align-content: start !important;
+}
+
+.tableCover {
+	margin: 30px;
+}
+
+.addButton {
+    background-color: #F7C04A;
+    color:black;
+    border-color: black;
+    border-radius: 20px;
+    margin-left: 140px;
+    margin-top: 30px;
+    width: 160px;
+    height: 45px;
+  }
+
+  .addButton:hover {
+    background-color: #F7C04A;
+    color:black;
+    border-color: black;
+  }

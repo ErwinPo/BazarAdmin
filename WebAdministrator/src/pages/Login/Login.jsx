@@ -12,7 +12,7 @@ export default function Login(){
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
 
-    function signIn(e){
+    /*function signIn(e){
         e.preventDefault();
         var txt_user = document.getElementById("txt_user").value;
         var txt_pswd = document.getElementById("txt_pswd").value;
@@ -29,6 +29,11 @@ export default function Login(){
                 document.getElementById("txt_user").focus();
             }
         }
+    }*/
+
+    function signIn(e){
+      e.preventDefault();
+      setLogin("true")
     }
 
 	return (
