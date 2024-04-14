@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import SalesTable from "../components/Table/SalesTable";
-import Navbar from "../components/NavBar/Index";
+import Navbar from "../components/NavBar/Navbar";
 import ValueRangePicker from "../components/ValueRangePicker";
 import { Button, Col, Image, Row } from 'react-bootstrap';
 import classes from './Registros.module.css';

@@ -6,8 +6,8 @@
 import React, { useState } from 'react';
 import classes from './UsersTable.module.css';
 import { Button, ButtonGroup, Form, Image, Pagination, Table } from 'react-bootstrap';
-import iconPencil from '../../assets/images/icono_pencil.png';
-import iconTrash from '../../assets/images/icono_trash.png';
+import iconPencil from '../../assets/images/icon_pencil.png';
+import iconTrash from '../../assets/images/icon_trash.png';
 
 const UsersTable = ({ users }) => {
   const [page, setPage] = useState(1);

@@ -2,7 +2,11 @@
  * File: Registros.module.css
  * Type: css file */
 
- .filters {
+body {
+    text-align: center;
+}
+
+.filters {
     margin: 25px;
     display: flex;
     justify-content: center;
