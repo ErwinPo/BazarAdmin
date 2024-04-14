@@ -46,10 +46,10 @@ const SalesTable = ({ sales }) => {
                   <Form.Check />
                 </td>
                 <td>{sale.id}</td>
-                <td>{sale.fecha}</td>
-                <td>{sale.monto}</td>
-                <td>{sale.cantidad}</td>
-                <td>{sale.vendedor}</td>
+                <td>{sale.date}</td>
+                <td>{sale.amount}</td>
+                <td>{sale.quantity}</td>
+                <td>{sale.seller}</td>
                 <td>
                   <ButtonGroup className={classes.buttons}>
                     <Button variant="link" className={classes.noBorder}>
