@@ -7,7 +7,7 @@ const Usuarios = ({users}) => {
 	return (
 		<div>
 			<Navbar />
-			<Button className={classes.addButton}>Agregar Usuario</Button>
+			<Button variant="warning" className={classes.addButton}>Agregar Usuario</Button>
 			<UsersTable users={users} />
 		</div>
 	);
