@@ -6,9 +6,10 @@
 nav {
     background: #539165;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 0;
+    text-align: center;
     z-index: 12;
     border-bottom: 8px solid #F7C04A;
     position: sticky;
@@ -32,9 +33,8 @@ nav ul li a{
     font-family: 'Inter', sans-serif;
     font-size: 22px;
     padding-top: 11px;
-    padding-left: 40px;
-    padding-right: 40px;
-    margin: 0 0.5rem;
+    margin-left:40px;
+    margin-right: 40px;
     border-radius: 0.5rem;
 }
 

@@ -5,6 +5,7 @@
  .buttons {
 	gap: 12px;
 }
+
 .checkBox {
 	height: 25px;
 	width: auto;
@@ -22,11 +23,17 @@
 	width: auto;
 }
 
-.table {
-	border-radius: 15px;
-	margin: 10px auto;
-	text-align: start;
-    width:85%;
+.tableCover div {
+	border-radius: 15px !important;
+}
+
+.tableCover table {
+	border: 1px solid black;
+}
+
+.table td {
+	background-color: white;
+	color: black;
 }
 
 .table td {
@@ -46,7 +53,7 @@
 }
 
 .tableCover {
-	margin: 30px;
+	margin: 30px 100px;
 }
 
 .addButton {
