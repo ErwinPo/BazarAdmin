@@ -18,14 +18,16 @@
 } 
 
 .image {
-	height: 25px;
+	height: 20px;
 	width: auto;
 }
 
-.table {
-	border-radius: 15px;
-	margin: 0px;
-	text-align: start;
+.tableCover div {
+	border-radius: 15px !important;
+}
+
+.tableCover table {
+	border: 1px solid black;
 }
 
 .table td {
@@ -36,8 +38,6 @@
 .table th {
 	background-color: #539165;
 	font-weight: normal;
-	justify-content: start !important;
-	align-content: start !important;
 }
 
 .tableCover {
