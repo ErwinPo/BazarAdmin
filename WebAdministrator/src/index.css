@@ -25,3 +25,8 @@ body {
 	width: 25px;
   border-color: black;
 }
+
+.active{
+  color: #F7C04A !important;
+font-weight: bold;
+}
