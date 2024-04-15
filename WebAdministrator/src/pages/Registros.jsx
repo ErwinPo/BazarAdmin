@@ -59,33 +59,35 @@ const Registros = ({ sales }) => {
     return (
         <div className="salesLog">
             <Navbar />
-            <Row className={classes.filters}>
-                <Col lg={isLargeScreen ? 12 : 'auto'}>
-                    <Button className={classes.button} variant="warning" >
-						<Image className={classes.image} src={iconExport} />
-						<span>
-							Exportar
-						</span>
-					</Button>
-                </Col>
-                <Col className={classes.pickers} md={12} lg={5}>
-                    <ValueRangePicker
-                        minValue={minValue}
-                        maxValue={maxValue}
-                        handleMinValueChange={handleMinValueChange}
-                        handleMaxValueChange={handleMaxValueChange}
-                    />
-                </Col>
-                <Col className={classes.pickers} md={12} lg={5}>
-                    <DateRangePicker
-                        startDate={startDate}
-                        endDate={endDate}
-                        handleStartDateChange={handleStartDateChange}
-                        handleEndDateChange={handleEndDateChange}
-                    />
-                </Col>
-            </Row>
-            <SalesTable sales={filteredSales} page={page} setPage={setPage} />
+            <div className={classes.salesLog}>
+                <Row className={classes.filters}>
+                    <Col lg={isLargeScreen ? 12 : 'auto'}>
+                        <Button className={classes.button} variant="warning" >
+                            <Image className={classes.image} src={iconExport} />
+                            <span>
+                                Exportar
+                            </span>
+                        </Button>
+                    </Col>
+                    <Col className={classes.pickers} md={12} lg={5}>
+                        <ValueRangePicker
+                            minValue={minValue}
+                            maxValue={maxValue}
+                            handleMinValueChange={handleMinValueChange}
+                            handleMaxValueChange={handleMaxValueChange}
+                        />
+                    </Col>
+                    <Col className={classes.pickers} md={12} lg={5}>
+                        <DateRangePicker
+                            startDate={startDate}
+                            endDate={endDate}
+                            handleStartDateChange={handleStartDateChange}
+                            handleEndDateChange={handleEndDateChange}
+                        />
+                    </Col>
+                </Row>
+                <SalesTable sales={filteredSales} page={page} setPage={setPage} />
+            </div>
         </div>
     );
 };
