@@ -4,6 +4,7 @@
 
 body {
     text-align: center;
+    font-size: 1em;
 }
 
 .filters {
@@ -29,7 +30,7 @@ body {
 }
 
 .pickers {
-    margin: 20px 6px;
+    margin: 0px 6px;
 }
 
 .rangePickers {
@@ -39,13 +40,17 @@ body {
 }
 
 @media (min-width: 992px) and (max-width: 1110px) {
-    .buttonCol {
-      grid-column: span 12;
-    }
+  .buttonCol {
+    grid-column: span 12;
   }
+}
   
-  @media (min-width: 1111px) {
-    .buttonCol {
-      grid-column: auto;
-    }
+@media (min-width: 1111px) {
+  .buttonCol {
+    grid-column: auto;
   }
+}
+
+.salesLog {
+  margin: 0px 30px;
+}

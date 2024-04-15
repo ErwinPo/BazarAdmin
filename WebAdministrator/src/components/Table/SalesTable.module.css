@@ -13,7 +13,6 @@
 .emptyState td {
 	color: black !important;
 	font-weight: bold;
-	font-size: large;
 	padding: 25px;
 } 
 
@@ -38,8 +37,4 @@
 .table th {
 	background-color: #539165;
 	font-weight: normal;
-}
-
-.tableCover {
-	margin: 30px 100px;
 }
