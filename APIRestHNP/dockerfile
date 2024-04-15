@@ -1,0 +1,14 @@
+# Usamos una imagen de Ubuntu como base
+FROM ubuntu:latest
+
+# Actualizamos el sistema e instalamos las dependencias necesarias
+RUN apt-get update && apt-get install -y python3 python3-pip default-libmysqlclient-dev build-essential pkg-config mysql-client libssl-dev
+
+# Establecemos el directorio de trabajo en /APIRestHNP
+WORKDIR /APIRestHNP
+
+# Instalamos Django y mysqlclient
+RUN pip3 install django mysqlclient
+
+# Copiamos el código de la aplicación al contenedor
+COPY . /APIRestHNP/

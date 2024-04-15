@@ -1,51 +1,70 @@
 from django.db import models
 from django.utils.timezone import now
-from django.contrib.auth.hashers import make_password
+from .managers import CustomUserManager
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 # Create your models here.
 
 
-class Usuario(models.Model):
-    #insertar campos  #hashear contraseña
-    user_id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50, unique=True)
-    contrasena = models.CharField(max_length=50)
-    correo = models.CharField(max_length=50, unique=True)
-    ventas_semana = models.IntegerField(default=0)
-    supermodel = models.BooleanField(default=False)
-    active = models.BooleanField(default=True)
+# class Usuario(AbstractBaseUser):
+#     #insertar campos  #hashear contraseña
+#     user_id = models.AutoField(primary_key=True)
+#     nombre = models.CharField(max_length=50, unique=True)
+#     contrasena = models.CharField(max_length=128)
+#     correo = models.CharField(max_length=50, unique=True)
+#     ventas_semana = models.IntegerField(default=0)
+#     supermodel = models.BooleanField(default=False)
+#     active = models.BooleanField(default=True)
+#     token = models.CharField(max_length=50, null=True)
+#     token_expiration = models.DateTimeField(null=True)
     
-    def save(self, *args, **kwargs):
-        self.contrasena = make_password(self.contrasena)
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         self.contrasena = make_password(self.contrasena)
+#         super().save(*args, **kwargs)
+    
+
+class Usuario(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=50, unique=True, default=None)
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+    ventas_semana = models.IntegerField(default=0)
+    
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = []
+    
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
     
     def as_dict(self):
         return {
-            "user_id": self.user_id,
-            "nombre": self.nombre,
-            "contraseña": self.contrasena,
-            "correo": self.correo,
+            "id": self.id,
+            "username": self.username,
+            "password": self.password,
+            "email": self.email,
             "ventas_semana": self.ventas_semana,
-            "supermodel": self.supermodel,
-            "active": self.active
+            "is_superuser": self.is_superuser,
+            "is_active": self.is_active
         }
         
 class Venta(models.Model):
     #insertar campos
-    venta_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(Usuario, editable=False, on_delete=models.DO_NOTHING) ##
-    monto = models.FloatField(default=0)
-    cantidad = models.IntegerField(default=0)
-    fecha = models.DateField(default=now, editable=False)
-    active = models.BooleanField(default=True)
+    sale_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(Usuario, editable=False, default=None, on_delete=models.DO_NOTHING) 
+    amount = models.FloatField(default=0)
+    quantity = models.IntegerField(default=0)
+    date = models.DateTimeField(default=now, editable=False)
+    is_active = models.BooleanField(default=True)
     
     def as_dict(self):
         return { 
-                "monto": self.monto,
-                "user_id": self.user_id.user_id,
-                "cantidad": self.cantidad,
-                "fecha": self.fecha,
-                "venta_id": self.venta_id,
-                "active": self.active
+                "amount": self.amount,
+                "user_id": self.user_id.id,
+                "quantity": self.quantity,
+                "date": self.date,
+                "sale_id": self.sale_id,
+                "is_active": self.is_active
                 }
 
