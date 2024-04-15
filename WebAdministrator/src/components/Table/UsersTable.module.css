@@ -60,7 +60,8 @@
     height: 45px;
   }
 
-  .addButton:hover {
+  .addButton:hover, 
+  .addButton:active {
     background-color: #F7C04A;
     color:black;
     border-color: black;
