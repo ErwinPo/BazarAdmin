@@ -1,5 +1,5 @@
 .active{
-    color: #F7C04A;
+    color: #F7C04A !important;
 	font-weight: bold;
 }
 
@@ -60,7 +60,7 @@ nav .menu span{
     border-radius: 0.2rem;
 }
 
-.nav-btn-link {
+.nav_btn_link {
     font-size: 18px;
     border-radius: 100px;
     background: #F7C04A;
@@ -80,7 +80,7 @@ nav .menu span{
     margin-top: 18px;
 }
 
-.logo-container {
+.logo_container {
     display: flex;
     align-items: center;
     margin-left: 0px;
@@ -106,7 +106,7 @@ nav .menu span{
         margin-bottom: 0.25rem;
     }
 
-    nav ul.open{
+    .open{
         display: flex;
     }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import "./Navbar.css";
+import classes from "./Navbar.module.css";
 import logo from "../../assets/images/LogoHNP.png";
 
 const Navbar = () => {
@@ -10,22 +10,22 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div className="logo-container">
-        <img src={logo} alt="Logo" className="logo" />
+      <div className={classes.logo_container}>
+        <img src={logo} alt="Logo" className={classes.logo} />
       </div>
-      <div className="menu" onClick={() => {
+      <div className={classes.menu} onClick={() => {
         setMenuOpen(!menuOpen)
       }}>
         <span></span>
         <span></span>
         <span></span>
       </div>
-      <ul className={menuOpen ? "open" : ""}>
+      <ul className={menuOpen ? classes.open : ""}>
         <li><NavLink to="/Ventas">Ventas</NavLink></li>
         <li><NavLink to="/Usuarios">Usuarios</NavLink></li>
         <li><NavLink to="/Estadisticas">Estadísticas</NavLink></li>
         <li><NavLink to="/Registros">Registros</NavLink></li>
-        <Link to="/" className="nav-btn-link">Cerrar Sesión</Link>
+        <Link to="/" className={classes.nav_btn_link}>Cerrar Sesión</Link>
       </ul>
     </nav>
   );
