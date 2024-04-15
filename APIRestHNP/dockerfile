@@ -12,3 +12,6 @@ RUN pip3 install django mysqlclient
 
 # Copiamos el código de la aplicación al contenedor
 COPY . /APIRestHNP/
+
+
+RUN chmod +x wait-for-db.sh
