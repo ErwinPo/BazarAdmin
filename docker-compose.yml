@@ -10,8 +10,8 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: trust
 
   api:
-    image: josafat/api-rest-hnp
-    command: sh -c "./wait-for-db.sh db python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python3 manage.py runserver 0.0.0.0:8000"
+    image: josafat/api-rest
+    command: sh -c "./wait-db.sh db python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/api-rest-hnp
     ports:
