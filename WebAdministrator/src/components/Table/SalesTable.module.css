@@ -1,0 +1,40 @@
+/* Copyright 2024 BitBrothers
+ * File: SalesTable.module.css
+ * Type: css file */
+
+.buttons {
+	gap: 12px;
+}
+.checkBox {
+	height: 25px;
+	width: auto;
+}
+
+.emptyState td {
+	color: black !important;
+	font-weight: bold;
+	padding: 25px;
+} 
+
+.image {
+	height: 20px;
+	width: auto;
+}
+
+.tableCover div {
+	border-radius: 15px !important;
+}
+
+.tableCover table {
+	border: 1px solid black;
+}
+
+.table td {
+	background-color: white;
+	color: black;
+}
+
+.table th {
+	background-color: #539165;
+	font-weight: normal;
+}
