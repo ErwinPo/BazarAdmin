@@ -15,3 +15,5 @@ COPY . /APIRestHNP/
 
 
 RUN chmod +x ./wait-db.sh
+
+RUN sed -i 's/\r//' ./wait-db.sh
