@@ -40,15 +40,15 @@ const SalesTable = ({ sales, page, setPage }) => {
                 <tbody>
                     {sales.length > 0 ? (
                         paginatedData.map((sale) => (
-                            <tr key={sale.id}>
+                            <tr key={sale.sale_id}>
                                 <td>
                                     <Form.Check />
                                 </td>
-                                <td>{sale.id}</td>
+                                <td>{sale.sale_id}</td>
                                 <td>{sale.date}</td>
                                 <td>{sale.amount}</td>
                                 <td>{sale.quantity}</td>
-                                <td>{sale.seller}</td>
+                                <td>{sale.user_id}</td>
                                 <td>
                                     <ButtonGroup className={classes.buttons}>
                                         <Button variant="link" className={classes.noBorder}>

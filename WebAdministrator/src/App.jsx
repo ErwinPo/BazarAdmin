@@ -14,9 +14,9 @@ import Login from "./pages/Login/Login";
 function App() {
     const [sales, setSales] = useState([]);
     useEffect(() => {
-        fetch("http://18.216.251.213:8000/BAZARAPI/ventas/", {
+        fetch("http://localhost:8000/BAZARAPI/ventas/", {
           method: "GET",
-          mode: "no-cors"
+          mode: "cors"
         })
           .then((response) => response)
           .then((data) => {
@@ -36,7 +36,7 @@ function App() {
         { id: 7, username: "Raúl", password: "**********", usertype: "Vendedor"},
     ]
 
-
+    console.log(sales)
     return (
         <Router>
             <Routes>
