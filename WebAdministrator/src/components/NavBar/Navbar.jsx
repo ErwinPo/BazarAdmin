@@ -20,13 +20,17 @@ const Navbar = () => {
         <span></span>
         <span></span>
       </div>
+      <>
       <ul className={menuOpen ? classes.open : ""}>
         <li><NavLink to="/Ventas">Ventas</NavLink></li>
         <li><NavLink to="/Usuarios">Usuarios</NavLink></li>
         <li><NavLink to="/Estadisticas">Estadísticas</NavLink></li>
         <li><NavLink to="/Registros">Registros</NavLink></li>
-        <Link to="/" className={classes.nav_btn_link}>Cerrar Sesión</Link>
       </ul>
+      <div className={classes.logout_container}>
+        <Link to="/" className={classes.nav_btn_link}>Cerrar Sesión</Link>
+      </div>
+      </>
     </nav>
   );
 };
