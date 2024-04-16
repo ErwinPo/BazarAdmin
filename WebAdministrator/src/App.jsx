@@ -1,4 +1,5 @@
 //import "./App.css";
+import React, { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Routes,
@@ -11,6 +12,19 @@ import Registros from "./pages/Registros";
 import Login from "./pages/Login/Login";
 
 function App() {
+    const [sales, setSales] = useState([]);
+    useEffect(() => {
+        fetch("http://18.216.251.213:8000/BAZARAPI/ventas/", {
+          method: "GET",
+          mode: "no-cors"
+        })
+          .then((response) => response)
+          .then((data) => {
+            setSales(data.registros)
+            console.log(data.registros);
+          })
+          .catch((error) => console.log(error));
+      }, [sales]);
 
     const users = [
         { id: 1, username: "Lety", password: "*********", usertype: "Admin"},
@@ -22,7 +36,7 @@ function App() {
         { id: 7, username: "Raúl", password: "**********", usertype: "Vendedor"},
     ]
 
-      
+
     return (
         <Router>
             <Routes>
@@ -30,7 +44,7 @@ function App() {
                 <Route path="/Ventas" element={<Ventas />} />
                 <Route path="/Usuarios" element={<Usuarios users={users}/>} />
                 <Route path="/Estadisticas" element={<Estadisticas />} />
-                <Route path="/Registros" element={<Registros />} />
+                <Route path="/Registros" element={<Registros sales={sales} />} />
             </Routes>
         </Router>
     );
