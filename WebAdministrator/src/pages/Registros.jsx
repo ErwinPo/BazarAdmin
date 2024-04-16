@@ -88,7 +88,7 @@ const Registros = ({ sales }) => {
                         />
                     </Col>
                 </Row>
-                <SalesTable sales={filteredSales} page={page} setPage={setPage} />
+                <SalesTable sales={sales} page={page} setPage={setPage} />
             </div>
         </div>
     );

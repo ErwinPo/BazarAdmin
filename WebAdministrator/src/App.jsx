@@ -12,19 +12,15 @@ import Registros from "./pages/Registros";
 import Login from "./pages/Login/Login";
 
 function App() {
-    const [sales, setSales] = useState([]);
+    const [sales, setSales] = useState([{ sales_id: 1, date: '05/07/2024', amount: 100, quantity: 2, user_id: 'John Doe' }]);
     useEffect(() => {
-        fetch("http://localhost:8000/BAZARAPI/ventas/", {
-          method: "GET",
-          mode: "cors"
+        fetch("http://localhost:8000/BAZARAPI/ventas", {
+          method: "GET"
         })
-          .then((response) => response)
-          .then((data) => {
-            setSales(data.registros)
-            console.log(data.registros);
-          })
+          .then((response) => response.json())
+          .then(data => {console.log(data.registros); setSales(data.registros);})
           .catch((error) => console.log(error));
-      }, [sales]);
+      }, []);
 
     const users = [
         { id: 1, username: "Lety", password: "*********", usertype: "Admin"},
@@ -37,6 +33,7 @@ function App() {
     ]
 
     console.log(sales)
+    console.log(users)
     return (
         <Router>
             <Routes>
