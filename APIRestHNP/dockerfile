@@ -5,7 +5,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get install -y python3 python3-pip default-libmysqlclient-dev build-essential pkg-config mysql-client libssl-dev
 
 # Establecemos el directorio de trabajo en /APIRestHNP
-WORKDIR /APIRestHNP
+WORKDIR /APIRestHNP/
 
 # Instalamos Django y mysqlclient
 RUN pip3 install django mysqlclient
@@ -14,4 +14,4 @@ RUN pip3 install django mysqlclient
 COPY . /APIRestHNP/
 
 
-RUN chmod +x wait-for-db.sh
+RUN chmod +x ./wait-db.sh
