@@ -5,7 +5,7 @@
     margin-top: 3%;
     margin-left: 5%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 13px;
     width: 150px;
 }
@@ -13,7 +13,7 @@
 .form_grp{
     margin-top: 3%;
     margin-left: 5%;
-    margin-right: 5%;
+    width: 60%;
     text-align: left;
     font-family: sans-serif;
 }
@@ -23,4 +23,10 @@
     border-radius: 30px;
     border: none;
     padding: 8px;
+}
+
+.success_txt{
+    color: #F7C04A;
+    display: flex;
+    margin-left: 5%;
 }
