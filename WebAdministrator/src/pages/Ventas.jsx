@@ -14,7 +14,7 @@ const Ventas = () => {
 			setTimeout(() => {
                 localStorage.removeItem("successState"); 
                 setSuccess_txt_hidden(true); 
-            }, 5000); 
+            }, 10000); 
         }
     }, []);
 
