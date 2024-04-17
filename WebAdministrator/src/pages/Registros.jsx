@@ -2,7 +2,7 @@
  * File: Registros.jsx
  * Type: component */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SalesTable from "../components/Table/SalesTable";
 import Navbar from "../components/NavBar/Navbar";
 import ValueRangePicker from "../components/ValueRangePicker";
@@ -13,16 +13,30 @@ import moment from "moment";
 import iconExport from '../assets/images/icon_export.png';
 import { useMediaQuery } from 'react-responsive';
 
-
-const Registros = ({ sales }) => {
-
-    const lowestDate = sales.length > 0 ? moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate() : new Date();
-	const highestAmount = sales.length > 0 ? Math.max(...sales.map(sale => sale.amount)) : 0;
+const Registros = () => {      
+    const [sales, setSales] = useState([]);
+    const lowestDate = new Date();
+    const highestAmount = 1000;
     const [startDate, setStartDate] = useState(lowestDate);
     const [endDate, setEndDate] = useState(new Date());
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(highestAmount);
     const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        fetch("http://localhost:8000/BAZARAPI/ventas", {
+            method: "GET"
+        })
+        .then((response) => response.json())
+        .then(data => {
+            setSales(data.registros);
+            const lowestDate = data.registros.length > 0 ? moment.utc(Math.min(...data.registros.map(sale => moment.utc(sale.date).valueOf()))).toDate() : new Date();
+            const highestAmount = data.registros.length > 0 ? Math.max(...data.registros.map(sale => sale.amount)) : 0;
+            setStartDate(lowestDate);
+            setMaxValue(highestAmount);
+        })
+        .catch((error) => console.log(error));
+    }, []);
 
     const handleStartDateChange = (date) => {
         setStartDate(date);
@@ -35,28 +49,28 @@ const Registros = ({ sales }) => {
     };
 
     const handleMinValueChange = (value) => {
-		if (value < 0 || value > maxValue) {
-			return;
-		}
-		setMinValue(value);
+        if (value < 0 || value > maxValue) {
+            return;
+        }
+        setMinValue(value);
         setPage(1);
     };
 
     const handleMaxValueChange = (value) => {
-		if (value < 0 || value < minValue) {
-			return;
-		}
-		setMaxValue(value);
+        if (value < 0 || value < minValue) {
+            return;
+        }
+        setMaxValue(value);
         setPage(1);
     };
 
     const filteredSales = sales.filter(sale =>
-        moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrAfter(startDate, 'day') &&
-        moment(sale.date, 'DD/MM/YYYY HH:mm:ss').isSameOrBefore(endDate, 'day') &&
+        moment(sale.date).isSameOrAfter(startDate, 'day') &&
+        moment(sale.date).isSameOrBefore(endDate, 'day') &&
         sale.amount >= minValue && sale.amount <= maxValue
     );
 
-	const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1152 });
+    const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1152 });
 
     return (
         <div className="salesLog">
@@ -88,7 +102,7 @@ const Registros = ({ sales }) => {
                         />
                     </Col>
                 </Row>
-                <SalesTable sales={sales} page={page} setPage={setPage} />
+                <SalesTable sales={filteredSales} page={page} setPage={setPage} />
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 //import "./App.css";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     BrowserRouter as Router,
     Routes,
@@ -12,15 +12,6 @@ import Registros from "./pages/Registros";
 import Login from "./pages/Login/Login";
 
 function App() {
-    const [sales, setSales] = useState([{ sales_id: 1, date: '05/07/2024', amount: 100, quantity: 2, user_id: 'John Doe' }]);
-    useEffect(() => {
-        fetch("http://localhost:8000/BAZARAPI/ventas", {
-          method: "GET"
-        })
-          .then((response) => response.json())
-          .then(data => {console.log(data.registros); setSales(data.registros);})
-          .catch((error) => console.log(error));
-      }, []);
 
     const users = [
         { id: 1, username: "Lety", password: "*********", usertype: "Admin"},
@@ -31,9 +22,7 @@ function App() {
         { id: 6, username: "Josafat", password: "********", usertype: "Vendedor"},
         { id: 7, username: "Raúl", password: "**********", usertype: "Vendedor"},
     ]
-
-    console.log(sales)
-    console.log(users)
+    
     return (
         <Router>
             <Routes>
@@ -41,7 +30,7 @@ function App() {
                 <Route path="/Ventas" element={<Ventas />} />
                 <Route path="/Usuarios" element={<Usuarios users={users}/>} />
                 <Route path="/Estadisticas" element={<Estadisticas />} />
-                <Route path="/Registros" element={<Registros sales={sales} />} />
+                <Route path="/Registros" element={<Registros />} />
             </Routes>
         </Router>
     );
