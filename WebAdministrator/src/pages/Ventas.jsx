@@ -8,14 +8,14 @@ const Ventas = () => {
 		<div>
 			<Navbar />
 			<Form>
-				<Form.Group controlId="formMonto">
+				<Form.Group className={classes.form_grp} controlId="formMonto">
 					<Form.Label>Monto Total</Form.Label>
-					<Form.Control type="number"/>
+					<Form.Control type="number" className={classes.control_input}/>
 				</Form.Group>
 
-				<Form.Group controlId="formCantidad">
+				<Form.Group className={classes.form_grp} controlId="formCantidad">
 					<Form.Label>Número Total de Articulos Vendidos</Form.Label>
-					<Form.Control type="number"/>
+					<Form.Control type="number" className={classes.control_input}/>
 				</Form.Group>
 
 				<Button variant="warning" type="submit" className={classes.register_btn}>
