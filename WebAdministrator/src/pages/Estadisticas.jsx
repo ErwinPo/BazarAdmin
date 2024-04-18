@@ -1,4 +1,5 @@
 import React from "react";
+import Navbar from "../components/NavBar/Navbar";
 
 const Estadisticas = () => {
 	return (
@@ -6,13 +7,13 @@ const Estadisticas = () => {
 			style={{
 				display: "flex",
 				justifyContent: "centre",
+				flexDirection: "column",
 				alignItems: "centre",
 				height: "100vh",
 			}}
 		>
-			<h1>
-				Estadísticas
-			</h1>
+			<Navbar />
+			<h1>Estadísticas</h1>
 		</div>
 	);
 };

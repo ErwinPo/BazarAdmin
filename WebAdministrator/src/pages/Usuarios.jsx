@@ -1,18 +1,14 @@
-import React from "react";
+import Navbar from "../components/NavBar/Navbar";
+import UsersTable from "../components/Table/UsersTable";
+import { Button } from 'react-bootstrap';
+import classes from '../components/Table/UsersTable.module.css';
 
-const Usuarios = () => {
+const Usuarios = ({users}) => {
 	return (
-		<div
-			style={{
-				display: "flex",
-				justifyContent: "centre",
-				alignItems: "centre",
-				height: "100vh",
-			}}
-		>
-			<h1>
-                Usuarios
-			</h1>
+		<div>
+			<Navbar />
+			<Button variant="warning" className={classes.addButton}>Agregar Usuario</Button>
+			<UsersTable users={users} />
 		</div>
 	);
 };
