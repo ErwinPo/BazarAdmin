@@ -64,27 +64,34 @@ class UsersTable extends React.Component {
     this.setState({deleteModal: false});
   }
 
-  insertUser=()=>{
-    var newUser = {...this.state.form};
-    newUser.id = this.state.users.length+1;
-    var list = this.state.users;
-    list.push(newUser);
-    this.setState({users: list, insertModal: false});
+  insertUser = () => {
+    const { username, password, usertype } = this.state.form;
+    if (!username || !password || !usertype) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
+    const newUser = { ...this.state.form };
+    newUser.id = this.state.users.length + 1;
+    const updatedUsers = [...this.state.users, newUser];
+    this.setState({ users: updatedUsers, insertModal: false });
   }
-
-  editUser=(data)=>{
-    var cont = 0;
-    var list = this.state.users;
-    list.map((user)=>{
-      if(data.id==user.id){
-        list[cont].username=data.username;
-        list[cont].password=data.password;
-        list[cont].usertype=data.usertype;
+  
+  editUser = () => {
+    const { id, username, password, usertype } = this.state.form;
+    if (!username || !password || !usertype) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
+    const updatedUsers = this.state.users.map(user => {
+      if (user.id === id) {
+        return { ...user, username, password, usertype };
       }
-      cont++;
+      return user;
     });
-    this.setState({data:list, editModal: false})
+    
+    this.setState({ users: updatedUsers, editModal: false });
   }
+  
 
   deleteUser=(data)=>{
     var cont = 0;
@@ -125,7 +132,7 @@ class UsersTable extends React.Component {
                   <td><Form.Check /></td>
                   <td>{user.id}</td>
                   <td>{user.username}</td>
-                  <td>{user.password}</td>
+                  <td>{'*'.repeat(user.password.length)}</td>
                   <td>{user.usertype}</td>
                   <td>
                     <ButtonGroup className={classes.buttons}>
