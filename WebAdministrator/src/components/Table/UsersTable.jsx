@@ -132,7 +132,7 @@ class UsersTable extends React.Component {
                   <td><Form.Check /></td>
                   <td>{user.id}</td>
                   <td>{user.username}</td>
-                  <td>{'*'.repeat(user.password.length)}</td>
+                  <td>{'•'.repeat(user.password.length)}</td>
                   <td>{user.usertype}</td>
                   <td>
                     <ButtonGroup className={classes.buttons}>
