@@ -46,8 +46,8 @@
 .table th {
 	background-color: #539165;
 	font-weight: normal;
-    border-left: none; 
-    border-right: none;
+  border-left: none; 
+  border-right: none;
 	justify-content: start !important;
 	align-content: start !important;
 }
@@ -61,7 +61,6 @@
     color:black;
     border-color: black;
     border-radius: 20px;
-    margin-left: 140px;
     margin-top: 30px;
     width: 160px;
     height: 45px;
@@ -72,4 +71,22 @@
     background-color: #F7C04A;
     color:black;
     border-color: black;
+  }
+
+  .btn_container {
+    display: flex;
+	  margin-left: 100px;
+    justify-content: left;
+  }
+
+  label{
+    width: 100%;
+    text-align: left;
+    padding-bottom: 8px;
+  }
+
+  .modal_header{
+    background-color: #539165;
+    color:white;
+    justify-content: center;
   }
