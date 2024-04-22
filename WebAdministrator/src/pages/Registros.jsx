@@ -13,9 +13,11 @@ import moment from "moment";
 import iconExport from '../assets/images/icon_export.png';
 import { useMediaQuery } from 'react-responsive';
 
+
 const Registros = ({ sales }) => {
-    const lowestDate = moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate();
-	const highestAmount = Math.max(...sales.map(sale => sale.amount));
+
+    const lowestDate = sales.length > 0 ? moment(Math.min(...sales.map(sale => moment(sale.date, 'DD/MM/YYYY HH:mm:ss').valueOf()))).toDate() : new Date();
+	const highestAmount = sales.length > 0 ? Math.max(...sales.map(sale => sale.amount)) : 0;
     const [startDate, setStartDate] = useState(lowestDate);
     const [endDate, setEndDate] = useState(new Date());
     const [minValue, setMinValue] = useState(0);
@@ -54,7 +56,7 @@ const Registros = ({ sales }) => {
         sale.amount >= minValue && sale.amount <= maxValue
     );
 
-	const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1110 });
+	const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1152 });
 
     return (
         <div className="salesLog">
