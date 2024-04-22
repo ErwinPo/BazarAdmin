@@ -12,9 +12,9 @@ import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 
 const users = [
-  { id: 1, username: "Gissel", password: "Hola1234", usertype: "Administrador"},
-  { id: 2, username: "Leticia", password: "contraseña123", usertype: "Vendedor"},
-  { id: 3, username: "Israel", password: "abc123", usertype: "Vendedor"}
+  { id: 1, username: "Gissel", mail: "gissel@gmail.com", password: "Hola1234", usertype: "Administrador"},
+  { id: 2, username: "Leticia", mail: "lety@gmail.com", password: "contraseña123", usertype: "Vendedor"},
+  { id: 3, username: "Israel", mail: "israel@gmail.com", password: "abc123", usertype: "Vendedor"}
 ];
 
 class UsersTable extends React.Component {
@@ -23,12 +23,15 @@ class UsersTable extends React.Component {
     form: {
       id:'',
       username: '',
+      mail: '',
       password: '',
       usertype: ''
     },
     insertModal: false,
     editModal: false,
     deleteModal: false,
+    errorModal: false,
+    adminCountBeforeEdit: 0
   };
 
   handleChange = e=>{
@@ -36,7 +39,8 @@ class UsersTable extends React.Component {
       form:{
         ...this.state.form,
         [e.target.name]: e.target.value,
-      }
+      },
+      errorMessage: ''
     });
   }
 
@@ -46,50 +50,93 @@ class UsersTable extends React.Component {
 
   hideModalInsert=()=>{
     this.setState({insertModal: false});
+    this.hideErrorMessage();
   }
 
   showModalEdit=(user)=>{
-    this.setState({editModal: true, form: user});
+    const adminCountBeforeEdit = this.state.users.filter(u => u.usertype === 'Administrador').length;
+    this.setState({ editModal: true, form: user, adminCountBeforeEdit });
   }
 
   hideModalEdit=()=>{
     this.setState({editModal: false});
+    this.hideErrorMessage();
+  }
+
+  hideErrorMessage = () => {
+    this.setState({ errorMessage: '' });
   }
 
   showModalDelete=(user)=>{
-    this.setState({deleteModal: true, form: user});
+    const adminUsers = this.state.users.filter(user => user.usertype === 'Administrador');
+    if (adminUsers.length === 1 && user.usertype === 'Administrador') {
+      this.setState({errorModal: true, form: user});
+    } else {
+      this.setState({deleteModal: true, form: user});
+    }
   }
 
   hideModalDelete=()=>{
     this.setState({deleteModal: false});
   }
 
+  showModalError=(user)=>{
+    this.setState({errorModal: true, form: user});
+  }
+
+  hideModalError=()=>{
+    this.setState({errorModal: false});
+  }
+
+  resetForm = () => {
+    this.setState({
+      form: {
+        id: '',
+        username: '',
+        mail: '',
+        password: '',
+        usertype: ''
+      },
+      errorMessage: ''
+    });
+  }
+
   insertUser = () => {
-    const { username, password, usertype } = this.state.form;
-    if (!username || !password || !usertype) {
-      alert("Por favor, completa todos los campos.");
+    const { username, mail, password, usertype } = this.state.form;
+    if (!username || !mail || !password || !usertype) {
+      this.setState({ errorMessage: "Por favor, completa todos los campos." });
       return;
     }
     const newUser = { ...this.state.form };
     newUser.id = this.state.users.length + 1;
     const updatedUsers = [...this.state.users, newUser];
     this.setState({ users: updatedUsers, insertModal: false });
+    this.resetForm();
   }
   
-  editUser = () => {
-    const { id, username, password, usertype } = this.state.form;
-    if (!username || !password || !usertype) {
-      alert("Por favor, completa todos los campos.");
+  editUser=()=>{
+    const { id, username, mail, password, usertype } = this.state.form;
+    const { adminCountBeforeEdit } = this.state;
+
+    if (!username || !mail || !password || !usertype) {
+      this.setState({ errorMessage: "Por favor, completa todos los campos." });
       return;
     }
+
+    if (usertype === 'Vendedor' && adminCountBeforeEdit === 1) {
+      this.setState({ errorMessage: "No es posible guardar los cambios ya que debe haber al menos un usuario de tipo Administrador." });
+      return;
+    }
+
     const updatedUsers = this.state.users.map(user => {
       if (user.id === id) {
-        return { ...user, username, password, usertype };
+        return { ...user, username, mail, password, usertype };
       }
       return user;
     });
     
     this.setState({ users: updatedUsers, editModal: false });
+    this.resetForm();
   }
   
 
@@ -103,6 +150,7 @@ class UsersTable extends React.Component {
       cont++;
     });
     this.setState({data:list, deleteModal: false})
+    this.resetForm();
   }
 
   render(){
@@ -116,11 +164,10 @@ class UsersTable extends React.Component {
         <Table bordered responsive size='lg' variant='dark' className={classes.table}>
           <thead>
             <tr>
-              <th>
-                <Form.Check className={classes.checkBox} />
-              </th>
+              <th></th>
               <th>ID</th>
               <th>Nombre</th>
+              <th>Correo</th>
               <th>Contraseña</th>
               <th>Tipo Usuario</th>
               <th></th>
@@ -132,6 +179,7 @@ class UsersTable extends React.Component {
                   <td><Form.Check /></td>
                   <td>{user.id}</td>
                   <td>{user.username}</td>
+                  <td>{user.mail}</td>
                   <td>{'•'.repeat(user.password.length)}</td>
                   <td>{user.usertype}</td>
                   <td>
@@ -158,6 +206,7 @@ class UsersTable extends React.Component {
           </div>
         </ModalHeader>
         <ModalBody>
+          {this.state.errorMessage && <div className={classes.error_message}>{this.state.errorMessage}</div>}
           <FormGroup>
             <label>Id:</label>
             <input className='form-control' readOnly type='text' value={this.state.users.length+1}/>
@@ -165,6 +214,10 @@ class UsersTable extends React.Component {
           <FormGroup>
             <label>Nombre:</label>
             <input className='form-control' name='username' type='text' onChange={this.handleChange}/>
+          </FormGroup>
+          <FormGroup>
+            <label>Correo:</label>
+            <input className='form-control' name='mail' type='text' onChange={this.handleChange}/>
           </FormGroup>
           <FormGroup>
             <label>Contraseña:</label>
@@ -192,6 +245,7 @@ class UsersTable extends React.Component {
           </div>
         </ModalHeader>
         <ModalBody>
+          {this.state.errorMessage && <div className={classes.error_message}>{this.state.errorMessage}</div>}
           <FormGroup>
             <label>Id:</label>
             <input className='form-control' readOnly type='text' value={this.state.form.id}/>
@@ -199,6 +253,10 @@ class UsersTable extends React.Component {
           <FormGroup>
             <label>Nombre:</label>
             <input className='form-control' name='username' type='text' onChange={this.handleChange} value={this.state.form.username}/>
+          </FormGroup>
+          <FormGroup>
+            <label>Correo:</label>
+            <input className='form-control' name='mail' type='text' onChange={this.handleChange} value={this.state.form.mail}/>
           </FormGroup>
           <FormGroup>
             <label>Contraseña:</label>
@@ -214,7 +272,7 @@ class UsersTable extends React.Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={()=>this.editUser(this.state.form)}>Guardar</Btn>
+          <Btn color='success' onClick={()=>this.editUser()}>Guardar</Btn>
           <Btn color='danger' onClick={()=>this.hideModalEdit()}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
@@ -233,6 +291,22 @@ class UsersTable extends React.Component {
         <ModalFooter>
           <Btn color='success' onClick={()=>this.deleteUser(this.state.form)}>Confirmar</Btn>
           <Btn color='danger' onClick={()=>this.hideModalDelete()}>Cancelar</Btn>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={this.state.errorModal}>
+        <ModalHeader className={classes.modal_header}>
+          <div>
+            <h3>Error</h3>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label>No es posible eliminar este usuario ya que debe existir al menos un usuario de tipo Administrador</label>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Btn color='success' onClick={()=>this.hideModalError()}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
 

@@ -37,7 +37,7 @@
 }
 
 .table td {
-	background-color: #E8E5E5;
+	background-color: white;
 	color: black;
     border-left: none; 
     border-right: none;
@@ -89,4 +89,8 @@
     background-color: #539165;
     color:white;
     justify-content: center;
+  }
+
+  .error_message{
+    color: red;
   }
