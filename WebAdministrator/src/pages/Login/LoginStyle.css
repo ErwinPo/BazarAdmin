@@ -1,10 +1,10 @@
-  
-  .Login-form-container {
+ .Login-form-container {
     display: flex;
     justify-content: center;
     padding-top: 50px;
+    padding-bottom: 50px;
     width: 100vw;
-    height: 160vh;
+    height: 100vh;
     background-color: #009641;
   }
   
@@ -73,4 +73,8 @@
     height: 200px;
     width: auto;
     align-items: center;
+}
+
+.error-message{
+  color: red;
 }

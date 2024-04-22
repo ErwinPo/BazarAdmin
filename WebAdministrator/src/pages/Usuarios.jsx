@@ -1,14 +1,11 @@
 import Navbar from "../components/NavBar/Navbar";
 import UsersTable from "../components/Table/UsersTable";
-import { Button } from 'react-bootstrap';
-import classes from '../components/Table/UsersTable.module.css';
 
-const Usuarios = ({users}) => {
+const Usuarios = () => {
 	return (
 		<div>
 			<Navbar />
-			<Button variant="warning" className={classes.addButton}>Agregar Usuario</Button>
-			<UsersTable users={users} />
+			<UsersTable/>
 		</div>
 	);
 };
