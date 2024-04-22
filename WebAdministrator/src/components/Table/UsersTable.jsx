@@ -14,7 +14,13 @@ import iconTrash from '../../assets/images/icon_trash.png';
 const users = [
   { id: 1, username: "Gissel", mail: "gissel@gmail.com", password: "Hola1234", usertype: "Administrador"},
   { id: 2, username: "Leticia", mail: "lety@gmail.com", password: "contraseña123", usertype: "Vendedor"},
-  { id: 3, username: "Israel", mail: "israel@gmail.com", password: "abc123", usertype: "Vendedor"}
+  { id: 3, username: "Israel", mail: "israel@gmail.com", password: "abc123", usertype: "Vendedor"},
+  { id: 4, username: "Josafat", mail: "josafat@gmail.com", password: "12345678", usertype: "Vendedor"},
+  { id: 5, username: "Raúl", mail: "raul@gmail.com", password: "12345678", usertype: "Vendedor"},
+  { id: 6, username: "Erwin", mail: "erwin@gmail.com", password: "12345678", usertype: "Vendedor"},
+  { id: 7, username: "Diego", mail: "diego@gmail.com", password: "12345678", usertype: "Vendedor"},
+  { id: 8, username: "David", mail: "david@gmail.com", password: "12345678", usertype: "Vendedor"},
+  { id: 9, username: "Daniel", mail: "daniel@gmail.com", password: "12345678", usertype: "Vendedor"},
 ];
 
 class UsersTable extends React.Component {

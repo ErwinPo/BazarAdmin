@@ -14,7 +14,7 @@ import Login from "./pages/Login/Login";
 function App() {
     const [sales, setSales] = useState([]);
     useEffect(() => {
-        fetch("http://localhost:8000/BAZARAPI/ventas/", {
+        fetch("http://18.222.68.166:8000/BAZARAPI/ventas/", {
           method: "GET",
           mode: "cors"
         })
@@ -25,16 +25,6 @@ function App() {
           })
           .catch((error) => console.log(error));
       }, [sales]);
-
-    const users = [
-        { id: 1, username: "Lety", password: "*********", usertype: "Admin"},
-        { id: 2, username: "Daniel", password: "******", usertype: "Vendedor"},
-        { id: 3, username: "David", password: "********", usertype: "Vendedor"},
-        { id: 4, username: "Diego", password: "********", usertype: "Vendedor"},
-        { id: 5, username: "Erwin", password: "*******", usertype: "Vendedor"},
-        { id: 6, username: "Josafat", password: "********", usertype: "Vendedor"},
-        { id: 7, username: "Raúl", password: "**********", usertype: "Vendedor"},
-    ]
 
     console.log(sales)
     return (
