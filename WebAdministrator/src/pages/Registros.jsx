@@ -30,7 +30,6 @@ const Registros = () => {
         .then((response) => response.json())
         .then(data => {
             setSales(data.registros);
-            const lowestDate = data.registros.length > 0 ? moment.utc(Math.min(...data.registros.map(sale => moment.utc(sale.date).valueOf()))).toDate() : new Date();
             const highestAmount = data.registros.length > 0 ? Math.max(...data.registros.map(sale => sale.amount)) : 0;
             setStartDate(lowestDate);
             setMaxValue(highestAmount);
