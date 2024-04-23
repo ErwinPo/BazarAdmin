@@ -2,6 +2,29 @@
  * File: UsersTable.module.css
  * Type: css file */
 
+ .addButton {
+  background-color: #F7C04A;
+  color:black;
+  border-color: black;
+  border-radius: 20px;
+  margin-top: 30px;
+  width: 160px;
+  height: 45px;
+}
+
+.addButton:hover, 
+.addButton:active {
+  background-color: #F7C04A;
+  color:black;
+  border-color: black;
+}
+
+.btn_container {
+  display: flex;
+  margin-left: 100px;
+  justify-content: left;
+}
+
  .buttons {
 	gap: 12px;
 }
@@ -17,9 +40,25 @@
 	padding: 25px;
 } 
 
+.error_message{
+  color: red;
+}
+
 .image {
 	height: 20px;
 	width: auto;
+}
+
+label{
+  width: 100%;
+  text-align: left;
+  padding-bottom: 8px;
+}
+
+.modal_header{
+  background-color: #539165;
+  color:white;
+  justify-content: center;
 }
 
 .tableCover div {
@@ -54,42 +93,3 @@
 .tableCover {
 	margin: 30px 100px;
 }
-
-.addButton {
-    background-color: #F7C04A;
-    color:black;
-    border-color: black;
-    border-radius: 20px;
-    margin-top: 30px;
-    width: 160px;
-    height: 45px;
-  }
-
-  .addButton:hover, 
-  .addButton:active {
-    background-color: #F7C04A;
-    color:black;
-    border-color: black;
-  }
-
-  .btn_container {
-    display: flex;
-	  margin-left: 100px;
-    justify-content: left;
-  }
-
-  label{
-    width: 100%;
-    text-align: left;
-    padding-bottom: 8px;
-  }
-
-  .modal_header{
-    background-color: #539165;
-    color:white;
-    justify-content: center;
-  }
-
-  .error_message{
-    color: red;
-  }

@@ -9,12 +9,12 @@ import Ventas from "./pages/Ventas";
 import Usuarios from "./pages/Usuarios";
 import Estadisticas from "./pages/Estadisticas";
 import Registros from "./pages/Registros";
-import Login from "./pages/Login/Login";
+import Login from "./pages/Login";
 
 function App() {
     const [sales, setSales] = useState([]);
     useEffect(() => {
-        fetch("http://18.222.68.166:8000/BAZARAPI/ventas/", {
+        fetch("http://localhost:8000/BAZARAPI/ventas/", {
           method: "GET",
           mode: "cors"
         })
