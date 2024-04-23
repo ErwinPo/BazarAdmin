@@ -5,7 +5,7 @@
 // imports
 import React, { useState } from 'react';
 import classes from './UsersTable.module.css';
-import {Button, ButtonGroup, Form, Image, Table, Container} from 'react-bootstrap';
+import {Button, ButtonGroup, Form, Image, Table} from 'react-bootstrap';
 import {Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import iconPencil from '../../assets/images/icon_pencil.png';
@@ -107,10 +107,35 @@ class UsersTable extends React.Component {
     });
   }
 
+  checkDuplicateUsername = (username, userId) => {
+    return this.state.users.some(user => user.id !== userId && user.username.toLowerCase() === username.toLowerCase());
+  }
+  
+  validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  validatePassword = (password) => {
+    return password.length >= 8 && /\d/.test(password);
+  }
+
   insertUser = () => {
     const { username, mail, password, usertype } = this.state.form;
     if (!username || !mail || !password || !usertype) {
       this.setState({ errorMessage: "Por favor, completa todos los campos." });
+      return;
+    }
+    if (this.checkDuplicateUsername(username)) {
+      this.setState({ errorMessage: "El nombre de usuario ya está en uso." });
+      return;
+    }
+    if (!this.validateEmail(mail)) {
+      this.setState({ errorMessage: "Por favor, introduce un correo electrónico válido." });
+      return;
+    }
+    if (!this.validatePassword(password)) {
+      this.setState({ errorMessage: "La contraseña debe tener al menos 8 caracteres y contener al menos un número." });
       return;
     }
     const newUser = { ...this.state.form };
@@ -123,24 +148,32 @@ class UsersTable extends React.Component {
   editUser=()=>{
     const { id, username, mail, password, usertype } = this.state.form;
     const { adminCountBeforeEdit } = this.state;
-
     if (!username || !mail || !password || !usertype) {
       this.setState({ errorMessage: "Por favor, completa todos los campos." });
       return;
     }
-
+    if (this.checkDuplicateUsername(username, id)) {
+      this.setState({ errorMessage: "El nombre de usuario ya está en uso." });
+      return;
+    }
+    if (!this.validateEmail(mail)) {
+      this.setState({ errorMessage: "Por favor, introduce un correo electrónico válido." });
+      return;
+    }
+    if (!this.validatePassword(password)) {
+      this.setState({ errorMessage: "La contraseña debe tener al menos 8 caracteres y contener al menos un número." });
+      return;
+    }
     if (usertype === 'Vendedor' && adminCountBeforeEdit === 1) {
       this.setState({ errorMessage: "No es posible guardar los cambios ya que debe haber al menos un usuario de tipo Administrador." });
       return;
     }
-
     const updatedUsers = this.state.users.map(user => {
       if (user.id === id) {
         return { ...user, username, mail, password, usertype };
       }
       return user;
     });
-    
     this.setState({ users: updatedUsers, editModal: false });
     this.resetForm();
   }
@@ -218,7 +251,7 @@ class UsersTable extends React.Component {
             <input className='form-control' readOnly type='text' value={this.state.users.length+1}/>
           </FormGroup>
           <FormGroup>
-            <label>Nombre:</label>
+            <label>Nombre de Usuario:</label>
             <input className='form-control' name='username' type='text' onChange={this.handleChange}/>
           </FormGroup>
           <FormGroup>
@@ -257,7 +290,7 @@ class UsersTable extends React.Component {
             <input className='form-control' readOnly type='text' value={this.state.form.id}/>
           </FormGroup>
           <FormGroup>
-            <label>Nombre:</label>
+            <label>Nombre de Usuario:</label>
             <input className='form-control' name='username' type='text' onChange={this.handleChange} value={this.state.form.username}/>
           </FormGroup>
           <FormGroup>

@@ -9,7 +9,7 @@ import Ventas from "./pages/Ventas";
 import Usuarios from "./pages/Usuarios";
 import Estadisticas from "./pages/Estadisticas";
 import Registros from "./pages/Registros";
-import Login from "./pages/Login/Login";
+import Login from "./pages/Login";
 
 function App() {
     return (
