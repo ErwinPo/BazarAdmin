@@ -51,6 +51,8 @@ const Registros = () => {
     const [minValue, setMinValue] = useState(0);
     const [maxValue, setMaxValue] = useState(highestAmount);
     const [page, setPage] = useState(1);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [columnCheck, setColumnCheck] = useState(false);
     
 
     useEffect(() => {
@@ -92,6 +94,37 @@ const Registros = () => {
         setPage(1);
     };
 
+    const handlePageChange = () => {
+        setColumnCheck(false)
+        setSelectedRows([]);
+    };
+
+    const handleRowSelect = (saleId, selected) => {
+        setSelectedRows((prevSelectedRows) => {
+            if (selected) {
+                return [...prevSelectedRows, saleId];
+            } else {
+                setColumnCheck(false)
+                return prevSelectedRows.filter((id) => id !== saleId);
+            }
+        });
+    };
+
+    const handleSelectAllChange = (event, pageSales) => {
+        const Checked = event.target.checked
+        setColumnCheck(Checked)
+        if (Checked) {
+            const allSaleIds = pageSales.map(sale => sale.sale_id);
+            setSelectedRows(allSaleIds);
+        } else {
+            setSelectedRows([]);
+        }
+    };
+
+    const handleDeleteSelected = () => {
+        console.log(selectedRows)
+    };
+
     const filteredSales = sales.filter(sale =>
         moment(sale.date).isSameOrAfter(startDate, 'day') &&
         moment(sale.date).isSameOrBefore(endDate, 'day') &&
@@ -130,13 +163,24 @@ const Registros = () => {
                         />
                     </Col>
                 </Row>
-                    <Button className={classes.buttonDeleteAll} variant="warning" >
+                {selectedRows.length > 0 && (
+                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={handleDeleteSelected} >
                         <Image className={classes.image} src={iconTrash} />
                         <span>
                             Eliminar Seleccionados
                         </span>
                     </Button>
-                <SalesTable sales={filteredSales} page={page} setPage={setPage} />
+                )}
+                <SalesTable 
+                    columnCheck={columnCheck}
+                    sales={filteredSales} 
+                    page={page}
+                    handlePageChange={handlePageChange}
+                    handleSelectAllChange={handleSelectAllChange}
+                    setPage={setPage} 
+                    onRowSelect={handleRowSelect}
+                    selectedRows={selectedRows}
+                />
             </div>
         </div>
     );
