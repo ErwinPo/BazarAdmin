@@ -48,12 +48,6 @@
                 android:textColor="@color/darkblue"
                 android:textStyle="bold"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:srcCompat="@drawable/user"
-                android:contentDescription="TODO"
-                android:gravity="center"/>
         </LinearLayout>
 
         <TextView

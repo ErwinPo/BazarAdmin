@@ -11,11 +11,11 @@ import java.util.ListIterator;
 
 public class Ventas {
 
-    List<Venta> registros;
+    List<GetVenta> registros;
 
     String message;
 
-    public Ventas(List<Venta> registros, String message) {
+    public Ventas(List<GetVenta> registros, String message) {
         this.registros = registros;
         this.message = message;
     }

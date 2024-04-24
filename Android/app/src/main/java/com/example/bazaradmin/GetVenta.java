@@ -3,26 +3,23 @@ package com.example.bazaradmin;
 
 import java.sql.Timestamp;
 
-public class Venta {
+public class GetVenta {
 
     int amount;
     int quantity;
     int user_id;
     Timestamp date;
+    int sale_id;
+    Boolean is_active;
 
-    public Venta(int amount, int quantity, int user_id) {
-        this.user_id = user_id;
+    public GetVenta(int amount, int quantity, int user_id, Timestamp date, int sale_id, Boolean is_active) {
         this.amount = amount;
         this.quantity = quantity;
-    }
-
-    public Venta(int monto, int cantidad, int user_id, Timestamp date) {
-        this.amount = monto;
-        this.quantity = cantidad;
         this.user_id = user_id;
         this.date = date;
+        this.sale_id = sale_id;
+        this.is_active = is_active;
     }
-
 
     public int getAmount() {
         return amount;
@@ -54,5 +51,21 @@ public class Venta {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public int getSale_id() {
+        return sale_id;
+    }
+
+    public void setSale_id(int sale_id) {
+        this.sale_id = sale_id;
+    }
+
+    public Boolean getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(Boolean is_active) {
+        this.is_active = is_active;
     }
 }
