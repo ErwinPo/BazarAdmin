@@ -5,6 +5,7 @@
  .label {
     margin-bottom: 0.5rem;
     font-weight: bold;
+    text-align: center;
   }
 
   .row {
@@ -33,16 +34,12 @@
     display: none;
 }
 
-.dash span {
-    margin-top: 15px;
-}
-
 @media (min-width: 768px) {
 .dash {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 30px;
 }
 }
 

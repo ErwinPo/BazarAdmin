@@ -39,10 +39,10 @@ const SalesTable = ({ sales, page, setPage }) => {
                 </thead>
                 <tbody>
                     {sales.length > 0 ? (
-                        paginatedData.map((sale) => (
-                            <tr key={sale.sale_id}>
+                        paginatedData.map((sale, saleIndex) => (
+                            <tr key={saleIndex}>
                                 <td>
-                                    <Form.Check />
+                                    <Form.Check className={classes.checkBox} />
                                 </td>
                                 <td>{sale.sale_id}</td>
                                 <td>{sale.date}</td>

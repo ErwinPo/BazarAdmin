@@ -24,6 +24,17 @@ body {
     padding: 12px 16px;
 }
 
+.buttonDeleteAll {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border-radius: 25px;
+  border: 1px solid #AA7606;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}
+
 .image {
 	height: 20px;
 	width: auto;
@@ -31,6 +42,7 @@ body {
 
 .pickers {
     margin: 12px 6px;
+    text-align: center;
 }
 
 .rangePickers {
