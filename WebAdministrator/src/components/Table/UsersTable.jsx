@@ -8,6 +8,8 @@ import classes from './UsersTable.module.css';
 import {Button, ButtonGroup, Form, Image, Table} from 'react-bootstrap';
 import {Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 
@@ -17,10 +19,6 @@ const users = [
   { id: 3, username: "Israel", mail: "israel@gmail.com", password: "abc123", usertype: "Vendedor"},
   { id: 4, username: "Josafat", mail: "josafat@gmail.com", password: "12345678", usertype: "Vendedor"},
   { id: 5, username: "Raúl", mail: "raul@gmail.com", password: "12345678", usertype: "Vendedor"},
-  { id: 6, username: "Erwin", mail: "erwin@gmail.com", password: "12345678", usertype: "Vendedor"},
-  { id: 7, username: "Diego", mail: "diego@gmail.com", password: "12345678", usertype: "Vendedor"},
-  { id: 8, username: "David", mail: "david@gmail.com", password: "12345678", usertype: "Vendedor"},
-  { id: 9, username: "Daniel", mail: "daniel@gmail.com", password: "12345678", usertype: "Vendedor"},
 ];
 
 class UsersTable extends React.Component {
@@ -143,11 +141,13 @@ class UsersTable extends React.Component {
     const updatedUsers = [...this.state.users, newUser];
     this.setState({ users: updatedUsers, insertModal: false });
     this.resetForm();
+    toast.success("Usuario creado con éxito.");
   }
   
   editUser=()=>{
     const { id, username, mail, password, usertype } = this.state.form;
     const { adminCountBeforeEdit } = this.state;
+    const usertypeBeforeEdit = this.state.users.find(user => user.id === id)?.usertype;
     if (!username || !mail || !password || !usertype) {
       this.setState({ errorMessage: "Por favor, completa todos los campos." });
       return;
@@ -164,7 +164,7 @@ class UsersTable extends React.Component {
       this.setState({ errorMessage: "La contraseña debe tener al menos 8 caracteres y contener al menos un número." });
       return;
     }
-    if (usertype === 'Vendedor' && adminCountBeforeEdit === 1) {
+    if (usertypeBeforeEdit === 'Administrador' && usertype === 'Vendedor' && adminCountBeforeEdit === 1) {
       this.setState({ errorMessage: "No es posible guardar los cambios ya que debe haber al menos un usuario de tipo Administrador." });
       return;
     }
@@ -176,8 +176,8 @@ class UsersTable extends React.Component {
     });
     this.setState({ users: updatedUsers, editModal: false });
     this.resetForm();
+    toast.success("Usuario editado con éxito.");
   }
-  
 
   deleteUser=(data)=>{
     var cont = 0;
@@ -190,13 +190,15 @@ class UsersTable extends React.Component {
     });
     this.setState({data:list, deleteModal: false})
     this.resetForm();
+    toast.success("Usuario eliminado con éxito.");
   }
 
   render(){
     return(
     <>
       <>
-        <div className={classes.btn_container}>
+      <ToastContainer className={classes.custom_toast_container} position="top-right" autoClose={false}/>
+      <div className={classes.btn_container}>
           <Button variant="warning" className={classes.addButton} onClick={()=>this.showModalInsert()}>Agregar Usuario</Button>
       </div>
       <div className={classes.tableCover}>
@@ -215,7 +217,7 @@ class UsersTable extends React.Component {
           <tbody>
             {this.state.users.map((user) => (
                 <tr key={user.id}>
-                  <td><Form.Check /></td>
+                  <td><Form.Check className={classes.checkBox}/></td>
                   <td>{user.id}</td>
                   <td>{user.username}</td>
                   <td>{user.mail}</td>
