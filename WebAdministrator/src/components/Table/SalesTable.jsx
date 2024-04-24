@@ -42,7 +42,7 @@ const SalesTable = ({ sales, page, setPage }) => {
                         paginatedData.map((sale, saleIndex) => (
                             <tr key={saleIndex}>
                                 <td>
-                                    <Form.Check />
+                                    <Form.Check className={classes.checkBox} />
                                 </td>
                                 <td>{sale.sale_id}</td>
                                 <td>{sale.date}</td>

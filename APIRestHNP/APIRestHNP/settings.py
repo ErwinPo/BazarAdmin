@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'bazar',
         'USER': 'root',
         'PASSWORD': '',  
-        'HOST': 'localhost',  
+        'HOST': 'db',  
         'PORT': '3306',  
     }
 }

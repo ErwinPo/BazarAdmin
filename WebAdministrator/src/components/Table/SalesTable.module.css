@@ -10,6 +10,10 @@
 	width: auto;
 }
 
+.checkBox input:focus {
+	border-radius: 0.25rem !important;
+}
+
 .emptyState td {
 	color: black !important;
 	font-weight: bold;
