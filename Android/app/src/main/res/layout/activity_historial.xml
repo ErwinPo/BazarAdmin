@@ -34,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/Historial"
+        android:id="@+id/historialRecyclerView"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
