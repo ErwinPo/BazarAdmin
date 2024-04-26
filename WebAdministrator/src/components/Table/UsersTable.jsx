@@ -3,203 +3,262 @@
  * Type: component */
 
 // imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './UsersTable.module.css';
-import {Button, ButtonGroup, Form, Image, Table} from 'react-bootstrap';
-import {Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
+import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
+import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 
-const users = [
-  { id: 1, username: "Gissel", mail: "gissel@gmail.com", password: "Hola1234", usertype: "Administrador"},
-  { id: 2, username: "Leticia", mail: "lety@gmail.com", password: "contraseña123", usertype: "Vendedor"},
-  { id: 3, username: "Israel", mail: "israel@gmail.com", password: "abc123", usertype: "Vendedor"},
-  { id: 4, username: "Josafat", mail: "josafat@gmail.com", password: "12345678", usertype: "Vendedor"},
-  { id: 5, username: "Raúl", mail: "raul@gmail.com", password: "12345678", usertype: "Vendedor"},
-];
+const UsersTable = () => {
 
-class UsersTable extends React.Component {
-  state={
+  const users = [
+    { id: 1, username: "GisselAdmin", email: "gissel@gmail.com", password: "Hola1234", is_superuser: true },
+    { id: 2, username: "Lety77", email: "lety@gmail.com", password: "contrasena123", is_superuser: false },
+    { id: 3, username: "IsraHdez58", email: "israel@gmail.com", password: "abc12345", is_superuser: false },
+    { id: 4, username: "JossGC", email: "josafat@gmail.com", password: "a12345678", is_superuser: false },
+    { id: 5, username: "RaulDiaz", email: "raul@gmail.com", password: "a12345678", is_superuser: false },
+  ];
+
+  /*const [ussers, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("http://18.222.68.166:8000/BAZARAPI/usuarios/", {
+        method: "GET"
+    })
+    .then((response) => response.json())
+    .then(data => {
+        setUsers(data.registros);
+        console.log(data.registros)
+    })
+    .catch((error) => console.log(error));
+  }, []);*/
+
+
+  const [state, setState] = useState({
     users: users,
     form: {
-      id:'',
+      id: '',
       username: '',
-      mail: '',
+      email: '',
       password: '',
-      usertype: ''
+      is_superuser: ''
     },
     insertModal: false,
     editModal: false,
     deleteModal: false,
     errorModal: false,
-    adminCountBeforeEdit: 0
+  });
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    const newValue = name === 'is_superuser' ? (value === 'Administrador') : value;
+    setState({
+      ...state,
+      form: {
+        ...state.form,
+        [name]: newValue,
+      },
+    });
   };
 
-  handleChange = e=>{
-    this.setState({
-      form:{
-        ...this.state.form,
-        [e.target.name]: e.target.value,
-      },
-      errorMessage: ''
-    });
-  }
-
-  showModalInsert=()=>{
-    this.setState({insertModal: true});
-  }
-
-  hideModalInsert=()=>{
-    this.setState({insertModal: false});
-    this.hideErrorMessage();
-  }
-
-  showModalEdit=(user)=>{
-    const adminCountBeforeEdit = this.state.users.filter(u => u.usertype === 'Administrador').length;
-    this.setState({ editModal: true, form: user, adminCountBeforeEdit });
-  }
-
-  hideModalEdit=()=>{
-    this.setState({editModal: false});
-    this.hideErrorMessage();
-  }
-
-  hideErrorMessage = () => {
-    this.setState({ errorMessage: '' });
-  }
-
-  showModalDelete=(user)=>{
-    const adminUsers = this.state.users.filter(user => user.usertype === 'Administrador');
-    if (adminUsers.length === 1 && user.usertype === 'Administrador') {
-      this.setState({errorModal: true, form: user});
+  const handleUsernameChange = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
     } else {
-      this.setState({deleteModal: true, form: user});
+      setState({
+        ...state,
+        form: {
+          ...state.form,
+          username: e.target.value
+        }
+      });
     }
+  };
+
+  const handleMailChange = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    } else {
+      setState({
+        ...state,
+        form: {
+          ...state.form,
+         email: e.target.value
+        }
+      });
+    }
+  };
+  
+  const handlePasswordChange = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    } else{
+      setState({
+        ...state,
+        form: {
+          ...state.form,
+          password: e.target.value
+        }
+      });
+    }
+  };
+
+  const showModalInsert = () => {
+    setState({ ...state, insertModal: true });
+  };
+
+  const hideModalInsert = () => {
+    setState({ ...state, insertModal: false });
+  };
+
+  const showModalEdit = (user) => {
+    setState({ ...state, editModal: true, form: user});
+  };
+
+  const hideModalEdit = () => {
+    setState({ ...state, editModal: false });
+  };
+
+  const showModalDelete = (user) => {
+    const isAdminUser = user.is_superuser;
+    const adminCount = state.users.filter(u => u.is_superuser).length;
+    if (isAdminUser && adminCount === 1) {
+      setState({ ...state, errorModal: true, form: user });
+    } else {
+      setState({ ...state, deleteModal: true, form: user });
+    }
+  };
+  
+  const hideModalDelete = () => {
+    setState({ ...state, deleteModal: false });
+  };
+
+  const hideModalError = () => {
+    setState({ ...state, errorModal: false });
   }
 
-  hideModalDelete=()=>{
-    this.setState({deleteModal: false});
-  }
+  const validateForm = () => {
+    const { id, username,email, password, is_superuser } = state.form;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const lowercaseUsername = username.toLowerCase();
+    const lowercaseMail = email.toLowerCase();
+    const isUsernameExists = state.users.some(user => user.username.toLowerCase() === lowercaseUsername && user.id !== id);
+    const isEmailExists = state.users.some(user => user.email.toLowerCase() === lowercaseMail && user.id !== id);
+    
+    if (!username || !email || !password || is_superuser === '') {
+      toast.error("Por favor, complete todos los campos.");
+      return false;
+    } else if (isUsernameExists) {
+      toast.error("El nombre de usuario ya existe. Por favor, elija otro nombre.");
+      return false;
+    } else if (!emailPattern.test(email)) {
+      toast.error("Por favor, ingrese un correo electrónico válido.");
+      return false;
+    } else if (isEmailExists) {
+      toast.error("El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.");
+      return false;
+    } else if (!passwordPattern.test(password)) {
+      toast.error("La contraseña debe tener al menos 8 caracteres y al menos un número.");
+      return false;
+    }
+    return true;
+  };
 
-  showModalError=(user)=>{
-    this.setState({errorModal: true, form: user});
-  }
+  const generateUniqueId = () => {
+    let newId = state.users.length + 1;
+    while (state.users.some(user => user.id === newId)) {
+      newId++;
+    }
+    return newId;
+  };  
 
-  hideModalError=()=>{
-    this.setState({errorModal: false});
-  }
-
-  resetForm = () => {
-    this.setState({
+  const handleCreateUser = () => {
+    if (!validateForm()) {
+      return;
+    }
+    const { username, email, password, is_superuser } = state.form;
+    const newUser = {
+      id: generateUniqueId(),
+      username: username,
+      email: email,
+      password: password,
+      is_superuser: is_superuser
+    };
+    const updatedUsers = [...state.users, newUser];
+    setState({
+      ...state,
+      users: updatedUsers,
+      insertModal: false,
       form: {
         id: '',
         username: '',
-        mail: '',
+        email: '',
         password: '',
-        usertype: ''
-      },
-      errorMessage: ''
+        is_superuser: ''
+      }
     });
-  }
-
-  checkDuplicateUsername = (username, userId) => {
-    return this.state.users.some(user => user.id !== userId && user.username.toLowerCase() === username.toLowerCase());
-  }
-  
-  validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  validatePassword = (password) => {
-    return password.length >= 8 && /\d/.test(password);
-  }
-
-  insertUser = () => {
-    const { username, mail, password, usertype } = this.state.form;
-    if (!username || !mail || !password || !usertype) {
-      this.setState({ errorMessage: "Por favor, completa todos los campos." });
-      return;
-    }
-    if (this.checkDuplicateUsername(username)) {
-      this.setState({ errorMessage: "El nombre de usuario ya está en uso." });
-      return;
-    }
-    if (!this.validateEmail(mail)) {
-      this.setState({ errorMessage: "Por favor, introduce un correo electrónico válido." });
-      return;
-    }
-    if (!this.validatePassword(password)) {
-      this.setState({ errorMessage: "La contraseña debe tener al menos 8 caracteres y contener al menos un número." });
-      return;
-    }
-    const newUser = { ...this.state.form };
-    newUser.id = this.state.users.length + 1;
-    const updatedUsers = [...this.state.users, newUser];
-    this.setState({ users: updatedUsers, insertModal: false });
-    this.resetForm();
     toast.success("Usuario creado con éxito.");
-  }
-  
-  editUser=()=>{
-    const { id, username, mail, password, usertype } = this.state.form;
-    const { adminCountBeforeEdit } = this.state;
-    const usertypeBeforeEdit = this.state.users.find(user => user.id === id)?.usertype;
-    if (!username || !mail || !password || !usertype) {
-      this.setState({ errorMessage: "Por favor, completa todos los campos." });
+  };
+
+  const handleSaveUser = () => {
+    if (!validateForm()) {
       return;
     }
-    if (this.checkDuplicateUsername(username, id)) {
-      this.setState({ errorMessage: "El nombre de usuario ya está en uso." });
+    const { id, username, email, password, is_superuser } = state.form;
+    const editedUserIndex = state.users.findIndex(user => user.id === id);
+    const editedUser = state.users[editedUserIndex];
+    const adminCount = state.users.filter(user => user.is_superuser).length;
+    if (editedUser.is_superuser && !is_superuser && adminCount === 1) {
+      toast.error("No se puede cambiar el tipo de usuario ya que solo hay un administrador en el sistema.");
       return;
     }
-    if (!this.validateEmail(mail)) {
-      this.setState({ errorMessage: "Por favor, introduce un correo electrónico válido." });
-      return;
-    }
-    if (!this.validatePassword(password)) {
-      this.setState({ errorMessage: "La contraseña debe tener al menos 8 caracteres y contener al menos un número." });
-      return;
-    }
-    if (usertypeBeforeEdit === 'Administrador' && usertype === 'Vendedor' && adminCountBeforeEdit === 1) {
-      this.setState({ errorMessage: "No es posible guardar los cambios ya que debe haber al menos un usuario de tipo Administrador." });
-      return;
-    }
-    const updatedUsers = this.state.users.map(user => {
-      if (user.id === id) {
-        return { ...user, username, mail, password, usertype };
+    const updatedUsers = [
+      ...state.users.slice(0, editedUserIndex),
+      { ...editedUser, username, email, password, is_superuser },
+      ...state.users.slice(editedUserIndex + 1)
+    ];
+    setState({
+      ...state,
+      users: updatedUsers,
+      editModal: false,
+      form: {
+        id: '',
+        username: '',
+        email: '',
+        password: '',
+        is_superuser: ''
       }
-      return user;
     });
-    this.setState({ users: updatedUsers, editModal: false });
-    this.resetForm();
     toast.success("Usuario editado con éxito.");
-  }
-
-  deleteUser=(data)=>{
-    var cont = 0;
-    var list = this.state.users;
-    list.map((user)=>{
-      if(data.id==user.id){
-        list.splice(cont, 1);
+  };
+  
+  const handleDeleteUser = () => {
+    const updatedUsers = state.users.filter(user => user.id !== state.form.id);
+    setState({
+      ...state,
+      users: updatedUsers,
+      deleteModal: false,
+      form: {
+        id: '',
+        username: '',
+        email: '',
+        password: '',
+        is_superuser: ''
       }
-      cont++;
     });
-    this.setState({data:list, deleteModal: false})
-    this.resetForm();
     toast.success("Usuario eliminado con éxito.");
-  }
+  };
 
-  render(){
-    return(
+  return (
     <>
-      <>
-      <ToastContainer className={classes.custom_toast_container} position="top-right" autoClose={false}/>
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className={classes.btn_container}>
-          <Button variant="warning" className={classes.addButton} onClick={()=>this.showModalInsert()}>Agregar Usuario</Button>
+        <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
       </div>
       <div className={classes.tableCover}>
         <Table bordered responsive size='lg' variant='dark' className={classes.table}>
@@ -215,58 +274,57 @@ class UsersTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.users.map((user) => (
-                <tr key={user.id}>
-                  <td><Form.Check className={classes.checkBox}/></td>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.mail}</td>
-                  <td>{'•'.repeat(user.password.length)}</td>
-                  <td>{user.usertype}</td>
-                  <td>
-                    <ButtonGroup className={classes.buttons}>
-                    <Button variant="link" className={classes.noBorder} onClick={()=>this.showModalEdit(user)}>
-                        <Image className={classes.image} src={iconPencil}/>
-                      </Button>
-                      <Button variant="link" className={classes.noBorder} onClick={()=>this.showModalDelete(user)}>
-                        <Image className={classes.image} src={iconTrash}/>
-                      </Button>
-                    </ButtonGroup>
-                  </td>
-                </tr>
-              ))}
+            {state.users.map((user) => (
+              <tr key={user.id}>
+                <td><Form.Check className={classes.checkBox} /></td>
+                <td>{user.id}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{'•'.repeat(user.password.length)}</td>
+                <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
+                <td>
+                  <ButtonGroup className={classes.buttons}>
+                    <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
+                      <Image className={classes.image} src={iconPencil} />
+                    </Button>
+                    <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
+                      <Image className={classes.image} src={iconTrash} />
+                    </Button>
+                  </ButtonGroup>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </div>
-      </>
-      
-      <Modal isOpen={this.state.insertModal}>
+
+      <Modal isOpen={state.insertModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
             <h3>Nuevo Usuario</h3>
           </div>
         </ModalHeader>
         <ModalBody>
-          {this.state.errorMessage && <div className={classes.error_message}>{this.state.errorMessage}</div>}
+          {state.errorMessage && <div className={classes.error_message}>{state.errorMessage}</div>}
           <FormGroup>
             <label>Id:</label>
-            <input className='form-control' readOnly type='text' value={this.state.users.length+1}/>
+            <input className='form-control' readOnly type='text' value={generateUniqueId()} />
           </FormGroup>
           <FormGroup>
             <label>Nombre de Usuario:</label>
-            <input className='form-control' name='username' type='text' onChange={this.handleChange}/>
+            <input className='form-control' name='username' type='text' onChange={handleChange} onKeyDown={handleUsernameChange} />
           </FormGroup>
           <FormGroup>
             <label>Correo:</label>
-            <input className='form-control' name='mail' type='text' onChange={this.handleChange}/>
+            <input className='form-control' name='email' type='text' onChange={handleChange} onKeyDown={handleMailChange} />
           </FormGroup>
           <FormGroup>
             <label>Contraseña:</label>
-            <input className='form-control' name='password' type='text' onChange={this.handleChange}/>
+            <input className='form-control' name='password' type='text' onChange={handleChange} onKeyDown={handlePasswordChange} />
           </FormGroup>
           <FormGroup>
             <label>Tipo de Usuario:</label>
-            <select className='form-control' name='usertype' onChange={this.handleChange} defaultValue=''>
+            <select className='form-control' name='is_superuser' onChange={handleChange} defaultValue=''>
               <option value='' disabled>Selecciona una opción</option>
               <option value='Administrador'>Administrador</option>
               <option value='Vendedor'>Vendedor</option>
@@ -274,38 +332,38 @@ class UsersTable extends React.Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={()=>this.insertUser()}>Crear</Btn>
-          <Btn color='danger' onClick={()=>this.hideModalInsert()}>Cancelar</Btn>
+          <Btn color='success' onClick={handleCreateUser}>Crear</Btn>
+          <Btn color='danger' onClick={hideModalInsert}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={this.state.editModal}>
+      <Modal isOpen={state.editModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
             <h3>Editar Usuario</h3>
           </div>
         </ModalHeader>
         <ModalBody>
-          {this.state.errorMessage && <div className={classes.error_message}>{this.state.errorMessage}</div>}
+          {state.errorMessage && <div className={classes.error_message}>{state.errorMessage}</div>}
           <FormGroup>
             <label>Id:</label>
-            <input className='form-control' readOnly type='text' value={this.state.form.id}/>
+            <input className='form-control' readOnly type='text' value={state.form.id} />
           </FormGroup>
           <FormGroup>
             <label>Nombre de Usuario:</label>
-            <input className='form-control' name='username' type='text' onChange={this.handleChange} value={this.state.form.username}/>
+            <input className='form-control' name='username' type='text' onChange={handleChange} value={state.form.username} onKeyDown={handleUsernameChange} />
           </FormGroup>
           <FormGroup>
             <label>Correo:</label>
-            <input className='form-control' name='mail' type='text' onChange={this.handleChange} value={this.state.form.mail}/>
+            <input className='form-control' name='email' type='text' onChange={handleChange} value={state.form.email} onKeyDown={handleMailChange} />
           </FormGroup>
           <FormGroup>
             <label>Contraseña:</label>
-            <input className='form-control' name='password' type='text' onChange={this.handleChange} value={this.state.form.password}/>
+            <input className='form-control' name='password' type='text' onChange={handleChange} value={state.form.password} onKeyDown={handlePasswordChange} />
           </FormGroup>
           <FormGroup>
             <label>Tipo de Usuario:</label>
-            <select className='form-control' name='usertype' onChange={this.handleChange} value={this.state.form.usertype}>
+            <select className='form-control' name='is_superuser' onChange={handleChange} value={state.form.is_superuser ? 'Administrador' : 'Vendedor'}>
               <option value='' disabled>Selecciona una opción</option>
               <option value='Administrador'>Administrador</option>
               <option value='Vendedor'>Vendedor</option>
@@ -313,12 +371,12 @@ class UsersTable extends React.Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={()=>this.editUser()}>Guardar</Btn>
-          <Btn color='danger' onClick={()=>this.hideModalEdit()}>Cancelar</Btn>
+          <Btn color='success' onClick={handleSaveUser}>Guardar</Btn>
+          <Btn color='danger' onClick={hideModalEdit}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={this.state.deleteModal}>
+      <Modal isOpen={state.deleteModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
             <h3>Eliminar Usuario</h3>
@@ -330,12 +388,12 @@ class UsersTable extends React.Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={()=>this.deleteUser(this.state.form)}>Confirmar</Btn>
-          <Btn color='danger' onClick={()=>this.hideModalDelete()}>Cancelar</Btn>
+          <Btn color='success' onClick={handleDeleteUser}>Confirmar</Btn>
+          <Btn color='danger' onClick={hideModalDelete}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={this.state.errorModal}>
+      <Modal isOpen={state.errorModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
             <h3>Error</h3>
@@ -347,13 +405,12 @@ class UsersTable extends React.Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={()=>this.hideModalError()}>Aceptar</Btn>
+          <Btn color='success' onClick={hideModalError}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
 
     </>
-    )
-  }
+  );
 };
 
 export default UsersTable;
