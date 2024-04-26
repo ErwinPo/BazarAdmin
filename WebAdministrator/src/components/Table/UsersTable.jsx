@@ -40,6 +40,8 @@ const UsersTable = () => {
 
   const [state, setState] = useState({
     users: users,
+    selectedUserIds: [],
+    isAnyUserSelected: false,
     form: {
       id: '',
       username: '',
@@ -50,6 +52,7 @@ const UsersTable = () => {
     insertModal: false,
     editModal: false,
     deleteModal: false,
+    deletesModal: false,
     errorModal: false,
   });
 
@@ -107,6 +110,22 @@ const UsersTable = () => {
     }
   };
 
+  const handleCheckboxChange = (userId) => {
+    setState((prevState) => {
+      const isSelected = prevState.selectedUserIds.includes(userId);
+      const selectedUserIds = isSelected
+        ? prevState.selectedUserIds.filter((id) => id !== userId)
+        : [...prevState.selectedUserIds, userId];
+      const isAnyUserSelected = selectedUserIds.length > 0;
+      return {
+        ...prevState,
+        selectedUserIds,
+        isAnyUserSelected,
+      };
+    });
+  };
+  
+
   const showModalInsert = () => {
     setState({ ...state, insertModal: true });
   };
@@ -137,6 +156,14 @@ const UsersTable = () => {
     setState({ ...state, deleteModal: false });
   };
 
+  const showModalDeleteS = () => {
+    setState({ ...state, deletesModal: true });
+  };
+
+  const hideModalDeleteS = () => {
+    setState({ ...state, deletesModal: false });
+  };
+
   const hideModalError = () => {
     setState({ ...state, errorModal: false });
   }
@@ -149,7 +176,6 @@ const UsersTable = () => {
     const lowercaseMail = email.toLowerCase();
     const isUsernameExists = state.users.some(user => user.username.toLowerCase() === lowercaseUsername && user.id !== id);
     const isEmailExists = state.users.some(user => user.email.toLowerCase() === lowercaseMail && user.id !== id);
-    
     if (!username || !email || !password || is_superuser === '') {
       toast.error("Por favor, complete todos los campos.");
       return false;
@@ -254,11 +280,36 @@ const UsersTable = () => {
     toast.success("Usuario eliminado con éxito.");
   };
 
+  const handleDeleteSelectedUsers = () => {
+    const selectedAdminUsers = state.users.filter((user) =>
+      state.selectedUserIds.includes(user.id) && user.is_superuser
+    );
+    const totalAdminUsers = state.users.filter((user) => user.is_superuser).length;
+    if (selectedAdminUsers.length === totalAdminUsers) {
+      setState({
+        ...state,
+        deletesModal: false,
+        errorModal: true,
+      });
+    } else {
+      const updatedUsers = state.users.filter((user) => !state.selectedUserIds.includes(user.id));
+      setState({
+        ...state,
+        users: updatedUsers,
+        selectedUserIds: [],
+        deletesModal: false,
+        isAnyUserSelected: false,
+      });
+      toast.success("Usuarios seleccionados eliminados con éxito.");
+    }
+  };  
+
   return (
     <>
       <ToastContainer position="top-center" autoClose={3000} />
       <div className={classes.btn_container}>
         <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
+        <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
       </div>
       <div className={classes.tableCover}>
         <Table bordered responsive size='lg' variant='dark' className={classes.table}>
@@ -276,7 +327,7 @@ const UsersTable = () => {
           <tbody>
             {state.users.map((user) => (
               <tr key={user.id}>
-                <td><Form.Check className={classes.checkBox} /></td>
+                <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} /></td>
                 <td>{user.id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
@@ -390,6 +441,23 @@ const UsersTable = () => {
         <ModalFooter>
           <Btn color='success' onClick={handleDeleteUser}>Confirmar</Btn>
           <Btn color='danger' onClick={hideModalDelete}>Cancelar</Btn>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={state.deletesModal}>
+        <ModalHeader className={classes.modal_header}>
+          <div>
+            <h3>Eliminar Usuarios Seleccionados</h3>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label>¿Estás seguro que deseas eliminar todos los usuarios que has seleccionado?</label>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Btn color='success' onClick={handleDeleteSelectedUsers}>Confirmar</Btn>
+          <Btn color='danger' onClick={hideModalDeleteS}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
 
