@@ -1,17 +1,24 @@
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework import routers
 from django.urls import path
-from . import views
+from .views import *
+
+router = routers.DefaultRouter()
+
+router.register('users/', UserViewSet, "users")
+router.register('sales/', SalesViewSet, "sales")
 
 urlpatterns = [
-    path("registrousuario/", views.registrousuario, name="registrousuario"),
-    path("usuarios/", views.usuarios, name="usuarios"),
-    path("registroventa/", views.registroventa, name="registroventa"),
-    path("ventas/", views.ventas, name="ventas"),
-    path("eliminarusuario/<int:user_id>", views.eliminarusuario, name="eliminarusuario"),
-    path("eliminarventa/<int:venta_id>", views.eliminarventa, name="eliminarventa"),
-    path("ventasusuario/<int:user_id>", views.ventasusuario, name="ventasusuario"),
-    path("actualizarusuario/<int:user_id>", views.actualizarusuario, name="actualizarusuario"),
-    path("actualizarventa/<int:venta_id>", views.actualizarVenta, name="actualizarventa")
-    # path("login/", views.login, name="login"),
-    # path("logout/", views.logout, name="logout"),
-    # path("recoverpassword/", views.recoverpassword, name="recoverpassword")
+    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),   
+    path("sales-date-range-amount/", SalesDateRangeAmountView.as_view(), name="SalesDataRangeAmount"),
+    path("sales-date-range-quantity/", SalesDateRangeQuantityView.as_view(), name="SalesDataRangeQuantity"),
+    path("sales-date-range-amount-seller/", SalesDateRangeSellerAmountView.as_view(), name="SalesDataRangeAmountSeller"),
+    path("sales-date-range-quantity-seller/", SalesDateRangeSellerQuantityView.as_view(), name="SalesDataRangeQuantitySeller"),
+    path("ranking/", Ranking.as_view(), name='Ranking'),
+    path("sales-per-user/", SalesPerUser.as_view(), name="SalesPerUser")
 ]
+
+
+urlpatterns += router.urls
+

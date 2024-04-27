@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-import corsheaders
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,11 +30,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
     "corsheaders",
+    "rest_framework",
+    'rest_framework_simplejwt',
     "APIRest.apps.ApirestConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -75,6 +77,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "APIRestHNP.wsgi.application"
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
+
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -86,7 +105,7 @@ DATABASES = {
         'NAME': 'bazar',
         'USER': 'root',
         'PASSWORD': '',  
-        'HOST': 'localhost',  
+        'HOST': 'db',  
         'PORT': '3306',  
     }
 }
@@ -110,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "APIRest.Usuario"
+AUTH_USER_MODEL = "APIRest.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
