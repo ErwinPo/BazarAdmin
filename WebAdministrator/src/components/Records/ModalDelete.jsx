@@ -5,9 +5,9 @@
 import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import classes from './Modals.module.css';
 
-const ModalDelete = ({ deleteAllModalOpen, handleDeleteSelected, toggleDeleteAllModal }) =>{
+const ModalDelete = ({ sale_id, deleteModalOpen, handleDelete, toggleDeleteModal }) =>{
     return (
-        <Modal isOpen={deleteAllModalOpen}>
+        <Modal isOpen={deleteModalOpen}>
             <ModalHeader className={classes.modal_header}>
             <div>
                 <h3>Eliminar Venta</h3>
@@ -19,8 +19,8 @@ const ModalDelete = ({ deleteAllModalOpen, handleDeleteSelected, toggleDeleteAll
             </FormGroup>
             </ModalBody>
             <ModalFooter>
-            <Btn color='success' onClick={handleDeleteSelected}>Confirmar</Btn>
-            <Btn color='danger' onClick={toggleDeleteAllModal}>Cancelar</Btn>
+            <Btn color='success' onClick={() => {handleDelete(sale_id)}}>Confirmar</Btn>
+            <Btn color='danger' onClick={toggleDeleteModal}>Cancelar</Btn>
             </ModalFooter>
         </Modal>
     );

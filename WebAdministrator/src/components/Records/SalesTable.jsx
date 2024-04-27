@@ -10,7 +10,7 @@ import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 import PaginationComponent from './PaginationComponent';
 
-const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows }) => {
+const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows, toggleDeleteModal, setCurrentSaleIdDelete, toggleEditModal, setCurrentSaleEdit }) => {
     const itemsPerPage = 20; // Número de elementos por página
 
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
@@ -74,10 +74,26 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 <td>{sale.user_id}</td>
                                 <td>
                                     <ButtonGroup className={classes.buttons}>
-                                        <Button variant="link" className={classes.noBorder}>
+                                        <Button 
+                                        variant="link" 
+                                        className={classes.noBorder} 
+                                        onClick={
+                                            () => {
+                                                toggleDeleteModal();
+                                                setCurrentSaleIdDelete(sale.sale_id)
+                                            }
+                                        }>
                                             <Image className={classes.image} src={iconTrash} />
                                         </Button>
-                                        <Button variant="link" className={classes.noBorder}>
+                                        <Button 
+                                        variant="link" 
+                                        className={classes.noBorder}
+                                        onClick={
+                                            () => {
+                                                toggleEditModal();
+                                                setCurrentSaleEdit(sale)
+                                            }
+                                        }>
                                             <Image className={classes.image} src={iconPencil} />
                                         </Button>
                                     </ButtonGroup>
