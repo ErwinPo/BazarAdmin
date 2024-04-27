@@ -4,14 +4,14 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'is_superuser', 'is_active', 'email']
+        fields = ['id', 'username', 'password', 'is_superuser', 'email']
             
         
         
 class SalesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale
-        fields = ['sale_id', 'user_id', 'amount', 'quantity', 'date', 'is_active']
+        fields = ['sale_id', 'user_id', 'amount', 'quantity', 'date']
         read_only_fields = ('date',)  
         
 
