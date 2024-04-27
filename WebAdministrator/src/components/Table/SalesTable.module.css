@@ -5,9 +5,14 @@
 .buttons {
 	gap: 12px;
 }
+
 .checkBox {
 	height: 25px;
 	width: auto;
+}
+
+.checkBox input {
+	margin-top: 0px;
 }
 
 .checkBox input:focus {
@@ -17,12 +22,19 @@
 .emptyState td {
 	color: black !important;
 	font-weight: bold;
-	padding: 25px;
+	padding: 25px !important;
 } 
 
 .image {
 	height: 20px;
 	width: auto;
+}
+
+.tableCover {
+	margin: 0px 60px;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 }
 
 .tableCover div {
@@ -36,6 +48,9 @@
 .table td {
 	background-color: white;
 	color: black;
+	height: fit-content;
+	padding: 0px;
+	vertical-align: middle;
 }
 
 .table th {

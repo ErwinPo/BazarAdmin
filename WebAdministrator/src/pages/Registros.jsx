@@ -45,7 +45,7 @@ const Registros = () => {
 
     const [sales, setSales] = useState([]);
     const lowDate = moment().subtract(6, 'months').toDate();
-    const highestAmount = 1000;
+    const highestAmount = 10000;
     const [startDate, setStartDate] = useState(lowDate);
     const [endDate, setEndDate] = useState(new Date());
     const [minValue, setMinValue] = useState(0);
@@ -53,17 +53,14 @@ const Registros = () => {
     const [page, setPage] = useState(1);
     const [selectedRows, setSelectedRows] = useState([]);
     const [columnCheck, setColumnCheck] = useState(false);
-    
 
     useEffect(() => {
-        fetch("http://localhost:8000/BAZARAPI/ventas", {
+        fetch("http://18.222.68.166:8000/BAZARAPI/ventas", {
             method: "GET"
         })
         .then((response) => response.json())
         .then(data => {
             setSales(data.registros);
-            const highestAmount = data.registros.length > 0 ? Math.max(...data.registros.map(sale => sale.amount)) : 0;
-            setMaxValue(highestAmount);
         })
         .catch((error) => console.log(error));
     }, []);
@@ -123,7 +120,29 @@ const Registros = () => {
 
     const handleDeleteSelected = () => {
         console.log(selectedRows)
+        selectedRows.forEach(id => {
+            deleteSale(id);
+        });
+        // Clear selected rows after deleting
+        setSelectedRows([]);
     };
+
+    const deleteSale = (id) => {
+        fetch(`http://18.222.68.166:8000/BAZARAPI/eliminarventa/${id}`, {
+            method: "DELETE"
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            // Assuming success means the sale was deleted, you can update the state accordingly
+            // setSales(sales.filter(sale => sale.id !== id));
+        })
+        .catch(error => {
+            console.error("Error deleting sale:", error);
+            // Optionally, you can set an error state here to handle it in your UI
+        });
+    };    
 
     const filteredSales = sales.filter(sale =>
         moment(sale.date).isSameOrAfter(startDate, 'day') &&
