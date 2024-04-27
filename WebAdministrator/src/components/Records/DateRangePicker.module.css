@@ -19,7 +19,7 @@
 .dateInput {
     width: 100%;
     display: block !important;
-    padding: 0.375rem 0.75rem;
+    padding: 6px;
     line-height: 1.5;
     background-color: #fff;
     background-clip: padding-box;

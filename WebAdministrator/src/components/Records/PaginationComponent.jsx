@@ -17,7 +17,7 @@ const PaginationComponent = ({ totalPages, page, handlePageChange }) => {
   
   return (
     <div className={classes.paginationCover}>
-      <Pagination className={classes.pagination} size='md'>
+      <Pagination className={classes.pagination} size='sm'>
         <Pagination.First onClick={() => handlePageChange(1)} />
         <Pagination.Prev onClick={() => handlePageChange(page - 1)} disabled={page === 1} />
         {Array.from({ length: Math.min(totalPages, maxPageItems) }, (_, index) => {

@@ -11,7 +11,7 @@ import iconTrash from '../../assets/images/icon_trash.png';
 import PaginationComponent from './PaginationComponent';
 
 const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows }) => {
-    const itemsPerPage = 7; // Número de elementos por página
+    const itemsPerPage = 20; // Número de elementos por página
 
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
     const [checkedColumn, setCheckedColumn] = useState(columnCheck || false);

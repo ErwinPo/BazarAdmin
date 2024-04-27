@@ -1,0 +1,9 @@
+/* Copyright 2024 BitBrothers
+ * File: ModalDeleteSelected.module.css
+ * Type: css file */
+
+ .modal_header{
+  background-color: #539165;
+  color:white;
+  justify-content: center;
+}

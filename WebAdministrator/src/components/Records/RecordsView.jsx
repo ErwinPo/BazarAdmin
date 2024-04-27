@@ -13,6 +13,7 @@ import moment from "moment";
 import iconExport from '../../assets/images/icon_export.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 import { useMediaQuery } from 'react-responsive';
+import ModalDeleteSelected from './ModalDeleteSelected';
 
 const RecordsView = () => {      
     const dummySales = [
@@ -43,16 +44,20 @@ const RecordsView = () => {
         { id: '#25', date: '19/01/2025 - 01:22:33', amount: 180, quantity: 4, seller: 'Eve Williams' },
       ];
 
-    const [sales, setSales] = useState([]);
     const lowDate = moment().subtract(6, 'months').toDate();
     const highestAmount = 10000;
-    const [startDate, setStartDate] = useState(lowDate);
-    const [endDate, setEndDate] = useState(new Date());
-    const [minValue, setMinValue] = useState(0);
-    const [maxValue, setMaxValue] = useState(highestAmount);
-    const [page, setPage] = useState(1);
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [columnCheck, setColumnCheck] = useState(false);
+
+    const [state, setState] = useState({
+        sales: [],
+        startDate: lowDate,
+        endDate: new Date(),
+        minValue: 0,
+        maxValue: highestAmount,
+        page: 1,
+        selectedRows: [],
+        columnCheck: false,
+        deleteAllModalOpen: false
+    });
 
     useEffect(() => {
         fetch("http://18.222.68.166:8000/BAZARAPI/ventas", {
@@ -60,71 +65,72 @@ const RecordsView = () => {
         })
         .then((response) => response.json())
         .then(data => {
-            setSales(data.registros);
+            setState({ ...state, sales: data.registros });
         })
         .catch((error) => console.log(error));
     }, []);
 
     const handleStartDateChange = (date) => {
-        setStartDate(date);
-        setPage(1);
+        setState({ ...state, startDate: date, page: 1 });
     };
 
     const handleEndDateChange = (date) => {
-        setEndDate(date);
-        setPage(1);
+        setState({ ...state, endDate: date, page: 1 });
     };
 
     const handleMinValueChange = (value) => {
         if (value < 0 || value > maxValue) {
             return;
         }
-        setMinValue(value);
-        setPage(1);
+        setState({ ...state,minValue: value, page: 1 });
     };
 
     const handleMaxValueChange = (value) => {
         if (value < 0 || value < minValue) {
             return;
         }
-        setMaxValue(value);
-        setPage(1);
+        setState({ ...state, maxValue: value, page: 1 });
     };
 
     const handlePageChange = () => {
-        setColumnCheck(false)
-        setSelectedRows([]);
+        setState({ ...state, columnCheck: false, selectedRows: [] });
     };
 
     const handleRowSelect = (saleId, selected) => {
-        setSelectedRows((prevSelectedRows) => {
+        setState(prevState => {
+            const prevSelectedRows = prevState.selectedRows;
             if (selected) {
-                return [...prevSelectedRows, saleId];
+                return { ...prevState, selectedRows: [...prevSelectedRows, saleId] };
             } else {
-                setColumnCheck(false)
-                return prevSelectedRows.filter((id) => id !== saleId);
+                return { ...prevState, selectedRows: prevSelectedRows.filter(id => id !== saleId), columnCheck: false };
             }
         });
     };
 
     const handleSelectAllChange = (event, pageSales) => {
-        const Checked = event.target.checked
-        setColumnCheck(Checked)
-        if (Checked) {
-            const allSaleIds = pageSales.map(sale => sale.sale_id);
-            setSelectedRows(allSaleIds);
-        } else {
-            setSelectedRows([]);
-        }
+        const Checked = event.target.checked;
+        setState(prevState => {
+            if (Checked) {
+                const allSaleIds = pageSales.map(sale => sale.sale_id);
+                return { ...prevState, columnCheck: Checked, selectedRows: allSaleIds };
+            } else {
+                return { ...prevState, columnCheck: Checked, selectedRows: [] };
+            }
+        });
+    };
+
+    const toggleDeleteAllModal = () => {
+        setState({ ...state, deleteAllModalOpen: !state.deleteAllModalOpen });
+
     };
 
     const handleDeleteSelected = () => {
-        console.log(selectedRows)
-        selectedRows.forEach(id => {
+        console.log(state.selectedRows);
+        state.selectedRows.forEach(id => {
             deleteSale(id);
         });
-        setColumnCheck(false)
-        setSelectedRows([]);
+        setState({ ...state, columnCheck: false, selectedRows: [], deleteAllModalOpen: !state.deleteAllModalOpen });
+    
     };
 
     const deleteSale = (id) => {
@@ -144,13 +150,13 @@ const RecordsView = () => {
         });
     };    
 
-    const filteredSales = sales.filter(sale =>
-        moment(sale.date).isSameOrAfter(startDate, 'day') &&
-        moment(sale.date).isSameOrBefore(endDate, 'day') &&
-        sale.amount >= minValue && sale.amount <= maxValue
+    const filteredSales = state.sales.filter(sale =>
+        moment(sale.date).isSameOrAfter(state.startDate, 'day') &&
+        moment(sale.date).isSameOrBefore(state.endDate, 'day') &&
+        sale.amount >= state.minValue && sale.amount <= state.maxValue
     );
 
-    const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1152 });
+    const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1300 });
 
     return (
         <div className="salesLog">
@@ -167,23 +173,23 @@ const RecordsView = () => {
                     </Col>
                     <Col className={classes.pickers} md={12} lg={5}>
                         <ValueRangePicker
-                            minValue={minValue}
-                            maxValue={maxValue}
+                            minValue={state.minValue}
+                            maxValue={state.maxValue}
                             handleMinValueChange={handleMinValueChange}
                             handleMaxValueChange={handleMaxValueChange}
                         />
                     </Col>
                     <Col className={classes.pickers} md={12} lg={5}>
                         <DateRangePicker
-                            startDate={startDate}
-                            endDate={endDate}
+                            startDate={state.startDate}
+                            endDate={state.endDate}
                             handleStartDateChange={handleStartDateChange}
                             handleEndDateChange={handleEndDateChange}
                         />
                     </Col>
                 </Row>
-                {selectedRows.length > 0 && (
-                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={handleDeleteSelected} >
+                {state.selectedRows.length > 0 && (
+                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteAllModal} >
                         <Image className={classes.image} src={iconTrash} />
                         <span>
                             Eliminar Seleccionados
@@ -191,15 +197,16 @@ const RecordsView = () => {
                     </Button>
                 )}
                 <SalesTable 
-                    columnCheck={columnCheck}
+                    columnCheck={state.columnCheck}
                     sales={filteredSales} 
-                    page={page}
+                    page={state.page}
                     handlePageChange={handlePageChange}
                     handleSelectAllChange={handleSelectAllChange}
-                    setPage={setPage} 
+                    setPage={state.setPage} 
                     onRowSelect={handleRowSelect}
-                    selectedRows={selectedRows}
+                    selectedRows={state.selectedRows}
                 />
+                <ModalDeleteSelected deleteAllModalOpen = {state.deleteAllModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteAllModal={toggleDeleteAllModal} />
             </div>
         </div>
     );
