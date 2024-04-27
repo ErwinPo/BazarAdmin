@@ -4,6 +4,8 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import logo from "../assets/images/LogoHNP1.png";
 import classes from "./Login.module.css";
 
@@ -12,18 +14,15 @@ export default function Login() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
-  const [emptyFieldError, setEmptyFieldError] = useState(false);
 
   function signIn(e) {
     e.preventDefault();
     if (user === "" || password === "") {
-      setEmptyFieldError(true);
-      setLoginError(false);
+      toast.error("Por favor, complete todos los campos.");
     } else if (user === "admin" && password === "hola1234") {
       navigate('/Ventas');
     } else {
-      setLoginError(true);
-      setEmptyFieldError(false);
+      toast.error("Usuario y/o contraseña incorrecto(s).");
       setUser("");
       setPassword("");
     }
@@ -42,6 +41,8 @@ export default function Login() {
   }
 
   return (
+    <>
+    <ToastContainer position="top-center" autoClose={3000} />
     <div className={classes.Login_form_container}>
       <form className={classes.Login_form} id="Login-f" onSubmit={signIn}>
         <div className={classes.Login_form_content}>
@@ -50,8 +51,6 @@ export default function Login() {
           </div>
           <h3 className={classes.Login_form_title}>INICIO DE SESIÓN</h3>
           <div className={`${classes.form_group} mt-3`}>
-            {emptyFieldError && <p className={classes.error_message}>Por favor llena los campos vacíos</p>}
-            {loginError && <p className={classes.error_message}>Usuario y/o Contraseña incorrecto(s)</p>}
             <h5 className={classes.Login_form_name}>Usuario</h5>
             <input
               type="text"
@@ -78,5 +77,6 @@ export default function Login() {
         </div>
       </form>
     </div>
+    </>
   );
 }
