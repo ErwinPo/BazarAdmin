@@ -56,7 +56,9 @@ const RecordsView = () => {
         page: 1,
         selectedRows: [],
         columnCheck: false,
-        deleteAllModalOpen: false
+        deleteSelectedModalOpen: false,
+        deleteModalOpen: false,
+        editModalOpen: false
     });
 
     useEffect(() => {
@@ -119,9 +121,16 @@ const RecordsView = () => {
         });
     };
 
-    const toggleDeleteAllModal = () => {
-        setState({ ...state, deleteAllModalOpen: !state.deleteAllModalOpen });
+    const toggleDeleteSelectedModal = () => {
+        setState({ ...state, deleteSelectedModalOpen: !state.deleteSelectedModalOpen });
+    };
 
+    const toggleDeleteModal = () => {
+        setState({ ...state, deleteAllModalOpen: !state.deleteAllModalOpen });
+    };
+
+    const toggleEditModal = () => {
+        setState({ ...state, deleteAllModalOpen: !state.deleteAllModalOpen });
     };
 
     const handleDeleteSelected = () => {
@@ -129,7 +138,7 @@ const RecordsView = () => {
         state.selectedRows.forEach(id => {
             deleteSale(id);
         });
-        setState({ ...state, columnCheck: false, selectedRows: [], deleteAllModalOpen: !state.deleteAllModalOpen });
+        setState({ ...state, columnCheck: false, selectedRows: [], deleteSelectedModalOpen: !state.deleteSelectedModalOpen });
     
     };
 
@@ -189,7 +198,7 @@ const RecordsView = () => {
                     </Col>
                 </Row>
                 {state.selectedRows.length > 0 && (
-                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteAllModal} >
+                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteSelectedModal} >
                         <Image className={classes.image} src={iconTrash} />
                         <span>
                             Eliminar Seleccionados
@@ -206,7 +215,7 @@ const RecordsView = () => {
                     onRowSelect={handleRowSelect}
                     selectedRows={state.selectedRows}
                 />
-                <ModalDeleteSelected deleteAllModalOpen = {state.deleteAllModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteAllModal={toggleDeleteAllModal} />
+                <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>
         </div>
     );
