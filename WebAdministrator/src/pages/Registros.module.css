@@ -10,8 +10,7 @@ body {
 .filters {
     margin: 25px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    align-items: end;
 }
 
 .button {
@@ -22,6 +21,7 @@ body {
     border-radius: 25px;
     border: 1px solid #AA7606;
     padding: 12px 16px;
+    margin-bottom: 12PX;
 }
 
 .buttonDeleteAll {
@@ -64,5 +64,5 @@ body {
 }
 
 .salesLog {
-  margin: 0px 30px;
+  margin: 0px 100px;
 }
