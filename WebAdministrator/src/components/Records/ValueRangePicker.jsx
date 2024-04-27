@@ -5,7 +5,6 @@
 import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 import classes from './ValueRangePicker.module.css';
-import "../index.css";
 
 const ValueRangePicker = ({ minValue, maxValue, handleMinValueChange, handleMaxValueChange }) => {
 

@@ -1,20 +1,20 @@
 /* Copyright 2024 BitBrothers
- * File: Registros.jsx
+ * File: RecordsView.jsx
  * Type: component */
 
 import React, { useState, useEffect } from 'react';
-import SalesTable from "../components/Table/SalesTable";
-import Navbar from "../components/NavBar/Navbar";
-import ValueRangePicker from "../components/ValueRangePicker";
+import SalesTable from "./SalesTable";
+import Navbar from "../NavBar/Navbar";
+import ValueRangePicker from "./ValueRangePicker";
 import { Button, Col, Image, Row } from 'react-bootstrap';
-import classes from './Registros.module.css';
-import DateRangePicker from "../components/DateRangePicker";
+import classes from './RecordsView.module.css';
+import DateRangePicker from "./DateRangePicker";
 import moment from "moment";
-import iconExport from '../assets/images/icon_export.png';
-import iconTrash from '../assets/images/icon_trash.png';
+import iconExport from '../../assets/images/icon_export.png';
+import iconTrash from '../../assets/images/icon_trash.png';
 import { useMediaQuery } from 'react-responsive';
 
-const Registros = () => {      
+const RecordsView = () => {      
     const dummySales = [
         { id: '#1', date: '19/01/2024 - 01:22:33', amount: 1, quantity: 2, seller: 'John Doe' },
         { id: '#2', date: '19/02/2024 - 01:22:33', amount: 1, quantity: 3, seller: 'Jane Smith' },
@@ -123,7 +123,7 @@ const Registros = () => {
         selectedRows.forEach(id => {
             deleteSale(id);
         });
-        // Clear selected rows after deleting
+        setColumnCheck(false)
         setSelectedRows([]);
     };
 
@@ -205,4 +205,4 @@ const Registros = () => {
     );
 };
 
-export default Registros;
+export default RecordsView;
