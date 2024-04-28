@@ -1,0 +1,16 @@
+
+
+.row{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    font-size: 1.75rem
+}
+
+.centered{
+    justify-content: center;
+}
+
+.col{
+    font-weight:700;
+}
+

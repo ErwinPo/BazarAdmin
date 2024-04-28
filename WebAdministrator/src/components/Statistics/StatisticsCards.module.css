@@ -1,0 +1,26 @@
+
+
+.card{
+    border-color: #3F497F;
+    background-color: #E9E9E9;
+    font-weight: 700;
+    
+    
+}
+
+.col{
+    margin:auto;
+}
+
+.title{
+    font-size: medium;
+    font-weight: bold;
+    text-align: left;
+}
+
+.text{
+    font-size: xx-large;
+    text-align: left;
+}
+
+
