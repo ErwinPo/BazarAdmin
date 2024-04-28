@@ -3,6 +3,8 @@
  * Type: component */
 
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import SalesTable from "./SalesTable";
 import Navbar from "../NavBar/Navbar";
 import ValueRangePicker from "./ValueRangePicker";
@@ -16,8 +18,7 @@ import { useMediaQuery } from 'react-responsive';
 import ModalDeleteSelected from './ModalDeleteSelected';
 import ModalDelete from './ModalDelete';
 import ModalEdit from './ModalEdit';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 const RecordsView = () => {      
     const dummySales = [
@@ -158,7 +159,7 @@ const RecordsView = () => {
     };
 
     const deleteSale = (id) => {
-        console.log(id)
+        // console.log(id)
         fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
             method: "DELETE"
         })
@@ -166,23 +167,23 @@ const RecordsView = () => {
             if (response.ok) {
                 const updatedSales = state.sales.filter(sale => sale.sale_id !== id);
                 console.log(updatedSales)
-                setState({ ...state, sales: updatedSales, deleteModalOpen: false});
+                setState({ ...state, sales: updatedSales, deleteModalOpen: false });
                 toast.success("Venta seleccionada eliminada con éxito.");
             }
             else {
                 console.error(response)
                 toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
-                setState({ ...state, deleteModalOpen: false});
+                setState({ ...state, deleteModalOpen: false });
             }
         })
         .catch(error => {
             console.error("Error deleting sale:", error);
             toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
         });
-    };    
+    };      
 
     const editSale = (amount, id, quantity) => {
-        console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
+        // console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
         fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
@@ -193,8 +194,7 @@ const RecordsView = () => {
         .then(response => {
             console.log(id)
             if (response.ok) {
-                toast.success("Venta seleccionada editada con éxito.");
-                setState({ ...state, editModalOpen: false });
+                setState({ ...state, editModalOpen: false }, toast.success("Venta seleccionada editada con éxito."));
             }
             else {
                 console.error(response)
@@ -218,7 +218,6 @@ const RecordsView = () => {
 
     return (
         <div className="salesLog">
-            <ToastContainer position="top-center" autoClose={3000} />
             <Navbar />
             <div className={classes.salesLog}>
                 <Row className={classes.filters}>
@@ -273,6 +272,7 @@ const RecordsView = () => {
                 <ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
                 <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>
+            <ToastContainer position="top-center" autoClose={3000} />
         </div>
     );
 };
