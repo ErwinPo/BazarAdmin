@@ -3,21 +3,21 @@
  * Type: component */
 
 import React, { useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import SalesTable from "./SalesTable";
-import Navbar from "../NavBar/Navbar";
-import ValueRangePicker from "./ValueRangePicker";
-import { Button, Col, Image, Row } from 'react-bootstrap';
 import classes from './RecordsView.module.css';
 import DateRangePicker from "./DateRangePicker";
-import moment from "moment";
 import iconExport from '../../assets/images/icon_export.png';
 import iconTrash from '../../assets/images/icon_trash.png';
-import { useMediaQuery } from 'react-responsive';
-import ModalDeleteSelected from './ModalDeleteSelected';
 import ModalDelete from './ModalDelete';
+import ModalDeleteSelected from './ModalDeleteSelected';
 import ModalEdit from './ModalEdit';
+import moment from "moment";
+import Navbar from "../NavBar/Navbar";
+import SalesTable from "./SalesTable";
+import ValueRangePicker from "./ValueRangePicker";
+import { Button, Col, Image, Row } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import { useMediaQuery } from 'react-responsive';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const RecordsView = () => {      
