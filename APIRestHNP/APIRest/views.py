@@ -3,6 +3,7 @@ import json
 from .utils import *
 from .models import *
 from .serializers import *
+from .permissions import *
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import permissions, viewsets, views, status
@@ -24,16 +25,29 @@ class UserViewSet(viewsets.ModelViewSet):
 
         # Guardar el usuario con la contraseña hasheada
         serializer.save()    
+        
+    def perform_update(self, serializer):
+        # Extraer la contraseña del serializer
+        password = serializer.validated_data.get('password')
+
+        # Modificar el serializer para establecer la contraseña hasheada
+        serializer.validated_data['password'] = make_password(password)
+
+        # Guardar el usuario con la contraseña hasheada
+        serializer.save()    
     
 class SalesViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
     serializer_class = SalesSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user)
     
 
 # ============= Delete Many Users =================
 class DeleteManyUsersView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -56,7 +70,7 @@ class DeleteManyUsersView(views.APIView):
 
 # ============= Delete Many Sales =================
 class DeleteManySalesView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -79,7 +93,7 @@ class DeleteManySalesView(views.APIView):
 # ============= Sales Per User ====================
     
 class SalesPerUserView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
         
     def get(self, request):
         query_id = self.request.query_params.get('id')
@@ -91,9 +105,10 @@ class SalesPerUserView(views.APIView):
 # ============= Ranking =========================
 
 class RankingView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
     
     def get(self,request):
+        print(request.user.id)
         queryset = callRanking()
         data = [{"user": item[0], "amount": float(item[1])} for item in queryset]
         serializer = RankingSerializer(data=data, many=True)
@@ -114,7 +129,7 @@ class RankingView(views.APIView):
 # ==========  With Date (Start - End) =================        
     
 class SalesDateRangeQuantityView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -129,7 +144,7 @@ class SalesDateRangeQuantityView(views.APIView):
     
     
 class SalesDateRangeAmountView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -146,7 +161,7 @@ class SalesDateRangeAmountView(views.APIView):
 # ==========  With Date (Start - End) & Seller ID =================
     
 class SalesDateRangeSellerQuantityView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         query_id = self.request.query_params.get('id')
@@ -162,9 +177,10 @@ class SalesDateRangeSellerQuantityView(views.APIView):
     
     
 class SalesDateRangeSellerAmountView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
+        print(request.user.id)
         query_id = self.request.query_params.get('id')
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')

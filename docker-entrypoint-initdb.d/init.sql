@@ -14,7 +14,6 @@ BEGIN
 	FROM apirest_sale
 	WHERE date BETWEEN start_date AND end_date
 	AND user_id_id = user_id
-	AND is_active = 1
 	GROUP BY DATE(date);
 END$$
 
@@ -32,7 +31,6 @@ BEGIN
 	FROM apirest_sale
 	WHERE date BETWEEN start_date AND end_date
 	AND user_id_id = user_id
-	AND is_active = 1
 	GROUP BY DATE(date);
 END$$
 
@@ -49,7 +47,6 @@ BEGIN
 	SELECT SUM(amount) as day_amount, DATE(date) AS day
 	FROM apirest_sale
 	WHERE date BETWEEN start_date AND end_date
-	AND is_active = 1
 	GROUP BY DATE(date);
 END$$
 
@@ -66,7 +63,6 @@ BEGIN
 	SELECT SUM(quantity) as day_quantity, DATE(date) AS day
 	FROM apirest_sale
 	WHERE date BETWEEN start_date AND end_date
-	AND is_active = 1
 	GROUP BY DATE(date);
 END$$
 

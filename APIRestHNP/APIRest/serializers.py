@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 class SalesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale
-        fields = ['sale_id', 'user_id', 'amount', 'quantity', 'date']
+        fields = ['id', 'user_id', 'amount', 'quantity', 'date']
         read_only_fields = ('date',)  
         
 
