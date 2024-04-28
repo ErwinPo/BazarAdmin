@@ -16,6 +16,8 @@ import { useMediaQuery } from 'react-responsive';
 import ModalDeleteSelected from './ModalDeleteSelected';
 import ModalDelete from './ModalDelete';
 import ModalEdit from './ModalEdit';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RecordsView = () => {      
     const dummySales = [
@@ -66,12 +68,12 @@ const RecordsView = () => {
     });
 
     useEffect(() => {
-        fetch("http://18.222.68.166:8000/BAZARAPI/ventas", {
+        fetch("http://18.222.68.166:8000/bazar/sales//", {
             method: "GET"
         })
         .then((response) => response.json())
         .then(data => {
-            setState({ ...state, sales: data.registros });
+            setState({ ...state, sales: data ?? [] });
         })
         .catch((error) => {console.log(error)
             setState({ ...state, sales: dummySales });});
@@ -157,41 +159,52 @@ const RecordsView = () => {
 
     const deleteSale = (id) => {
         console.log(id)
-        fetch(`http://18.222.68.166:8000/BAZARAPI/eliminarventa/${id}`, {
+        fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
             method: "DELETE"
         })
         .then(response => {
-            if (!state.ModalDeleteSelected) {
+            if (response.ok) {
                 const updatedSales = state.sales.filter(sale => sale.sale_id !== id);
+                console.log(updatedSales)
                 setState({ ...state, sales: updatedSales, deleteModalOpen: false});
+                toast.success("Venta seleccionada eliminada con éxito.");
+            }
+            else {
+                console.error(response)
+                toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+                setState({ ...state, deleteModalOpen: false});
             }
         })
         .catch(error => {
             console.error("Error deleting sale:", error);
-            // Optionally, you can set an error state here to handle it in your UI
+            toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
         });
     };    
 
     const editSale = (amount, id, quantity) => {
         console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
-        fetch(`http://18.222.68.166:8000/BAZARAPI/actualizarventa/${id}`, {
+        fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ amount, quantity })
+            body: JSON.stringify({ 'amount': amount, 'quantity': quantity })
         })
         .then(response => {
             console.log(id)
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
+            if (response.ok) {
+                toast.success("Venta seleccionada editada con éxito.");
+                setState({ ...state, editModalOpen: false });
             }
-            
-            setState({ ...state, editModalOpen: !state.editModalOpen });
+            else {
+                console.error(response)
+                toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+                setState({ ...state, editModalOpen: false });
+            }
         })
         .catch(error => {
             console.error("Error updating sale:", error);
-            // Optionally, you can set an error state here to handle it in your UI
+            toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
         });
     };    
 
@@ -205,6 +218,7 @@ const RecordsView = () => {
 
     return (
         <div className="salesLog">
+            <ToastContainer position="top-center" autoClose={3000} />
             <Navbar />
             <div className={classes.salesLog}>
                 <Row className={classes.filters}>
@@ -255,7 +269,7 @@ const RecordsView = () => {
                     setCurrentSaleEdit={setCurrentSaleEdit}
                     toggleEditModal={toggleEditModal}
                 />
-                <ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} />
+                <ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} setCurrentSaleEdit={setCurrentSaleEdit} />
                 <ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
                 <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>

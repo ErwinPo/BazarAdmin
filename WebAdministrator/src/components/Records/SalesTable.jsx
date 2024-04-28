@@ -58,8 +58,8 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                 </thead>
                 <tbody>
                     {sales.length > 0 ? (
-                        paginatedData.map((sale, saleIndex) => (
-                            <tr key={saleIndex}>
+                        paginatedData.map((sale, sale_index) => (
+                            <tr key={sale_index}>
                                 <td>
                                     <Form.Check 
                                         className={classes.checkBox} 
@@ -91,7 +91,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                         onClick={
                                             () => {
                                                 toggleEditModal();
-                                                setCurrentSaleEdit(sale)
+                                                setCurrentSaleEdit({ ...sale, sale_index })
                                             }
                                         }>
                                             <Image className={classes.image} src={iconPencil} />
