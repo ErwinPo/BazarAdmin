@@ -219,7 +219,7 @@ const RecordsView = () => {
     const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1300 });
 
     return (
-        <div className="salesLog">
+        <>
             <Navbar />
             <div className={classes.salesLog}>
                 <Row className={classes.filters}>
@@ -275,7 +275,7 @@ const RecordsView = () => {
                 <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>
             <ToastContainer position="top-center" autoClose={3000} />
-        </div>
+        </>
     );
 };
 

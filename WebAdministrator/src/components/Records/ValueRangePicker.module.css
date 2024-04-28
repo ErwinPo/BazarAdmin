@@ -9,7 +9,8 @@
   }
 
   .row {
-    gap: 12px;
+    margin-top: 18px;
+    gap: 4px;
 }
 
 .input {
