@@ -15,6 +15,7 @@ class SalesSerializer(serializers.ModelSerializer):
         read_only_fields = ('date',)  
         
 
+
 class DayAmountSalesSerializer(serializers.Serializer):
     day = serializers.DateField()
     day_amount = serializers.FloatField()

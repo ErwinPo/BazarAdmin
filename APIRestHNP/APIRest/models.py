@@ -16,7 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         
 class Sale(models.Model):
     #insertar campos
-    sale_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, default=None, on_delete=models.CASCADE) 
     amount = models.FloatField(default=0)
     quantity = models.IntegerField(default=0)

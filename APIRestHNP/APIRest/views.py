@@ -1,7 +1,9 @@
 import pdb
+import json
 from .utils import *
 from .models import *
 from .serializers import *
+from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import permissions, viewsets, views, status
 from django.contrib.auth.hashers import make_password
@@ -21,17 +23,62 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.validated_data['password'] = make_password(password)
 
         # Guardar el usuario con la contraseña hasheada
-        serializer.save()
-    
+        serializer.save()    
     
 class SalesViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = SalesSerializer
+    
+
+# ============= Delete Many Users =================
+class DeleteManyUsersView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    def delete(self, request):
+        date = json.loads(request.body)
+        users = date.get('users', [])
+        
+        try:
+            with transaction.atomic():
+                deleted_count, _ = User.objects.filter(id__in=users).delete()  
+        except Exception as e:
+            transaction.rollback()
+            return Response({"message": f"Hubo un error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if deleted_count > 0:
+            transaction.commit()
+            return Response({"message": f"{deleted_count} usuario(s) eliminado(s) correctamente"}, status=status.HTTP_200_OK)
+        else:
+            transaction.rollback()
+            return Response({"message": "No se encontraron usuarios para eliminar"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+# ============= Delete Many Sales =================
+class DeleteManySalesView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    def delete(self, request):
+        date = json.loads(request.body)
+        sales = date.get('sales', [])
+        
+        try:
+            with transaction.atomic():
+                deleted_count, _ = Sale.objects.filter(id__in=sales).delete()  
+        except Exception as e:
+            transaction.rollback()
+            return Response({"message": f"Hubo un error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        if deleted_count > 0:
+            transaction.commit()
+            return Response({"message": f"{deleted_count} venta(s) eliminada(s) correctamente"}, status=status.HTTP_200_OK)
+        else:
+            transaction.rollback()
+            return Response({"message": "No se encontraron ventas para eliminar"}, status=status.HTTP_404_NOT_FOUND)
  
 # ============= Sales Per User ====================
     
-class SalesPerUser(views.APIView):
+class SalesPerUserView(views.APIView):
     permission_classes = [permissions.AllowAny]
         
     def get(self, request):
@@ -43,7 +90,7 @@ class SalesPerUser(views.APIView):
     
 # ============= Ranking =========================
 
-class Ranking(views.APIView):
+class RankingView(views.APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self,request):

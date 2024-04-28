@@ -15,8 +15,10 @@ urlpatterns = [
     path("sales-date-range-quantity/", SalesDateRangeQuantityView.as_view(), name="SalesDataRangeQuantity"),
     path("sales-date-range-amount-seller/", SalesDateRangeSellerAmountView.as_view(), name="SalesDataRangeAmountSeller"),
     path("sales-date-range-quantity-seller/", SalesDateRangeSellerQuantityView.as_view(), name="SalesDataRangeQuantitySeller"),
-    path("ranking/", Ranking.as_view(), name='Ranking'),
-    path("sales-per-user/", SalesPerUser.as_view(), name="SalesPerUser")
+    path("ranking/", RankingView.as_view(), name='Ranking'),
+    path("sales-per-user/", SalesPerUserView.as_view(), name="SalesPerUser"),
+    path("delete-users/", DeleteManyUsersView.as_view(), name="DeleteManyUsers"),
+    path("delete-sales/", DeleteManySalesView.as_view(), name="DeleteManySales"),
 ]
 
 
