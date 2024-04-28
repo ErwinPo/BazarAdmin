@@ -142,8 +142,8 @@ const RecordsView = () => {
         setState({ ...state, editModalOpen: !state.editModalOpen });
     };
 
-    const handleEdit = (amount, id, quantity) => {
-        editSale(amount, id, quantity);
+    const handleEdit = (amount, id, quantity, sale_index) => {
+        editSale(amount, id, quantity, sale_index);
     };
 
     const toggleDeleteSelectedModal = () => {
@@ -166,7 +166,6 @@ const RecordsView = () => {
         .then(response => {
             if (response.ok) {
                 const updatedSales = state.sales.filter(sale => sale.sale_id !== id);
-                console.log(updatedSales)
                 setState({ ...state, sales: updatedSales, deleteModalOpen: false });
                 toast.success("Venta seleccionada eliminada con éxito.");
             }
@@ -182,7 +181,7 @@ const RecordsView = () => {
         });
     };      
 
-    const editSale = (amount, id, quantity) => {
+    const editSale = (amount, id, quantity, sale_index) => {
         // console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
         fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
             method: "PUT",
@@ -192,9 +191,12 @@ const RecordsView = () => {
             body: JSON.stringify({ 'amount': amount, 'quantity': quantity })
         })
         .then(response => {
-            console.log(id)
             if (response.ok) {
-                setState({ ...state, editModalOpen: false }, toast.success("Venta seleccionada editada con éxito."));
+                console.log(sale_index)
+                const updatedSales = [...state.sales];
+                updatedSales[sale_index] = { ...updatedSales[sale_index], amount, quantity };
+                setState({ ...state, sales: updatedSales, editModalOpen: false });
+                toast.success("Venta seleccionada editada con éxito.");
             }
             else {
                 console.error(response)
