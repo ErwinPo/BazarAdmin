@@ -274,7 +274,7 @@ const RecordsView = () => {
                 <ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
                 <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>
-            <ToastContainer position="top-center" autoClose={3000} />
+            <ToastContainer position="top-center" autoClose={5000} />
         </>
     );
 };
