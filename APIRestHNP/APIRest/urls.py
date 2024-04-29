@@ -19,7 +19,9 @@ urlpatterns = [
     path("sales-per-user/", SalesPerUserView.as_view(), name="SalesPerUser"),
     path("delete-users/", DeleteManyUsersView.as_view(), name="DeleteManyUsers"),
     path("delete-sales/", DeleteManySalesView.as_view(), name="DeleteManySales"),
-    path("password-reset/", PasswordRestView.as_view(), name="PasswordReset")
+    path("password-reset/", PasswordRestView.as_view(), name="PasswordReset"),
+    path("registroventa/", registroventa, name="registroventa"),
+    path("ventas/", ventas, name="ventas"),
 ]
 
 

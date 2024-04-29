@@ -4,6 +4,7 @@ from .utils import *
 from .models import *
 from .serializers import *
 from .permissions import *
+from django.http import JsonResponse
 from django.db import transaction
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
@@ -13,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, viewsets, views, status
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.views.decorators.csrf import csrf_exempt
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -222,4 +224,46 @@ class SalesDateRangeSellerAmountView(views.APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+@csrf_exempt
+def ventas(request):
+    # Initialize response
+    response = {}
+
+    # Check if the request method is POST
+    if request.method != "GET":
+        response = {"message": "Operacion no valida"}
+        return JsonResponse(response, status=405, content_type="application/json")  # Method Not Allowed
+
+
+    # Get all data of venta table
+    registros = Sale.objects.all()
+    # Convertir objetos de modelo a diccionarios
+    registros_dict = [registro.as_dict() for registro in registros]
+
+    # Assuming you want to return the parsed JSON data
+    response = { "message": "Consulta Exitosa" , "registros": registros_dict}
+    return JsonResponse(response, status=200, content_type="application/json")
+
+@csrf_exempt
+def registroventa(request):
+    # Initialize response
+    response = {}
+
+    # Check if the request method is POST
+    if request.method != "POST":
+        response = {"message": "Operacion no valida"}
+        return JsonResponse(response, status=405)  # Method Not Allowed
+
+    # Get the request body
+    try:
+        info = json.loads(request.body)
+    except json.JSONDecodeError:
+        response = {"message": "Error de formato en los datos"}
+        return JsonResponse(response, status=400)  # Bad Request
+
+    registro = Sale.objects.create(user_id_id = int(info["user_id"]) ,amount = int(info["amount"]),quantity = int(info["quantity"]))
+
+    # Assuming you want to return the parsed JSON data
+    response = {"message": "Registro exitoso"}
+    return JsonResponse(response, status=200, content_type="application/json")
