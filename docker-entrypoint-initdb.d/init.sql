@@ -80,7 +80,7 @@ CREATE PROCEDURE Ranking()
 BEGIN
 
 	SELECT user_id_id AS user, SUM(amount) as amount 
-	FROM `apirest_sale` 
+	FROM apirest_sale 
 	WHERE date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
 	GROUP BY user_id_id; 
 
