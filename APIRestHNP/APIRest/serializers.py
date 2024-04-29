@@ -14,7 +14,8 @@ class SalesSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_id', 'amount', 'quantity', 'date']
         read_only_fields = ('date',)  
         
-
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
 
 class DayAmountSalesSerializer(serializers.Serializer):
     day = serializers.DateField()

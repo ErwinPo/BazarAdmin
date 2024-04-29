@@ -5,6 +5,10 @@ from .models import *
 from .serializers import *
 from .permissions import *
 from django.db import transaction
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework import permissions, viewsets, views, status
 from django.contrib.auth.hashers import make_password
@@ -38,16 +42,43 @@ class UserViewSet(viewsets.ModelViewSet):
     
 class SalesViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
     serializer_class = SalesSerializer
     
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user)
-    
+        
 
+class PasswordRestView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+    def post(self, request):    
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            try:
+                user = User.objects.get(email=email)
+            except Exception as e:
+                return Response({"error": f"Hubo un error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            reset_link = f"http://example.com/reset-password/{uid}/{token}/"
+            send_mail(
+                'Password Rest',
+                f'Please click the following link to reset your password: {reset_link}',
+                'from@example.com',
+                [email],
+                fail_silently=False
+            )
+            
+            return Response({"success":"Password reset email sent"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
 # ============= Delete Many Users =================
 class DeleteManyUsersView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -70,7 +101,7 @@ class DeleteManyUsersView(views.APIView):
 
 # ============= Delete Many Sales =================
 class DeleteManySalesView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -93,7 +124,7 @@ class DeleteManySalesView(views.APIView):
 # ============= Sales Per User ====================
     
 class SalesPerUserView(views.APIView):
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
         
     def get(self, request):
         query_id = self.request.query_params.get('id')
@@ -105,7 +136,7 @@ class SalesPerUserView(views.APIView):
 # ============= Ranking =========================
 
 class RankingView(views.APIView):
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self,request):
         print(request.user.id)
@@ -129,7 +160,7 @@ class RankingView(views.APIView):
 # ==========  With Date (Start - End) =================        
     
 class SalesDateRangeQuantityView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -144,7 +175,7 @@ class SalesDateRangeQuantityView(views.APIView):
     
     
 class SalesDateRangeAmountView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -161,7 +192,7 @@ class SalesDateRangeAmountView(views.APIView):
 # ==========  With Date (Start - End) & Seller ID =================
     
 class SalesDateRangeSellerQuantityView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         query_id = self.request.query_params.get('id')
@@ -177,7 +208,7 @@ class SalesDateRangeSellerQuantityView(views.APIView):
     
     
 class SalesDateRangeSellerAmountView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         print(request.user.id)
@@ -191,3 +222,4 @@ class SalesDateRangeSellerAmountView(views.APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
