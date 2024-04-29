@@ -1,0 +1,32 @@
+
+.row{
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.col{
+    margin: auto;
+}
+
+.card{
+    border-color: #3F497F;
+    background-color: #E9E9E9;
+    font-weight: 700
+}
+
+.text{
+    font-weight: bold;
+    color: #009641;
+    padding-top: 3rem;
+}
+
+
+.stack{
+   
+    align-items: right;
+    float: right;
+    margin-right: 0px;
+    margin-left: auto;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}

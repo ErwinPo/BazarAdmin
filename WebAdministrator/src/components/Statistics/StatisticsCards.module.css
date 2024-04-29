@@ -4,12 +4,12 @@
     border-color: #3F497F;
     background-color: #E9E9E9;
     font-weight: 700;
-    
-    
 }
 
 .col{
     margin:auto;
+    justify-content: space-between;
+    display: flex;
 }
 
 .title{
