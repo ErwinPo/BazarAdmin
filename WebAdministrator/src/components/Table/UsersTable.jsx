@@ -15,31 +15,8 @@ import iconTrash from '../../assets/images/icon_trash.png';
 
 const UsersTable = () => {
 
-  const users = [
-    { id: 1, username: "GisselAdmin", email: "gissel@gmail.com", password: "Hola1234", is_superuser: true },
-    { id: 2, username: "Lety77", email: "lety@gmail.com", password: "contrasena123", is_superuser: false },
-    { id: 3, username: "IsraHdez58", email: "israel@gmail.com", password: "abc12345", is_superuser: false },
-    { id: 4, username: "JossGC", email: "josafat@gmail.com", password: "a12345678", is_superuser: false },
-    { id: 5, username: "RaulDiaz", email: "raul@gmail.com", password: "a12345678", is_superuser: false },
-  ];
-
-  /*const [ussers, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch("http://18.222.68.166:8000/BAZARAPI/usuarios/", {
-        method: "GET"
-    })
-    .then((response) => response.json())
-    .then(data => {
-        setUsers(data.registros);
-        console.log(data.registros)
-    })
-    .catch((error) => console.log(error));
-  }, []);*/
-
-
+  const [users, setUsers] = useState([]);
   const [state, setState] = useState({
-    users: users,
     selectedUserIds: [],
     isAnyUserSelected: false,
     form: {
@@ -56,6 +33,27 @@ const UsersTable = () => {
     errorModal: false,
   });
 
+
+  useEffect(() => {
+    fetch("http://18.222.68.166:8000/bazar/users//", {
+      method: "GET"
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al cargar los datos del servidor');
+      }
+      return response.json();
+    })
+    .then(data => {
+      setUsers(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      toast.error("Error al cargar los datos del servidor");
+    });
+  }, []);
+
+
   const handleChange = e => {
     const { name, value } = e.target;
     const newValue = name === 'is_superuser' ? (value === 'Administrador') : value;
@@ -67,6 +65,7 @@ const UsersTable = () => {
       },
     });
   };
+
 
   const handleUsernameChange = (e) => {
     if (e.keyCode === 32) {
@@ -82,6 +81,7 @@ const UsersTable = () => {
     }
   };
 
+
   const handleMailChange = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -96,6 +96,7 @@ const UsersTable = () => {
     }
   };
   
+
   const handlePasswordChange = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -109,6 +110,7 @@ const UsersTable = () => {
       });
     }
   };
+
 
   const handleCheckboxChange = (userId) => {
     setState((prevState) => {
@@ -130,21 +132,25 @@ const UsersTable = () => {
     setState({ ...state, insertModal: true });
   };
 
+
   const hideModalInsert = () => {
     setState({ ...state, insertModal: false });
   };
+
 
   const showModalEdit = (user) => {
     setState({ ...state, editModal: true, form: user});
   };
 
+
   const hideModalEdit = () => {
     setState({ ...state, editModal: false });
   };
 
+
   const showModalDelete = (user) => {
     const isAdminUser = user.is_superuser;
-    const adminCount = state.users.filter(u => u.is_superuser).length;
+    const adminCount = users.filter(u => u.is_superuser).length;
     if (isAdminUser && adminCount === 1) {
       setState({ ...state, errorModal: true, form: user });
     } else {
@@ -152,30 +158,35 @@ const UsersTable = () => {
     }
   };
   
+
   const hideModalDelete = () => {
     setState({ ...state, deleteModal: false });
   };
+
 
   const showModalDeleteS = () => {
     setState({ ...state, deletesModal: true });
   };
 
+
   const hideModalDeleteS = () => {
     setState({ ...state, deletesModal: false });
   };
+
 
   const hideModalError = () => {
     setState({ ...state, errorModal: false });
   }
 
+
   const validateForm = () => {
-    const { id, username,email, password, is_superuser } = state.form;
+    const { id, username, email, password, is_superuser } = state.form;
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const lowercaseUsername = username.toLowerCase();
     const lowercaseMail = email.toLowerCase();
-    const isUsernameExists = state.users.some(user => user.username.toLowerCase() === lowercaseUsername && user.id !== id);
-    const isEmailExists = state.users.some(user => user.email.toLowerCase() === lowercaseMail && user.id !== id);
+    const isUsernameExists = users.some(user => user.id !== id && user.username.toLowerCase() === lowercaseUsername);
+    const isEmailExists = users.some(user => user.id !== id && user.email.toLowerCase() === lowercaseMail);
     if (!username || !email || !password || is_superuser === '') {
       toast.error("Por favor, complete todos los campos.");
       return false;
@@ -188,97 +199,142 @@ const UsersTable = () => {
     } else if (isEmailExists) {
       toast.error("El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.");
       return false;
-    } else if (!passwordPattern.test(password)) {
+    } /*else if (!passwordPattern.test(password)) {
       toast.error("La contraseña debe tener al menos 8 caracteres y al menos un número.");
       return false;
-    }
+    }*/
     return true;
   };
 
+
   const generateUniqueId = () => {
-    let newId = state.users.length + 1;
-    while (state.users.some(user => user.id === newId)) {
+    let newId = users.length + 1;
+    while (users.some(user => user.id === newId)) {
       newId++;
     }
     return newId;
   };  
+  
 
   const handleCreateUser = () => {
     if (!validateForm()) {
       return;
     }
-    const { username, email, password, is_superuser } = state.form;
+    const { id, username, email, password, is_superuser } = state.form;
     const newUser = {
-      id: generateUniqueId(),
+      id: id,
       username: username,
       email: email,
       password: password,
       is_superuser: is_superuser
     };
-    const updatedUsers = [...state.users, newUser];
-    setState({
-      ...state,
-      users: updatedUsers,
-      insertModal: false,
-      form: {
-        id: '',
-        username: '',
-        email: '',
-        password: '',
-        is_superuser: ''
+    fetch("http://18.222.68.166:8000/bazar/users//", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newUser)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al crear el usuario');
       }
+      return response.json();
+    })
+    .then(data => {
+      setUsers([...users, data]); // Agregar el nuevo usuario a la lista de usuarios
+      setState({ ...state, insertModal: false }); // Cerrar el modal de creación de usuario
+      toast.success("Usuario creado con éxito.");
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      toast.error("Error al crear el usuario");
     });
-    toast.success("Usuario creado con éxito.");
   };
+  
 
   const handleSaveUser = () => {
     if (!validateForm()) {
       return;
     }
     const { id, username, email, password, is_superuser } = state.form;
-    const editedUserIndex = state.users.findIndex(user => user.id === id);
-    const editedUser = state.users[editedUserIndex];
-    const adminCount = state.users.filter(user => user.is_superuser).length;
+    const editedUserIndex = users.findIndex(user => user.id === id);
+    const editedUser = users[editedUserIndex];
+    const adminCount = users.filter(user => user.is_superuser).length;
     if (editedUser.is_superuser && !is_superuser && adminCount === 1) {
       toast.error("No se puede cambiar el tipo de usuario ya que solo hay un administrador en el sistema.");
       return;
     }
-    const updatedUsers = [
-      ...state.users.slice(0, editedUserIndex),
-      { ...editedUser, username, email, password, is_superuser },
-      ...state.users.slice(editedUserIndex + 1)
-    ];
-    setState({
-      ...state,
-      users: updatedUsers,
-      editModal: false,
-      form: {
-        id: '',
-        username: '',
-        email: '',
-        password: '',
-        is_superuser: ''
+    const updatedUser = {
+      ...editedUser,
+      username: username,
+      email: email,
+      password: password,
+      is_superuser: is_superuser
+    };
+    fetch(`http://18.222.68.166:8000/bazar/users//${id}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(updatedUser)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al actualizar el usuario');
       }
+      return response.json();
+    })
+    .then(data => {
+      const updatedUsers = [
+        ...users.slice(0, editedUserIndex),
+        data,
+        ...users.slice(editedUserIndex + 1)
+      ];
+      setUsers(updatedUsers);
+      setState({
+        ...state,
+        editModal: false,
+        form: {
+          id: '',
+          username: '',
+          email: '',
+          password: '',
+          is_superuser: ''
+        }
+      });
+      toast.success("Usuario editado con éxito.");
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      toast.error("Error al editar el usuario");
     });
-    toast.success("Usuario editado con éxito.");
   };
   
+
   const handleDeleteUser = () => {
-    const updatedUsers = state.users.filter(user => user.id !== state.form.id);
-    setState({
-      ...state,
-      users: updatedUsers,
-      deleteModal: false,
-      form: {
-        id: '',
-        username: '',
-        email: '',
-        password: '',
-        is_superuser: ''
-      }
-    });
-    toast.success("Usuario eliminado con éxito.");
+    const { id } = state.form;
+    fetch(`http://18.222.68.166:8000/bazar/users//${id}/`, {
+      method: "DELETE"
+    })
+    .then(() => {
+      setState({
+        ...state,
+        deleteModal: false,
+        form: {
+          id: '',
+          username: '',
+          email: '',
+          password: '',
+          is_superuser: ''
+        }
+      });
+      toast.success("Usuario eliminado con éxito.");
+      const updatedUsers = users.filter(user => user.id !== id);
+      setUsers(updatedUsers);
+    })
   };
+  
 
   const handleDeleteSelectedUsers = () => {
     const selectedAdminUsers = state.users.filter((user) =>
@@ -304,6 +360,7 @@ const UsersTable = () => {
     }
   };  
 
+
   return (
     <>
       <ToastContainer position="top-center" autoClose={3000} />
@@ -325,29 +382,36 @@ const UsersTable = () => {
             </tr>
           </thead>
           <tbody>
-            {state.users.map((user) => (
-              <tr key={user.id}>
-                <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} /></td>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{'•'.repeat(user.password.length)}</td>
-                <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
-                <td>
-                  <ButtonGroup className={classes.buttons}>
-                    <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
-                      <Image className={classes.image} src={iconPencil} />
-                    </Button>
-                    <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
-                      <Image className={classes.image} src={iconTrash} />
-                    </Button>
-                  </ButtonGroup>
-                </td>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user.id}>
+                  <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} /></td>
+                  <td>{user.id}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{'•'.repeat(user.password.length)}</td>
+                  <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
+                  <td>
+                    <ButtonGroup className={classes.buttons}>
+                      <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
+                        <Image className={classes.image} src={iconPencil} />
+                      </Button>
+                      <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
+                        <Image className={classes.image} src={iconTrash} />
+                      </Button>
+                    </ButtonGroup>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr className={classes.emptyState}>
+                <td colSpan='7'>No hay usuarios registrados hasta el momento</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </Table>
       </div>
+
 
       <Modal isOpen={state.insertModal}>
         <ModalHeader className={classes.modal_header}>
@@ -388,6 +452,7 @@ const UsersTable = () => {
         </ModalFooter>
       </Modal>
 
+
       <Modal isOpen={state.editModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -427,6 +492,7 @@ const UsersTable = () => {
         </ModalFooter>
       </Modal>
 
+
       <Modal isOpen={state.deleteModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -444,6 +510,7 @@ const UsersTable = () => {
         </ModalFooter>
       </Modal>
 
+
       <Modal isOpen={state.deletesModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -460,6 +527,7 @@ const UsersTable = () => {
           <Btn color='danger' onClick={hideModalDeleteS}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
+
 
       <Modal isOpen={state.errorModal}>
         <ModalHeader className={classes.modal_header}>

@@ -54,7 +54,7 @@ const Registros = () => {
     
 
     useEffect(() => {
-        fetch("http://localhost:8000/BAZARAPI/ventas", {
+        fetch("http://18.222.68.166:8000/BAZARAPI/ventas", {
             method: "GET"
         })
         .then((response) => response.json())
