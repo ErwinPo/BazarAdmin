@@ -26,8 +26,8 @@ const Estadisticas = () => {
 			</Row>
 
 			<Row >
-				<StatisticsCards title="Ingresos" data="$400"></StatisticsCards>			
-				<StatisticsCards title="Ventas Totales" data="7"></StatisticsCards>
+				<StatisticsCards title="Ingresos" data="$400000" increasePercentage="10%"></StatisticsCards>			
+				<StatisticsCards title="Ventas Totales" data="7" increasePercentage="22%"></StatisticsCards>
 				<StatisticsCards title="Mejor Vendedor" data="Fer Garcia"></StatisticsCards>
 			</Row>
 			
