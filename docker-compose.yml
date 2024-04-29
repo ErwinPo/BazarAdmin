@@ -3,7 +3,6 @@ services:
   db:
     image: mysql:latest
     volumes:
-      - ./mysql_data:/var/lib/mysql
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
@@ -12,7 +11,7 @@ services:
 
   api:
     image: josafat/api-rest
-    command: sh -c "ls && ./wait-db.sh db python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python3 manage.py createsuperuser --no-input && sleep 5 && python3 manage.py runserver 0.0.0.0:8000"
+    command: sh -c "ls && ./wait-db.sh db python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python3 manage.py runserver 0.0.0.0:8000"
     env_file:
       - env_vars.env
     volumes:
