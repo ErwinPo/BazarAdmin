@@ -30,7 +30,8 @@ const UsersTable = () => {
     editModal: false,
     deleteModal: false,
     deletesModal: false,
-    errorModal: false,
+    errorModal1: false,
+    errorModal2: false,
   });
 
 
@@ -152,7 +153,7 @@ const UsersTable = () => {
     const isAdminUser = user.is_superuser;
     const adminCount = users.filter(u => u.is_superuser).length;
     if (isAdminUser && adminCount === 1) {
-      setState({ ...state, errorModal: true, form: user });
+      setState({ ...state, errorModal1: true, form: user });
     } else {
       setState({ ...state, deleteModal: true, form: user });
     }
@@ -174,8 +175,12 @@ const UsersTable = () => {
   };
 
 
-  const hideModalError = () => {
-    setState({ ...state, errorModal: false });
+  const hideModalError1 = () => {
+    setState({ ...state, errorModal1: false });
+  }
+
+  const hideModalError2 = () => {
+    setState({ ...state, errorModal2: false });
   }
 
 
@@ -220,9 +225,8 @@ const UsersTable = () => {
     if (!validateForm()) {
       return;
     }
-    const { id, username, email, password, is_superuser } = state.form;
+    const { username, email, password, is_superuser } = state.form;
     const newUser = {
-      id: id,
       username: username,
       email: email,
       password: password,
@@ -334,33 +338,48 @@ const UsersTable = () => {
       setUsers(updatedUsers);
     })
   };
-  
+
 
   const handleDeleteSelectedUsers = () => {
-    const selectedAdminUsers = state.users.filter((user) =>
+    const selectedAdminUsers = users.filter((user) =>
       state.selectedUserIds.includes(user.id) && user.is_superuser
     );
-    const totalAdminUsers = state.users.filter((user) => user.is_superuser).length;
+    const totalAdminUsers = users.filter((user) => user.is_superuser).length;
     if (selectedAdminUsers.length === totalAdminUsers) {
       setState({
         ...state,
         deletesModal: false,
-        errorModal: true,
+        errorModal2: true,
       });
     } else {
-      const updatedUsers = state.users.filter((user) => !state.selectedUserIds.includes(user.id));
-      setState({
-        ...state,
-        users: updatedUsers,
-        selectedUserIds: [],
-        deletesModal: false,
-        isAnyUserSelected: false,
-      });
-      toast.success("Usuarios seleccionados eliminados con éxito.");
+      const deletedUserIds = state.selectedUserIds;
+      fetch("http://18.222.68.166:8000/bazar/users//", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userIds: deletedUserIds }),
+      })
+        .then(() => {
+          toast.success("Usuarios seleccionados eliminados con éxito.");
+          const updatedUsers = users.filter((user) => !deletedUserIds.includes(user.id));
+          setUsers(updatedUsers);
+          setState({
+            ...state,
+            deletesModal: false,
+            selectedUserIds: [],
+            isAnyUserSelected: false,
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          toast.error("Error al eliminar los usuarios seleccionados");
+        });
     }
-  };  
-
-
+  };
+  
+  
+  
   return (
     <>
       <ToastContainer position="top-center" autoClose={3000} />
@@ -385,7 +404,7 @@ const UsersTable = () => {
             {users.length > 0 ? (
               users.map((user) => (
                 <tr key={user.id}>
-                  <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} /></td>
+                  <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} checked={state.selectedUserIds.includes(user.id)} /></td>
                   <td>{user.id}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
@@ -421,10 +440,6 @@ const UsersTable = () => {
         </ModalHeader>
         <ModalBody>
           {state.errorMessage && <div className={classes.error_message}>{state.errorMessage}</div>}
-          <FormGroup>
-            <label>Id:</label>
-            <input className='form-control' readOnly type='text' value={generateUniqueId()} />
-          </FormGroup>
           <FormGroup>
             <label>Nombre de Usuario:</label>
             <input className='form-control' name='username' type='text' onChange={handleChange} onKeyDown={handleUsernameChange} />
@@ -529,7 +544,7 @@ const UsersTable = () => {
       </Modal>
 
 
-      <Modal isOpen={state.errorModal}>
+      <Modal isOpen={state.errorModal1}>
         <ModalHeader className={classes.modal_header}>
           <div>
             <h3>Error</h3>
@@ -541,7 +556,23 @@ const UsersTable = () => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={hideModalError}>Aceptar</Btn>
+          <Btn color='success' onClick={hideModalError1}>Aceptar</Btn>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={state.errorModal2}>
+        <ModalHeader className={classes.modal_header}>
+          <div>
+            <h3>Error</h3>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label>No es posible eliminar estos usuarios ya que uno de los usuarios que deseas eliminar es el único administrador del sistema</label>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Btn color='success' onClick={hideModalError2}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
 
