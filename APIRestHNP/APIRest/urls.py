@@ -20,6 +20,7 @@ urlpatterns = [
     path("delete-users/", DeleteManyUsersView.as_view(), name="DeleteManyUsers"),
     path("delete-sales/", DeleteManySalesView.as_view(), name="DeleteManySales"),
     path("password-reset/", PasswordRestView.as_view(), name="PasswordReset"),
+    path("is-superuser/", IsSuperuserView.as_view(), name="IsSuperuser"),
     path("registroventa/", registroventa, name="registroventa"),
     path("ventas/", ventas, name="ventas"),
 ]

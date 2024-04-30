@@ -150,7 +150,13 @@ class RankingView(views.APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+# =========== IsSuperuser =====================
+
+class IsSuperuserView(views.APIView):
+    permission_classes = [permissions.AllowAny]
     
+    def get(self, request):
+        return Response({"is_superuser":request.user.is_superuser}, status=status.HTTP_200_OK)    
     
 # =====================================================
 # ======== Estatistics Requests Views =================
