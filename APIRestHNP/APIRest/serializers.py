@@ -17,13 +17,13 @@ class SalesSerializer(serializers.ModelSerializer):
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
-class DayAmountSalesSerializer(serializers.Serializer):
-    day = serializers.DateField()
-    day_amount = serializers.FloatField()
+class IntervalAmountSalesSerializer(serializers.Serializer):
+    interval_time = serializers.DateField()
+    total_amount = serializers.FloatField()
     
-class DayQuantitySalesSerializer(serializers.Serializer):
-    day = serializers.DateField()
-    day_quantity = serializers.IntegerField()
+class IntervalQuantitySalesSerializer(serializers.Serializer):
+    interval_time = serializers.DateField()
+    total_quantity = serializers.IntegerField()
     
 class RankingSerializer(serializers.Serializer):
     user = serializers.CharField()

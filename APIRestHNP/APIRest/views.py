@@ -173,9 +173,10 @@ class SalesDateRangeQuantityView(views.APIView):
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')
-        queryset = callSalesDateRangeQuantity(query_start_date, query_end_date)
-        data = [{"day": item[1], "day_quantity": float(item[0])} for item in queryset]
-        serializer = DayQuantitySalesSerializer(data=data, many=True)
+        query_temporality = self.request.query_params.get('temporality')
+        queryset = callSalesDateRangeQuantity(query_start_date, query_end_date, query_temporality)
+        data = [{"interval_time": str(item[0]), "total_quantity": item[1]} for item in queryset]
+        serializer = IntervalQuantitySalesSerializer(data=data, many=True)
         if serializer.is_valid():
             return Response(serializer.data)
         else:
@@ -188,9 +189,10 @@ class SalesDateRangeAmountView(views.APIView):
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')
-        queryset = callSalesDateRangeAmount(query_start_date, query_end_date)
-        data = [{"day": item[1], "day_amount": float(item[0])} for item in queryset]
-        serializer = DayAmountSalesSerializer(data=data, many=True)
+        query_temporality = self.request.query_params.get('temporality')
+        queryset = callSalesDateRangeAmount(query_start_date, query_end_date,query_temporality)
+        data = [{"interval_time": str(item[0]), "total_amount": item[1]} for item in queryset]
+        serializer = IntervalAmountSalesSerializer(data=data, many=True)
         if serializer.is_valid():
             return Response(serializer.data)
         else:
@@ -206,9 +208,10 @@ class SalesDateRangeSellerQuantityView(views.APIView):
         query_id = self.request.query_params.get('id')
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')
-        queryset = callSalesDateRangeSellerQuantity(query_start_date, query_end_date, query_id)
-        data = [{"day": item[1], "day_quantity": float(item[0])} for item in queryset]
-        serializer = DayQuantitySalesSerializer(data=data, many=True)
+        query_temporality = self.request.query_params.get('temporality')
+        queryset = callSalesDateRangeSellerQuantity(query_start_date, query_end_date, query_id, query_temporality)
+        data = [{"interval_time": str(item[0]), "total_quantity": item[1]} for item in queryset]
+        serializer = IntervalQuantitySalesSerializer(data=data, many=True)
         if serializer.is_valid():
             return Response(serializer.data)
         else:
@@ -223,9 +226,10 @@ class SalesDateRangeSellerAmountView(views.APIView):
         query_id = self.request.query_params.get('id')
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')
-        queryset = callSalesDateRangeSellerAmount(query_start_date, query_end_date, query_id)
-        data = [{"day": item[1], "day_amount": float(item[0])} for item in queryset]
-        serializer = DayAmountSalesSerializer(data=data, many=True)
+        query_temporality = self.request.query_params.get('temporality')
+        queryset = callSalesDateRangeSellerAmount(query_start_date, query_end_date, query_id, query_temporality)
+        data = [{"interval_time": str(item[0]), "total_amount": item[1]} for item in queryset]
+        serializer = IntervalAmountSalesSerializer(data=data, many=True)
         if serializer.is_valid():
             return Response(serializer.data)
         else:

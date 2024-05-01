@@ -8,81 +8,42 @@ def callRanking():
             return result
         finally:
             cursor.close()
-            
-def callSalesLastWeekAmount():
+
+
+def callSalesDateRangeAmount(date_start, date_end, temporality):
     with connection.cursor() as cursor:
         try:
-            cursor.callproc('SalesLastWeekAmount')
+            cursor.callproc('SalesDateRangeAmount', [date_start, date_end, temporality])
             result = cursor.fetchall()
             return result
         finally:
             cursor.close()
 
 
-def callSalesLastWeekQuantity():
+def callSalesDateRangeQuantity(date_start, date_end, temporality):
     with connection.cursor() as cursor:
         try:
-            cursor.callproc('SalesLastWeekQuantity')
+            cursor.callproc('SalesDateRangeQuantity', [date_start, date_end, temporality])
             result = cursor.fetchall()
             return result
         finally:
             cursor.close()
 
 
-def callSalesLastWeekAmountSeller(seller):
+def callSalesDateRangeSellerAmount(date_start, date_end, seller, temporality):
     with connection.cursor() as cursor:
-        try: 
-            cursor.callproc('SalesLastWeekAmountSeller', [seller])
+        try:
+            cursor.callproc('SalesDateRangeSellerAmount', [date_start, date_end, seller, temporality])
             result = cursor.fetchall()
             return result
         finally:
             cursor.close()
 
 
-def callSalesLastWeekQuantitySeller(seller):
+def callSalesDateRangeSellerQuantity(date_start, date_end, seller, temporality):
     with connection.cursor() as cursor:
         try:
-            cursor.callproc('SalesLastWeekQuantitySeller', [seller])
-            result = cursor.fetchall()
-            return result
-        finally:
-            cursor.close()
-
-
-def callSalesDateRangeAmount(date_start, date_end):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('SalesDateRangeAmount', [date_start, date_end])
-            result = cursor.fetchall()
-            return result
-        finally:
-            cursor.close()
-
-
-def callSalesDateRangeQuantity(date_start, date_end):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('SalesDateRangeQuantity', [date_start, date_end])
-            result = cursor.fetchall()
-            return result
-        finally:
-            cursor.close()
-
-
-def callSalesDateRangeSellerAmount(date_start, date_end, seller):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('SalesDateRangeSellerAmount', [date_start, date_end, seller])
-            result = cursor.fetchall()
-            return result
-        finally:
-            cursor.close()
-
-
-def callSalesDateRangeSellerQuantity(date_start, date_end, seller):
-    with connection.cursor() as cursor:
-        try:
-            cursor.callproc('SalesDateRangeSellerQuantity', [date_start, date_end, seller])
+            cursor.callproc('SalesDateRangeSellerQuantity', [date_start, date_end, seller, temporality])
             result = cursor.fetchall()
             return result
         finally:
