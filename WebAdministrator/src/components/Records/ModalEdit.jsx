@@ -22,9 +22,9 @@ const ModalEdit = ({ sale, editModalOpen, handleEdit, toggleEditModal, setCurren
         }
     };    
 
-    const handleEditIfValid = (amount, sale_id, quantity, sale_index) => {
+    const handleEditIfValid = (amount, id, quantity, sale_index) => {
         if (amount && quantity && amount > 0 && quantity > 0) {
-            handleEdit(amount, sale_id, quantity, sale_index);
+            handleEdit(amount, id, quantity, sale_index);
         }
         else if (amount <= 0 || quantity <= 0) {
             toast.error("Monto o Cantidad inválidos."); 
@@ -46,7 +46,7 @@ const ModalEdit = ({ sale, editModalOpen, handleEdit, toggleEditModal, setCurren
                 <ModalBody>
                     <FormGroup>
                     <label>Id:</label>
-                    <input className='form-control' readOnly type='text' value={sale.sale_id} />
+                    <input className='form-control' readOnly type='text' value={sale.id} />
                     </FormGroup>
                     <FormGroup>
                     <label>Monto:</label>
@@ -58,7 +58,7 @@ const ModalEdit = ({ sale, editModalOpen, handleEdit, toggleEditModal, setCurren
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Btn color='success' onClick={() => {handleEditIfValid(sale.amount, sale.sale_id, sale.quantity, sale.sale_index)}}>Guardar</Btn>
+                    <Btn color='success' onClick={() => {handleEditIfValid(sale.amount, sale.id, sale.quantity, sale.sale_index)}}>Guardar</Btn>
                     <Btn color='danger' onClick={toggleEditModal}>Cancelar</Btn>
                 </ModalFooter>
             </Modal>

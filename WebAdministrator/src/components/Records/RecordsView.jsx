@@ -15,44 +15,44 @@ import Navbar from "../NavBar/Navbar";
 import SalesTable from "./SalesTable";
 import ValueRangePicker from "./ValueRangePicker";
 import { Button, Col, Image, Row } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const RecordsView = () => {      
     const dummySales = [
-        { sale_id: 1, date: '2024-04-24 1:22:33', amount: 1, quantity: 2, user_id: 'John Doe' },
-        { sale_id: 2, date: '2024-04-04 1:22:33', amount: 1, quantity: 3, user_id: 'Jane Smith' },
-        { sale_id: 3, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { sale_id: 4, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { sale_id: 5, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { sale_id: 6, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { sale_id: 7, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { sale_id: 8, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { sale_id: 9, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { sale_id: 10, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { sale_id: 11, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { sale_id: 12, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { sale_id: 13, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { sale_id: 14, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { sale_id: 15, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { sale_id: 16, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { sale_id: 17, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { sale_id: 18, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { sale_id: 19, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { sale_id: 20, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { sale_id: 21, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { sale_id: 22, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { sale_id: 23, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { sale_id: 24, date: '2024-04-04 1:22:33', amount: 900, quantity: 2, user_id: 'Bob Brown' },
-        { sale_id: 25, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
+        { id: 1, date: '2024-04-24 1:22:33', amount: 1, quantity: 2, user_id: 'John Doe' },
+        { id: 2, date: '2024-04-04 1:22:33', amount: 1, quantity: 3, user_id: 'Jane Smith' },
+        { id: 3, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
+        { id: 4, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
+        { id: 5, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
+        { id: 6, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
+        { id: 7, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
+        { id: 8, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
+        { id: 9, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
+        { id: 10, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
+        { id: 11, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
+        { id: 12, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
+        { id: 13, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
+        { id: 14, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
+        { id: 15, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
+        { id: 16, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
+        { id: 17, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
+        { id: 18, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
+        { id: 19, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
+        { id: 20, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
+        { id: 21, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
+        { id: 22, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
+        { id: 23, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
+        { id: 24, date: '2024-04-04 1:22:33', amount: 900, quantity: 2, user_id: 'Bob Brown' },
+        { id: 25, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
     ];
 
     const lowDate = moment().subtract(6, 'months').toDate();
     const highestAmount = 10000;
 
-    const [currentSaleEdit, setCurrentSaleEdit] = useState({ id_sale: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, user_id: 'John Doe' });
+    const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, user_id: 'John Doe' });
     const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
     const [page, setPage] = useState(1);
     const [state, setState] = useState({
@@ -76,8 +76,7 @@ const RecordsView = () => {
         .then(data => {
             setState({ ...state, sales: data ?? [] });
         })
-        .catch((error) => {console.log(error)
-            setState({ ...state, sales: dummySales });});
+        .catch((error) => {console.log(error);});
     }, []);
 
     const handleStartDateChange = (date) => {
@@ -89,14 +88,14 @@ const RecordsView = () => {
     };
 
     const handleMinValueChange = (value) => {
-        if (value < 0 || value > maxValue) {
+        if (value < 0 || value > state.maxValue) {
             return;
         }
-        setState({ ...state,minValue: value, page: 1 });
+        setState({ ...state, minValue: value, page: 1 });
     };
 
     const handleMaxValueChange = (value) => {
-        if (value < 0 || value < minValue) {
+        if (value < 0 || value < state.minValue) {
             return;
         }
         setState({ ...state, maxValue: value, page: 1 });
@@ -121,14 +120,13 @@ const RecordsView = () => {
         const Checked = event.target.checked;
         setState(prevState => {
             if (Checked) {
-                const allSaleIds = pageSales.map(sale => sale.sale_id);
+                const allSaleIds = pageSales.map(sale => sale.id);
                 return { ...prevState, columnCheck: Checked, selectedRows: allSaleIds };
             } else {
                 return { ...prevState, columnCheck: Checked, selectedRows: [] };
             }
         });
     };
-
 
     const toggleDeleteModal = () => {
         setState({ ...state, deleteModalOpen: !state.deleteModalOpen });
@@ -151,11 +149,7 @@ const RecordsView = () => {
     };
 
     const handleDeleteSelected = async () => {
-        const deletePromises = state.selectedRows.map(id => deleteSale(id));
-        await Promise.all(deletePromises);
-
-        const updatedSales = state.sales.filter(sale => !state.selectedRows.includes(sale.id));
-        setState({ ...state, columnCheck: false, selectedRows: [], sales: updatedSales, deleteSelectedModalOpen: false  });
+        deleteSelectedSale(state.selectedRows);
     };
 
     const deleteSale = (id) => {
@@ -165,14 +159,43 @@ const RecordsView = () => {
         })
         .then(response => {
             if (response.ok) {
-                const updatedSales = state.sales.filter(sale => sale.sale_id !== id);
-                setState({ ...state, sales: updatedSales, deleteModalOpen: false });
-                toast.success("Venta seleccionada eliminada con éxito.");
+                const updatedSales = state.sales.filter(sale => sale.id !== id);
+                setState({ ...state, sales: updatedSales, deleteModalOpen: false }, toast.success("Venta seleccionada eliminada con éxito."));
+                
             }
             else {
                 console.error(response)
                 toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
                 setState({ ...state, deleteModalOpen: false });
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting sale:", error);
+            toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+        });
+    };      
+
+    const deleteSelectedSale = (sale_ids) => {
+        // console.log(id)
+        fetch(`http://18.222.68.166:8000/bazar/delete-sales/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ sales: sale_ids})
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log(sale_ids)
+                const updatedSales = state.sales.filter(sale => !sale_ids.includes(sale.id));
+                setState({ ...state, sales: updatedSales, deleteSelectedModalOpen: false });
+                setPage(1);
+                toast.success("Ventas seleccionadas eliminadas con éxito.");
+            }
+            else {
+                console.error(response)
+                toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+                setState({ ...state, deleteSelectedModalOpen: false });
             }
         })
         .catch(error => {
@@ -192,11 +215,9 @@ const RecordsView = () => {
         })
         .then(response => {
             if (response.ok) {
-                console.log(sale_index)
                 const updatedSales = [...state.sales];
                 updatedSales[sale_index] = { ...updatedSales[sale_index], amount, quantity };
-                setState({ ...state, sales: updatedSales, editModalOpen: false });
-                toast.success("Venta seleccionada editada con éxito.");
+                setState({ ...state, sales: updatedSales, editModalOpen: false }, toast.success("Venta seleccionada editada con éxito."));
             }
             else {
                 console.error(response)
@@ -274,7 +295,6 @@ const RecordsView = () => {
                 <ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
                 <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>
-            <ToastContainer position="top-center" autoClose={5000} />
         </>
     );
 };

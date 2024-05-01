@@ -2,6 +2,12 @@
  * File: SalesTable.module.css
  * Type: css file */
 
+ .alignStart {
+    text-align: center;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .buttons {
 	gap: 12px;
 }

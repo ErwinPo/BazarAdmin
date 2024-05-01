@@ -12,11 +12,11 @@ import PaginationComponent from './PaginationComponent';
 import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
 
 const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows, toggleDeleteModal, setCurrentSaleIdDelete, toggleEditModal, setCurrentSaleEdit }) => {
-    const itemsPerPage = 20; // Number of elements per page
+    const itemsPerPage = 9; // Number of elements per page
 
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
     const [checkedColumn, setCheckedColumn] = useState(columnCheck || false);
-    const [sortConfig, setSortConfig] = useState({ key: 'sale_id', direction: 'asc' });
+    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
 
     useEffect(() => {
         const startIdx = (page - 1) * itemsPerPage;
@@ -51,6 +51,12 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
     }, [sales, sortConfig, page, itemsPerPage]);
 
     const totalPages = Math.ceil(sales.length / itemsPerPage);
+
+    useEffect(() => {
+        if (page > totalPages && totalPages > 0) {
+            setPage(totalPages);
+        }
+    }, [page, totalPages]);
 
     const handlePaginationChange = (pageNumber) => {
         handlePageChange();
@@ -88,7 +94,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 onChange={(event) => handleSelectAllChange(event, pageSales)}
                             />
                         </th>
-                        <th onClick={() => requestSort('sale_id')}>ID Venta <span className={classes.thArrow}>{getArrow('sale_id')}</span></th>
+                        <th onClick={() => requestSort('id')}>ID Venta <span className={classes.thArrow}>{getArrow('id')}</span></th>
                         <th onClick={() => requestSort('date')}>Fecha <span className={classes.thArrow}>{getArrow('date')}</span></th>
                         <th onClick={() => requestSort('amount')}>Monto <span className={classes.thArrow}>{getArrow('amount')}</span></th>
                         <th onClick={() => requestSort('quantity')}>Cantidad <span className={classes.thArrow}>{getArrow('quantity')}</span></th>
@@ -103,13 +109,13 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 <td>
                                     <Form.Check
                                         className={classes.checkBox}
-                                        checked={selectedRows.includes(sale.sale_id)}
-                                        onChange={(event) => handleCheckboxChange(event, sale.sale_id)}
+                                        checked={selectedRows.includes(sale.id)}
+                                        onChange={(event) => handleCheckboxChange(event, sale.id)}
                                     />
                                 </td>
-                                <td>{sale.sale_id}</td>
+                                <td>{sale.id}</td>
                                 <td>{moment(sale.date).format('DD/MM/YYYY - HH:mm:ss')}</td>
-                                <td>{sale.amount}</td>
+                                <td className={classes.alignStart}>$ {sale.amount}</td>
                                 <td>{sale.quantity}</td>
                                 <td>{sale.user_id}</td>
                                 <td>
@@ -119,7 +125,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                             className={classes.noBorder}
                                             onClick={() => {
                                                 toggleDeleteModal();
-                                                setCurrentSaleIdDelete(sale.sale_id);
+                                                setCurrentSaleIdDelete(sale.id);
                                             }}
                                         >
                                             <Image className={classes.image} src={iconTrash} />
@@ -140,7 +146,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                         ))
                     ) : (
                         <tr className={classes.emptyState}>
-                            <td colSpan='7'>No hay ventas registradas hasta el momento</td>
+                            <td colSpan='7'>No se encontraron ventas</td>
                         </tr>
                     )}
                 </tbody>
