@@ -31,6 +31,16 @@ export default function Login() {
           throw new Error('Usuario y/o contraseña incorrecto(s).');
         }
         const data = await response.json();
+        const isSuperuserResponse = await fetch('http://18.222.68.166:8000/bazar/is-superuser/', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${data.access}`
+          }
+        });
+        const isSuperuserData = await isSuperuserResponse.json();
+        if (!isSuperuserResponse.ok || isSuperuserData.is_superuser !== true) {
+          throw new Error('No tienes permiso para iniciar sesión.');
+        }
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
         navigate('/Ventas');
