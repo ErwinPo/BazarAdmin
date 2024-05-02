@@ -246,8 +246,8 @@ const UsersTable = () => {
       return response.json();
     })
     .then(data => {
-      setUsers([...users, data]); // Agregar el nuevo usuario a la lista de usuarios
-      setState({ ...state, insertModal: false }); // Cerrar el modal de creación de usuario
+      setUsers([...users, data]);
+      setState({ ...state, insertModal: false });
       toast.success("Usuario creado con éxito.");
     })
     .catch(error => {
@@ -487,10 +487,6 @@ const UsersTable = () => {
           <FormGroup>
             <label>Correo:</label>
             <input className='form-control' name='email' type='text' onChange={handleChange} value={state.form.email} onKeyDown={handleMailChange} />
-          </FormGroup>
-          <FormGroup>
-            <label>Contraseña:</label>
-            <input className='form-control' name='password' type='text' onChange={handleChange} value={state.form.password} onKeyDown={handlePasswordChange} />
           </FormGroup>
           <FormGroup>
             <label>Tipo de Usuario:</label>
