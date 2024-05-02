@@ -1,66 +1,64 @@
-//import "./App.css";
+import React, { useState, useEffect, createContext } from 'react';
 import {
     BrowserRouter as Router,
     Routes,
     Route,
-} from "react-router-dom";
-import Ventas from "./pages/Ventas";
-import Usuarios from "./pages/Usuarios";
-import Estadisticas from "./pages/Estadisticas";
-import Registros from "./pages/Registros";
-import Login from "./pages/Login/Login";
+    Navigate,
+} from 'react-router-dom';
+import Ventas from './pages/Ventas';
+import Usuarios from './pages/Usuarios';
+import Estadisticas from './pages/Estadisticas';
+import RecordsView from "./components/Records/RecordsView";
+import Login from './pages/Login';
+
+export const AuthContext = createContext();
 
 function App() {
+    const [authLoading, setAuthLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const users = [
-        { id: 1, username: "Lety", password: "*********", usertype: "Admin"},
-        { id: 2, username: "Daniel", password: "******", usertype: "Vendedor"},
-        { id: 3, username: "David", password: "********", usertype: "Vendedor"},
-        { id: 4, username: "Diego", password: "********", usertype: "Vendedor"},
-        { id: 5, username: "Erwin", password: "*******", usertype: "Vendedor"},
-        { id: 6, username: "Josafat", password: "********", usertype: "Vendedor"},
-        { id: 7, username: "Raúl", password: "**********", usertype: "Vendedor"},
-    ]
+    useEffect(() => {
+        const checkAuth = async () => {
+            const access_token = localStorage.getItem('access_token');
+            if (access_token) {
+                setIsLoggedIn(true);
+            }
+            setAuthLoading(false);
+        };
+        
+        checkAuth();
+    }, []);
 
-    const sales = [
-        { id: '#1', date: '19/01/2024 - 01:22:33', amount: 1, quantity: 2, seller: 'John Doe' },
-        { id: '#2', date: '19/02/2024 - 01:22:33', amount: 1, quantity: 3, seller: 'Jane Smith' },
-        { id: '#3', date: '19/03/2024 - 01:22:33', amount: 200, quantity: 1, seller: 'Alice Johnson' },
-        { id: '#4', date: '19/02/2024 - 01:22:33', amount: 120, quantity: 2, seller: 'Bob Brown' },
-        { id: '#5', date: '19/02/2024 - 01:22:33', amount: 180, quantity: 4, seller: 'Eve Williams' },
-        { id: '#6', date: '19/02/2024 - 01:22:33', amount: 100, quantity: 2, seller: 'John Doe' },
-        { id: '#7', date: '13/04/2024 - 01:22:33', amount: 150, quantity: 3, seller: 'Jane Smith' },
-        { id: '#8', date: '14/04/2024 - 01:22:33', amount: 200, quantity: 1, seller: 'Alice Johnson' },
-        { id: '#9', date: '10/04/2024 - 01:22:33', amount: 120, quantity: 2, seller: 'Bob Brown' },
-        { id: '#10', date: '19/03/2024 - 01:22:33', amount: 180, quantity: 4, seller: 'Eve Williams' },
-        { id: '#11', date: '19/01/2024 - 01:22:33', amount: 100, quantity: 2, seller: 'John Doe' },
-        { id: '#12', date: '19/02/2024 - 01:22:33', amount: 150, quantity: 3, seller: 'Jane Smith' },
-        { id: '#13', date: '19/01/2023 - 01:22:33', amount: 200, quantity: 1, seller: 'Alice Johnson' },
-        { id: '#14', date: '19/02/2023 - 01:22:33', amount: 120, quantity: 2, seller: 'Bob Brown' },
-        { id: '#15', date: '19/03/2023 - 01:22:33', amount: 180, quantity: 4, seller: 'Eve Williams' },
-        { id: '#16', date: '19/04/2023 - 01:22:33', amount: 100, quantity: 2, seller: 'John Doe' },
-        { id: '#17', date: '19/05/2023 - 01:22:33', amount: 150, quantity: 3, seller: 'Jane Smith' },
-        { id: '#18', date: '19/06/2023 - 01:22:33', amount: 200, quantity: 1, seller: 'Alice Johnson' },
-        { id: '#19', date: '19/07/2023 - 01:22:33', amount: 120, quantity: 2, seller: 'Bob Brown' },
-        { id: '#20', date: '19/08/2023 - 01:22:33', amount: 180, quantity: 4, seller: 'Eve Williams' },
-        { id: '#21', date: '19/09/2023 - 01:22:33', amount: 100, quantity: 2, seller: 'John Doe' },
-        { id: '#22', date: '19/10/2023 - 01:22:33', amount: 150, quantity: 3, seller: 'Jane Smith' },
-        { id: '#23', date: '19/11/2023 - 01:22:33', amount: 200, quantity: 1, seller: 'Alice Johnson' },
-        { id: '#24', date: '19/12/2023 - 01:22:33', amount: 900, quantity: 2, seller: 'Bob Brown' },
-        { id: '#25', date: '19/01/2025 - 01:22:33', amount: 180, quantity: 4, seller: 'Eve Williams' },
-      ];
-      
+    const handleLogin = () => {
+        setIsLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        setIsLoggedIn(false);
+    };
+
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/Ventas" element={<Ventas />} />
-                <Route path="/Usuarios" element={<Usuarios users={users}/>} />
-                <Route path="/Estadisticas" element={<Estadisticas />} />
-                <Route path="/Registros" element={<Registros sales={sales} />} />
-            </Routes>
-        </Router>
+        <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleLogout }}>
+            {!authLoading && (
+                <Router>
+                    <Routes>
+                        {!isLoggedIn && <Route path="/" element={<Login />} />}
+                        {isLoggedIn && (
+                            <>
+                                <Route path="/Ventas" element={<Ventas />} />
+                                <Route path="/Usuarios" element={<Usuarios />} />
+                                <Route path="/Estadisticas" element={<Estadisticas />} />
+                                <Route path="/Registros" element={<RecordsView />} />
+                                <Route path="/*" element={<Navigate to="/" replace />} />
+                            </>
+                        )}
+                    </Routes>
+                </Router>
+            )}
+        </AuthContext.Provider>
     );
 }
- 
+
 export default App;
