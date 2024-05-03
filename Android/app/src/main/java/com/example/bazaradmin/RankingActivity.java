@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RankingActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    Ranking rankedList;
+    ArrayList<RankedUser> rankedList;
     RankingAdapter myAdapter;
 
 
@@ -38,7 +38,7 @@ public class RankingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ranking);
 
         BottomNavigationView navigation = findViewById(R.id.barra_Menu);
-        navigation.setSelectedItemId(R.id.secondFragment);
+        navigation.setSelectedItemId(R.id.thirdFragment);
 
         myAdapter = new RankingAdapter(RankingActivity.this, rankedList);
 
@@ -81,26 +81,26 @@ public class RankingActivity extends AppCompatActivity {
 
     private void RankingChangeListener() {
         ApiService service = retrofit.create(ApiService.class);
-        Call<Ranking> call = service.getRanking();
+        Call<ArrayList<RankedUser>> call = service.getRanking();
         Log.i("2","2");
-        call.clone().enqueue(new Callback<Ranking>() {
+        call.clone().enqueue(new Callback<ArrayList<RankedUser>>() {
             @Override
-            public void onResponse(Call<Ranking> call, Response<Ranking> response) {
+            public void onResponse(Call<ArrayList<RankedUser>> call, Response<ArrayList<RankedUser>> response) {
                 String responseString = "RCode: " + response.code();
                 Log.i("RCODE", responseString);
                 if (response.isSuccessful()) {
 
-                    Ranking ranking = response.body();
+                    ArrayList<RankedUser> ranking = response.body();
 
                     myAdapter = new RankingAdapter(getApplicationContext(), ranking);
                     recyclerView.setAdapter(myAdapter);
-                    Log.i("RANKING", String.valueOf(ranking.rankedUsers.get(ranking.rankedUsers.size()-1).user));
+                    //Log.i("RANKING", String.valueOf(ranking.rankedUsers.get(ranking.rankedUsers.size()-1).user));
 
                 }
             }
             @Override
-            public void onFailure(Call<Ranking> call, Throwable t) {
-                Log.i("QUOTE", t.toString());
+            public void onFailure(Call<ArrayList<RankedUser>> call, Throwable t) {
+                Log.i("RANK FAIL", t.toString());
                 call.cancel();
             };
         });

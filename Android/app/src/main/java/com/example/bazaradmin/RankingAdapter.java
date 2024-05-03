@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHolder> {
 
     Context context;
-    Ranking RankedList;
+    ArrayList<RankedUser> RankedList;
 
 
-    public RankingAdapter(Context context, Ranking RankedArrayList) {
+    public RankingAdapter(Context context, ArrayList<RankedUser> RankedArrayList) {
         this.context = context;
         this.RankedList = RankedArrayList;
     }
@@ -37,17 +38,17 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        RankedUser user = RankedList.rankedUsers.get(position);
+        RankedUser user = RankedList.get(position);
 
         holder.amount.setText(String.valueOf(user.amount));
-        holder.name.setText(user.user);
+        holder.name.setText(String.valueOf(user.username));
         holder.placement.setText(String.valueOf(position + 1));
     }
 
 
     @Override
     public int getItemCount() {
-        return RankedList.rankedUsers.size();
+        return RankedList.size();
     }
 
     public  static class MyViewHolder extends RecyclerView.ViewHolder{

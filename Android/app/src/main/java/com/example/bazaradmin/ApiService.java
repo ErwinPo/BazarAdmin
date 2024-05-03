@@ -3,6 +3,7 @@ import android.text.GetChars;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,6 @@ public interface ApiService {
     Call<User> login(@Body Login login);
 
     @GET("ranking/")
-    Call<Ranking> getRanking();
+    Call<ArrayList<RankedUser>> getRanking();
 }
 
