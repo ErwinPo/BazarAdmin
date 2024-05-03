@@ -210,15 +210,6 @@ const UsersTable = () => {
     }*/
     return true;
   };
-
-
-  const generateUniqueId = () => {
-    let newId = users.length + 1;
-    while (users.some(user => user.id === newId)) {
-      newId++;
-    }
-    return newId;
-  };  
   
 
   const handleCreateUser = () => {
@@ -271,19 +262,19 @@ const UsersTable = () => {
     if (!validateForm()) {
       return;
     }
-    const { id, username, email, password, is_superuser } = state.form;
+    const { id, username, email, is_superuser } = state.form;
     const editedUserIndex = users.findIndex(user => user.id === id);
     const editedUser = users[editedUserIndex];
+    const { password, ...editedUserWithoutPassword } = editedUser;
     const adminCount = users.filter(user => user.is_superuser).length;
     if (editedUser.is_superuser && !is_superuser && adminCount === 1) {
       toast.error("No se puede cambiar el tipo de usuario ya que solo hay un administrador en el sistema.");
       return;
     }
     const updatedUser = {
-      ...editedUser,
+      ...editedUserWithoutPassword,
       username: username,
       email: email,
-      password: password,
       is_superuser: is_superuser
     };
     fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
