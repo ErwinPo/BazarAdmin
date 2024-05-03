@@ -2,19 +2,16 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/NavBar/Navbar";
 import classes from "./Ventas.module.css";
 import { Button, Form } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
 
 const Ventas = () => {
 	const [validated, setValidated] = useState(false);
-	const [success_txt_hidden, setSuccess_txt_hidden] = useState(true);
 
 	useEffect(() => {
         const successState = localStorage.getItem("successState");
         if (successState === "true") {
-            setSuccess_txt_hidden(false);
-			setTimeout(() => {
-                localStorage.removeItem("successState"); 
-                setSuccess_txt_hidden(true); 
-            }, 10000); 
+			toast.success("Venta registrada con éxito!");
+            //localStorage.removeItem("successState"); 
         }
     }, []);
 
@@ -24,10 +21,9 @@ const Ventas = () => {
 		if(form.checkValidity() === false) {
 			event.preventDefault();
 			event.stopPropagation();
-			setSuccess_txt_hidden(true);
 			localStorage.setItem("successState", "false");
+			toast.error("Error: Datos ingresados no validos.");
 		} else {
-			setSuccess_txt_hidden(false); 
             localStorage.setItem("successState", "true"); 
 		}
 		setValidated(true);
@@ -35,6 +31,7 @@ const Ventas = () => {
 
 	return (
 		<div>
+			<ToastContainer position="top-center" autoClose={false}/>
 			<Navbar />
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
 				<Form.Group className={classes.form_grp} controlId="formMonto">
@@ -55,7 +52,6 @@ const Ventas = () => {
 			</Form>
 
 			<br/>
-			<h4 hidden={success_txt_hidden} className={classes.success_txt}>¡Felicidades! Registró una Venta con Éxito.</h4>
 		</div>
 	);
 };

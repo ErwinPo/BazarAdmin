@@ -55,6 +55,7 @@ const RecordsView = () => {
     const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, user_id: 'John Doe' });
     const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
     const [page, setPage] = useState(1);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [state, setState] = useState({
         sales: [],
         startDate: lowDate,
@@ -88,18 +89,35 @@ const RecordsView = () => {
     };
 
     const handleMinValueChange = (value) => {
-        if (value < 0 || value > state.maxValue) {
-            return;
+        if (value === undefined) {
+            if (errorMessage == null) {
+                setErrorMessage("El monto inferior debe ser un número válido.");
+            }
+        } else if (value < 0) {
+            value = 0;
+        } else if (value > state.maxValue) {
+            setErrorMessage("El monto inferior debe ser un número válido y menor al monto superior.");
+        } else {
+            setErrorMessage(null);
         }
         setState({ ...state, minValue: value, page: 1 });
     };
-
+    
     const handleMaxValueChange = (value) => {
-        if (value < 0 || value < state.minValue) {
-            return;
+        if (value === undefined) {
+            if (errorMessage == null) {
+                setErrorMessage("El monto superior debe ser un número válido.");
+            }
+        } else if (value < 0) {
+            value = 0;
+        } else if (value < state.minValue) {
+            setErrorMessage("El monto superior debe ser un número válido y superior al monto inferior.");
+        } else {
+            setErrorMessage(null);
         }
         setState({ ...state, maxValue: value, page: 1 });
     };
+    
 
     const handlePageChange = () => {
         setState({ ...state, columnCheck: false, selectedRows: [] });
@@ -269,6 +287,11 @@ const RecordsView = () => {
                         />
                     </Col>
                 </Row>
+                {errorMessage && (
+                    <div className={classes.errorMessage}>
+                    <span>{errorMessage}</span>
+                    </div>
+                )}
                 {state.selectedRows.length > 0 && (
                     <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteSelectedModal} >
                         <Image className={classes.image} src={iconTrash} />

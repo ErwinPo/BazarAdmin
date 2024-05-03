@@ -38,6 +38,20 @@ body {
   margin-bottom: 24px;
 }
 
+.errorMessage {
+  color: #cc0000;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 12px;
+  margin-bottom: 18px;
+  border: solid red 2px;
+  border-radius: 15px;
+  width: fit-content;
+  padding: 8px;
+  display: inline-block;
+  text-align: center;
+}
+
 .image {
 	height: 20px;
 	width: auto;
