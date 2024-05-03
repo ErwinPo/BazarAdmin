@@ -3,7 +3,6 @@ import { Button} from 'react-bootstrap'
 
 const UsersDropdown = ({rangeOfDates}) => {
 
-    // console.log("Users Dropdown range of dates: ", rangeOfDates)
 
     return(
         <Dropdown>

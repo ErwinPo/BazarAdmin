@@ -20,6 +20,7 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
         const currDate = getCurrentDate(endDate, days);
 
         setdaysFromHandleDropdownItem([currDate, endDate]);
+        onRangeOfDatesUpdate([currDate, endDate])
     };
 
     useEffect(() => {
@@ -61,7 +62,7 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
                 <Dropdown.Item onClick={() => handleDropdownItemClick(15)}>15 días</Dropdown.Item>
                 <Dropdown.Item onClick={() => handleDropdownItemClick(30)}>30 días</Dropdown.Item>
                 <Dropdown.Item onClick={() => handleDropdownItemClick(180)}>6 meses</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Personalizar</Dropdown.Item>
+                <Dropdown.Item >Personalizar</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item eventKey="4">
                     <Button>Aplicar Cambios</Button>
