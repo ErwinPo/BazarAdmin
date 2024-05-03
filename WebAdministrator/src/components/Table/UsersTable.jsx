@@ -36,7 +36,7 @@ const UsersTable = () => {
 
 
   useEffect(() => {
-    fetch("http://18.222.68.166:8000/bazar/users//", {
+    fetch("http://3.146.65.111:8000/bazar/users//", {
       method: "GET"
     })
     .then(response => {
@@ -232,7 +232,7 @@ const UsersTable = () => {
       password: password,
       is_superuser: is_superuser
     };
-    fetch("http://18.222.68.166:8000/bazar/users//", {
+    fetch("http://3.146.65.111:8000/bazar/users//", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -276,7 +276,7 @@ const UsersTable = () => {
       password: password,
       is_superuser: is_superuser
     };
-    fetch(`http://18.222.68.166:8000/bazar/users//${id}/`, {
+    fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -318,7 +318,7 @@ const UsersTable = () => {
 
   const handleDeleteUser = () => {
     const { id } = state.form;
-    fetch(`http://18.222.68.166:8000/bazar/users//${id}/`, {
+    fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
       method: "DELETE"
     })
     .then(() => {
@@ -353,7 +353,7 @@ const UsersTable = () => {
       });
     } else {
       const deletedUserIds = state.selectedUserIds;
-      fetch("http://18.222.68.166:8000/bazar/users//", {
+      fetch("http://3.146.65.111:8000/bazar/users//", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
