@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'password', 'is_superuser', 'email']
         read_only_fields = ('id',)
         extra_kwargs = {
-            'password': {'required': False, 'write_only': True},  # Para asegurar que el password no sea visible en la respuesta
+            'password': {'required': False},  # Para asegurar que el password no sea visible en la respuesta
             'email': {'required': False},  # Hacer el campo email opcional durante la actualización
         }
             
