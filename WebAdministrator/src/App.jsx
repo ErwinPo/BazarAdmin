@@ -14,7 +14,6 @@ import Login from './pages/Login';
 export const AuthContext = createContext();
 
 function App() {
-
     const [authLoading, setAuthLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -52,7 +51,7 @@ function App() {
                                 <Route path="/Usuarios" element={<Usuarios />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
-                                <Route path="/*" element={<Navigate to="/Ventas" replace />} />
+                                <Route path="/*" element={<Navigate to="/" replace />} />
                             </>
                         )}
                     </Routes>

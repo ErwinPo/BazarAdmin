@@ -11,9 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
-
   async function signIn(e) {
     e.preventDefault();
     if (user === "" || password === "") {
