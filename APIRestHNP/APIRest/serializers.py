@@ -5,6 +5,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'is_superuser', 'email']
+        read_only_fields = ('id',)
+        extra_kwargs = {
+            'password': {'required': False, 'write_only': True},  # Para asegurar que el password no sea visible en la respuesta
+            'email': {'required': False},  # Hacer el campo email opcional durante la actualización
+        }
             
         
         
@@ -12,7 +17,7 @@ class SalesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale
         fields = ['id', 'user_id', 'amount', 'quantity', 'date']
-        read_only_fields = ('date',)  
+        read_only_fields = ('date', 'id',)  
         
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()

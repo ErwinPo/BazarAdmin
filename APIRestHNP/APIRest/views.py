@@ -32,15 +32,16 @@ class UserViewSet(viewsets.ModelViewSet):
         # Guardar el usuario con la contraseña hasheada
         serializer.save()    
         
-    def perform_update(self, serializer):
-        # Extraer la contraseña del serializer
-        password = serializer.validated_data.get('password')
-
-        # Modificar el serializer para establecer la contraseña hasheada
-        serializer.validated_data['password'] = make_password(password)
-
-        # Guardar el usuario con la contraseña hasheada
-        serializer.save()    
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)  # Determine si la actualización debe ser parcial
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        if 'password' in request.data:  # Verificar si se proporcionó una nueva contraseña
+            password = request.data['password']
+            serializer.validated_data['password'] = make_password(password)  # Hashear la nueva contraseña
+        self.perform_update(serializer)
+        return Response(serializer.data)
     
 class SalesViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
