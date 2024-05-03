@@ -20,7 +20,7 @@ export default function Login() {
       toast.error("Por favor, complete todos los campos.");
     } else {
       try {
-        const response = await fetch('http://18.222.68.166:8000/bazar/api/login/', {
+        const response = await fetch('http://3.146.65.111:8000/bazar/api/login/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ export default function Login() {
           throw new Error('Usuario y/o contraseña incorrecto(s).');
         }
         const data = await response.json();
-        const isSuperuserResponse = await fetch('http://18.222.68.166:8000/bazar/is-superuser/', {
+        const isSuperuserResponse = await fetch('http://3.146.65.111:8000/bazar/is-superuser/', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${data.access}`
