@@ -51,7 +51,7 @@ function App() {
                                 <Route path="/Usuarios" element={<Usuarios />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
-                                <Route path="/*" element={<Navigate to="/" replace />} />
+                                <Route path="/*" element={<Navigate to="/Ventas" replace />} />
                             </>
                         )}
                     </Routes>
