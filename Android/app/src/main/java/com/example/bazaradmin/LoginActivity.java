@@ -34,23 +34,22 @@ import  retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity{
-    Button login, recover;
+    Button login;
     EditText correologin, password;
-
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://18.222.68.166:8000/bazar/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-    ApiService service = retrofit.create(ApiService.class);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        login.findViewById(R.id.ingresar);
-        correologin.findViewById(R.id.correologin);
-        password.findViewById(R.id.password);
+        login = findViewById(R.id.ingresar);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), RegistroActivity.class));
+                overridePendingTransition(0,0);
+            }
+        });
 
     }
 
