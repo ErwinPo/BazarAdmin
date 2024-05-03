@@ -35,7 +35,7 @@ public class RegistroActivity extends AppCompatActivity{
     int user_id = 1;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://18.222.68.166:8000/BAZARAPI/")
+            .baseUrl("http://18.222.68.166:8000/bazar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

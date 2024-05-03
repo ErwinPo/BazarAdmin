@@ -51,7 +51,7 @@ public class HistorialActivity extends AppCompatActivity {
     }
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://18.222.68.166:8000/BAZARAPI/")
+            .baseUrl("http://18.222.68.166:8000/bazar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
