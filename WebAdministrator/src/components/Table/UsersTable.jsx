@@ -247,7 +247,17 @@ const UsersTable = () => {
     })
     .then(data => {
       setUsers([...users, data]);
-      setState({ ...state, insertModal: false });
+      setState({ 
+        ...state, 
+        insertModal: false,
+        form: {
+          id: '',
+          username: '',
+          email: '',
+          password: '',
+          is_superuser: ''
+        } 
+      });
       toast.success("Usuario creado con éxito.");
     })
     .catch(error => {
