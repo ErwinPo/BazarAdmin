@@ -19,8 +19,14 @@ const SalesGraph = ({salesData}) => {
         );
     }
 
+    // console.log("Sales Data from Sales Graph: ",...salesData)
+
     const intervalTimes = salesData.map(item => new Date(item.interval_time)); // Assuming interval_time is in ISO format
     const totalAmounts = salesData.map(item => item.total_amount);
+
+
+    // console.log(totalAmounts)
+    // console.log(intervalTimes)
 
     return (
         <Row className={classes.row}>

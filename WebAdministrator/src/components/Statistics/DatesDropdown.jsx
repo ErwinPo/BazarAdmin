@@ -21,12 +21,15 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
 
         setdaysFromHandleDropdownItem([currDate, endDate]);
         onRangeOfDatesUpdate([currDate, endDate])
+
     };
 
-    useEffect(() => {
+    // console.log("Date range: ",daysFromHandleDropdownItem)
+  
+    // useEffect(() => {
       
-        console.log("Date range: ", ...daysFromHandleDropdownItem);
-    }, [daysFromHandleDropdownItem]);
+    //     console.log("Date range: ", ...daysFromHandleDropdownItem);
+    // }, []);
 
     useEffect(() => {
         const [startDate, endDate] = daysFromHandleDropdownItem;
@@ -42,14 +45,15 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
                 return response.json();
             })
             .then(data => {
-                onDataUpdate(data);   
+                onDataUpdate(data); 
+                console.log(onDataUpdate(data))  
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
         
-    }, [daysFromHandleDropdownItem, onDataUpdate]);
+    }, [daysFromHandleDropdownItem]);
 
     return (
         <Dropdown>

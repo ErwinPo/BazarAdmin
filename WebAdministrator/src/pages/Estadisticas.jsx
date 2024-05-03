@@ -22,13 +22,27 @@ const Estadisticas = () => {
         setRangeOfDates(data);
     };
 
-    useEffect(() => {
-        // console.log("Sales Data: ", ...salesData);
-    }, [salesData]);
+    const dummySalesData = [
+        { interval_time: "2024-04-01T00:00:00.000Z", total_amount: 1000 },
+        { interval_time: "2024-04-02T00:00:00.000Z", total_amount: 1200 },
+        { interval_time: "2024-04-03T00:00:00.000Z", total_amount: 800 },
+        { interval_time: "2024-04-04T00:00:00.000Z", total_amount: 1500 },
+        { interval_time: "2024-04-05T00:00:00.000Z", total_amount: 2000 },
+        { interval_time: "2024-04-06T00:00:00.000Z", total_amount: 1800 },
+        { interval_time: "2024-04-07T00:00:00.000Z", total_amount: 2200 }
+    ];
+    
+    // Pass this dummy data to your SalesGraph component
 
-    useEffect(() => {
-        // console.log("Range of dates Estadisticas: ", ...rangeOfDates);
-    }, [rangeOfDates]);
+    
+
+    // useEffect(() => {
+    //     // console.log("Sales Data: ", ...salesData);
+    // }, [salesData]);
+
+    // useEffect(() => {
+    //     // console.log("Range of dates Estadisticas: ", ...rangeOfDates);
+    // }, [rangeOfDates]);
 
     useEffect(() => {
         fetch('http://3.146.65.111:8000/bazar/ranking/', {
@@ -42,14 +56,14 @@ const Estadisticas = () => {
         })
         .then(data => {
             setBestSeller(data);
-            console.log("Best seller", bestSeller)
+            
         })
         .catch(error => {
             console.error('Error:', error);
         });
-    }, [bestSeller]);
+    }, []);
         
-    
+    console.log("Best seller", bestSeller[0].username)
 
 
     return (
@@ -68,7 +82,7 @@ const Estadisticas = () => {
             <Row>
                 <StatisticsCards title="Ingresos" data="$400000" increasePercentage="10%" />
                 <StatisticsCards title="Ventas Totales" data="7" increasePercentage="22%" />
-                <StatisticsCards title="Mejor Vendedor" data="Juan" />
+                <StatisticsCards title="Mejor Vendedor" data={bestSeller[0].username} />
             </Row>
             {/* Pass salesData state to SalesGraph component */}
             <SalesGraph salesData={salesData} />
