@@ -25,29 +25,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HistorialActivity extends AppCompatActivity {
+public class RankingActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    Ventas salesList;
-    SalesAdapter myAdapter;
+    Ranking rankedList;
+    RankingAdapter myAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historial);
+        setContentView(R.layout.activity_ranking);
 
         BottomNavigationView navigation = findViewById(R.id.barra_Menu);
         navigation.setSelectedItemId(R.id.secondFragment);
 
-        myAdapter = new SalesAdapter(HistorialActivity.this, salesList);
+        myAdapter = new RankingAdapter(RankingActivity.this, rankedList);
 
-        recyclerView = findViewById(R.id.historialRecyclerView);
+        recyclerView = findViewById(R.id.rankingRecycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        SalesChangeListener();
+        RankingChangeListener();
 
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -60,11 +60,11 @@ public class HistorialActivity extends AppCompatActivity {
                     finish();
                     return true;
                 } else if (itemId == R.id.secondFragment) {
-                    return true;
-                } else if (itemId == R.id.thirdFragment) {
-                    startActivity(new Intent(getApplicationContext(), RankingActivity.class));
+                    startActivity(new Intent(getApplicationContext(), HistorialActivity.class));
                     overridePendingTransition(0,0);
                     finish();
+                    return true;
+                } else if (itemId == R.id.thirdFragment) {
                     return true;
                 }
                 return false;
@@ -79,27 +79,27 @@ public class HistorialActivity extends AppCompatActivity {
             .build();
 
 
-    private void SalesChangeListener() {
+    private void RankingChangeListener() {
         ApiService service = retrofit.create(ApiService.class);
-        Call<Ventas> call = service.getVentas();
+        Call<Ranking> call = service.getRanking();
         Log.i("2","2");
-        call.clone().enqueue(new Callback<Ventas>() {
+        call.clone().enqueue(new Callback<Ranking>() {
             @Override
-            public void onResponse(Call<Ventas> call, Response<Ventas> response) {
+            public void onResponse(Call<Ranking> call, Response<Ranking> response) {
                 String responseString = "RCode: " + response.code();
                 Log.i("RCODE", responseString);
                 if (response.isSuccessful()) {
 
-                    Ventas ventas = response.body();
+                    Ranking ranking = response.body();
 
-                    myAdapter = new SalesAdapter(getApplicationContext(), ventas);
+                    myAdapter = new RankingAdapter(getApplicationContext(), ranking);
                     recyclerView.setAdapter(myAdapter);
-                    Log.i("ID OF LAST SALE", String.valueOf(ventas.registros.get(ventas.registros.size()-1).id));
+                    Log.i("RANKING", String.valueOf(ranking.rankedUsers.get(ranking.rankedUsers.size()-1).user));
 
                 }
             }
             @Override
-            public void onFailure(Call<Ventas> call, Throwable t) {
+            public void onFailure(Call<Ranking> call, Throwable t) {
                 Log.i("QUOTE", t.toString());
                 call.cancel();
             };

@@ -45,6 +45,7 @@
         app:menu="@menu/barra_menu"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rankingRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/subtitle"

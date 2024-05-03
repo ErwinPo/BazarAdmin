@@ -106,6 +106,9 @@ public class RegistroActivity extends AppCompatActivity{
                     overridePendingTransition(0,0);
                     return true;
                 } else if (itemId == R.id.thirdFragment) {
+                    startActivity(new Intent(getApplicationContext(), RankingActivity.class));
+                    overridePendingTransition(0,0);
+                    finish();
                     return true;
                 }
                 return false;

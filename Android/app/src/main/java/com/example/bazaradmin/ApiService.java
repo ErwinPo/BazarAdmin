@@ -29,5 +29,8 @@ public interface ApiService {
 
     @POST("api/login/")
     Call<User> login(@Body Login login);
+
+    @GET("ranking/")
+    Call<Ranking> getRanking();
 }
 
