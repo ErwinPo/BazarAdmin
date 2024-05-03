@@ -143,7 +143,8 @@ class RankingView(views.APIView):
     def get(self,request):
         print(request.user.id)
         queryset = callRanking()
-        data = [{"user": item[0], "amount": float(item[1])} for item in queryset]
+        print(queryset)
+        data = [{"user": item[0], "username": item[1], "amount": item[2]} for item in queryset]
         serializer = RankingSerializer(data=data, many=True)
         if serializer.is_valid():
             return Response(serializer.data)

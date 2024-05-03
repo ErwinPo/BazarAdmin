@@ -127,11 +127,13 @@ CREATE PROCEDURE Ranking()
 
 BEGIN
 
-	SELECT user_id_id AS user, SUM(amount) as amount 
+	SELECT user_id_id AS user, username, SUM(amount) as amount 
 	FROM APIRest_sale 
+    INNER JOIN APIRest_user ON APIRest_sale.user_id_id = APIRest_user.id
 	WHERE date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
-	GROUP BY user_id_id; 
-
+	GROUP BY user_id_id
+    ORDER BY amount DESC; 
+	
 END$$
 
 DELIMITER ;

@@ -27,4 +27,5 @@ class IntervalQuantitySalesSerializer(serializers.Serializer):
     
 class RankingSerializer(serializers.Serializer):
     user = serializers.CharField()
+    username = serializers.CharField()
     amount = serializers.FloatField()
