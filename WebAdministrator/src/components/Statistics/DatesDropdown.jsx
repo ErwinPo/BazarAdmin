@@ -19,23 +19,19 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
         const endDate = getEndDate();
         const currDate = getCurrentDate(endDate, days);
 
-        setdaysFromHandleDropdownItem(() => {
-            return [currDate, endDate]
-        })
-        onRangeOfDatesUpdate(daysFromHandleDropdownItem)
+        setdaysFromHandleDropdownItem([currDate, endDate]);
     };
 
     useEffect(() => {
-        
+      
+        console.log("Date range: ", ...daysFromHandleDropdownItem);
     }, [daysFromHandleDropdownItem]);
-
-
 
     useEffect(() => {
         const [startDate, endDate] = daysFromHandleDropdownItem;
         
         if (startDate && endDate) {
-            fetch(`http://18.222.68.166:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=daily`, {
+            fetch(`http://3.146.65.111:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=daily`, {
                 method: "GET"
             })
             .then(response => {
@@ -45,15 +41,14 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
                 return response.json();
             })
             .then(data => {
-                onDataUpdate(data);
-                
+                onDataUpdate(data);   
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
         
-    }, [daysFromHandleDropdownItem]);
+    }, [daysFromHandleDropdownItem, onDataUpdate]);
 
     return (
         <Dropdown>

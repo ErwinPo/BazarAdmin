@@ -26,7 +26,7 @@ const Estadisticas = () => {
     }, [salesData]);
 
     useEffect(() => {
-        // console.log("Range of dates: ", ...rangeOfDates);
+        //console.log("Range of dates: ", ...rangeOfDates);
     }, [rangeOfDates]);
 
 
@@ -40,7 +40,7 @@ const Estadisticas = () => {
                     <DatesDropdown onDataUpdate={handleSalesDataUpdate} onRangeOfDatesUpdate={handleRangeOfDates} start/>
                 </Col>
                 <Col xs lg="2">
-                    <UsersDropdown />
+                    <UsersDropdown rangeOfDates={rangeOfDates} />
                 </Col>
             </Row>
             <Row>
