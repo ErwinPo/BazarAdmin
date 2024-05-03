@@ -26,13 +26,7 @@ BEGIN
 	FROM APIRest_sale
 	WHERE DATE(date) BETWEEN STR_TO_DATE(start_date, '%Y-%m-%d') AND STR_TO_DATE(end_date, '%Y-%m-%d')
 	AND user_id_id = user_id
-	GROUP BY 
-		CASE 
-			WHEN temporality = 'daily' THEN DATE(date)
-			WHEN temporality = 'weekly' THEN DATE_SUB(DATE(date), INTERVAL WEEKDAY(date) DAY)
-			WHEN temporality = 'monthly' THEN DATE_FORMAT(date, '%Y-%m-01')
-			WHEN temporality = 'annually' THEN DATE_FORMAT(date, '%Y-01-01')
-    	END;
+	GROUP BY interval_time;
 
 END$$
 
@@ -62,13 +56,7 @@ BEGIN
 	FROM APIRest_sale
 	WHERE DATE(date) BETWEEN STR_TO_DATE(start_date, '%Y-%m-%d') AND STR_TO_DATE(end_date, '%Y-%m-%d')
 	AND user_id_id = user_id
-	GROUP BY  
-		CASE 
-			WHEN temporality = 'daily' THEN DATE(date)
-			WHEN temporality = 'weekly' THEN DATE_SUB(DATE(date), INTERVAL WEEKDAY(date) DAY)
-			WHEN temporality = 'monthly' THEN DATE_FORMAT(date, '%Y-%m-01')
-			WHEN temporality = 'annually' THEN DATE_FORMAT(date, '%Y-01-01')
-    	END;
+	GROUP BY interval_time;
 END$$
 
 DELIMITER ;
@@ -94,13 +82,8 @@ BEGIN
 		SUM(amount) as total_amount
 	FROM APIRest_sale
 	WHERE DATE(date) BETWEEN STR_TO_DATE(start_date, '%Y-%m-%d') AND STR_TO_DATE(end_date, '%Y-%m-%d')
-	GROUP BY 
-		CASE 
-			WHEN temporality = 'daily' THEN DATE(date)
-			WHEN temporality = 'weekly' THEN DATE_SUB(DATE(date), INTERVAL WEEKDAY(date) DAY)
-			WHEN temporality = 'monthly' THEN DATE_FORMAT(date, '%Y-%m-01')
-			WHEN temporality = 'annually' THEN DATE_FORMAT(date, '%Y-01-01')
-    	END;
+	GROUP BY interval_time;
+
 END$$
 
 DELIMITER ;
@@ -127,13 +110,7 @@ BEGIN
 
 	FROM APIRest_sale
 	WHERE DATE(date) BETWEEN STR_TO_DATE(start_date, '%Y-%m-%d') AND STR_TO_DATE(end_date, '%Y-%m-%d')
-	GROUP BY 
-		CASE 
-			WHEN temporality = 'daily' THEN DATE(date)
-			WHEN temporality = 'weekly' THEN DATE_SUB(DATE(date), INTERVAL WEEKDAY(date) DAY)
-			WHEN temporality = 'monthly' THEN DATE_FORMAT(date, '%Y-%m-01')
-			WHEN temporality = 'annually' THEN DATE_FORMAT(date, '%Y-01-01')
-    	END;
+	GROUP BY interval_time;
 
 END$$
 
