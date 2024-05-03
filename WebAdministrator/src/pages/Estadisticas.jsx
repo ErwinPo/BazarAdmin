@@ -10,6 +10,7 @@ import SalesGraph from "../components/Statistics/SalesGraph";
 const Estadisticas = () => {
     const [salesData, setSalesData] = useState([]); // State to hold sales data
     const [rangeOfDates, setRangeOfDates] = useState([]); // State to hold sales data
+    const [bestSeller, setBestSeller] = useState()
 
     // Function to handle data update from DatesDropdown component
     const handleSalesDataUpdate = (data) => {
@@ -29,6 +30,27 @@ const Estadisticas = () => {
         // console.log("Range of dates Estadisticas: ", ...rangeOfDates);
     }, [rangeOfDates]);
 
+    useEffect(() => {
+        fetch('http://3.146.65.111:8000/bazar/ranking/', {
+            method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar los datos del servidor');
+            }
+            return response.json();
+        })
+        .then(data => {
+            setBestSeller(data);
+            console.log("Best seller", bestSeller)
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [bestSeller]);
+        
+    
+
 
     return (
         <div>
@@ -46,7 +68,7 @@ const Estadisticas = () => {
             <Row>
                 <StatisticsCards title="Ingresos" data="$400000" increasePercentage="10%" />
                 <StatisticsCards title="Ventas Totales" data="7" increasePercentage="22%" />
-                <StatisticsCards title="Mejor Vendedor" data="Fer Garcia" />
+                <StatisticsCards title="Mejor Vendedor" data="Juan" />
             </Row>
             {/* Pass salesData state to SalesGraph component */}
             <SalesGraph salesData={salesData} />

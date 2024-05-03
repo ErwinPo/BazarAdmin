@@ -5,6 +5,8 @@ import increaseArrow from '../../assets/images/icon_arrow.png';
 
 const StatisticsCards = (props) => {
 
+    
+
     return(
         <Col md="2" className={classes.col}>
             <Card className={classes.card} style={{ width: '15rem', height: '8rem' }}> 

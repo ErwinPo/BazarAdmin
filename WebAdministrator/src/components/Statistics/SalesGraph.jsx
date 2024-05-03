@@ -11,7 +11,7 @@ const SalesGraph = ({salesData}) => {
                     <Card className={classes.card}>
                         <h4 className={classes.text}> Estadísticas - Ganancias a través del tiempo </h4>
                         <div>
-                            <h3>No available data for now</h3>
+                            <h4>No available data for now</h4>
                         </div>
                     </Card>
                 </Col>
