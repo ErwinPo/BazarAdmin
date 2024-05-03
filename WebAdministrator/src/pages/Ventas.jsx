@@ -11,7 +11,9 @@ const Ventas = () => {
         const successState = localStorage.getItem("successState");
         if (successState === "true") {
 			toast.success("Venta registrada con éxito!");
-            //localStorage.removeItem("successState"); 
+			setTimeout(() => {
+                localStorage.removeItem("successState"); 
+            }, 1000); 
         }
     }, []);
 
