@@ -69,7 +69,7 @@ const RecordsView = () => {
     });
 
     useEffect(() => {
-        fetch("http://18.222.68.166:8000/bazar/sales//", {
+        fetch("http://3.146.65.111:8000/bazar/sales//", {
             method: "GET"
         })
         .then((response) => response.json())
@@ -154,7 +154,7 @@ const RecordsView = () => {
 
     const deleteSale = (id) => {
         // console.log(id)
-        fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
+        fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "DELETE"
         })
         .then(response => {
@@ -177,7 +177,7 @@ const RecordsView = () => {
 
     const deleteSelectedSale = (sale_ids) => {
         // console.log(id)
-        fetch(`http://18.222.68.166:8000/bazar/delete-sales/`, {
+        fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -206,7 +206,7 @@ const RecordsView = () => {
 
     const editSale = (amount, id, quantity, sale_index) => {
         // console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
-        fetch(`http://18.222.68.166:8000/bazar/sales//${id}/`, {
+        fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
