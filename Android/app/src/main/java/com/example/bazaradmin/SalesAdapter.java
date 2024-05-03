@@ -43,7 +43,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.MyViewHolder
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M - hh:mm", new Locale("es","ES"));
         holder.fecha.setText(dateFormat.format(sale.date));
         holder.quantity.setText(String.valueOf(sale.quantity));
-        holder.sale_id.setText("#"+String.valueOf(sale.sale_id));
+        holder.sale_id.setText("#"+String.valueOf(sale.id));
     }
 
 

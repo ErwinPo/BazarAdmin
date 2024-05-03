@@ -32,12 +32,13 @@ public class HistorialActivity extends AppCompatActivity {
     SalesAdapter myAdapter;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
 
+        BottomNavigationView navigation = findViewById(R.id.barra_Menu);
+        navigation.setSelectedItemId(R.id.secondFragment);
 
         myAdapter = new SalesAdapter(HistorialActivity.this, salesList);
 
@@ -48,12 +49,32 @@ public class HistorialActivity extends AppCompatActivity {
 
         SalesChangeListener();
 
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                int itemId = item.getItemId();
+                if (itemId == R.id.firstFragment) {
+                    startActivity(new Intent(getApplicationContext(), RegistroActivity.class));
+                    overridePendingTransition(0,0);
+                    finish();
+                    return true;
+                } else if (itemId == R.id.secondFragment) {
+                    return true;
+                } else if (itemId == R.id.thirdFragment) {
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://18.222.68.166:8000/bazar/")
+            .baseUrl("http://3.146.65.111:8000/bazar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
 
     private void SalesChangeListener() {
         ApiService service = retrofit.create(ApiService.class);
@@ -70,7 +91,7 @@ public class HistorialActivity extends AppCompatActivity {
 
                     myAdapter = new SalesAdapter(getApplicationContext(), ventas);
                     recyclerView.setAdapter(myAdapter);
-                    Log.i("ID OF LAST SALE", String.valueOf(ventas.registros.get(ventas.registros.size()-1).sale_id));
+                    Log.i("ID OF LAST SALE", String.valueOf(ventas.registros.get(ventas.registros.size()-1).id));
 
                 }
             }
@@ -81,6 +102,5 @@ public class HistorialActivity extends AppCompatActivity {
             };
         });
     }
-
 
 }

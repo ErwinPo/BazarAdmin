@@ -9,16 +9,14 @@ public class GetVenta {
     int quantity;
     int user_id;
     Timestamp date;
-    int sale_id;
-    Boolean is_active;
+    int id;
 
-    public GetVenta(int amount, int quantity, int user_id, Timestamp date, int sale_id, Boolean is_active) {
+    public GetVenta(int amount, int quantity, int user_id, Timestamp date, int id) {
         this.amount = amount;
         this.quantity = quantity;
         this.user_id = user_id;
         this.date = date;
-        this.sale_id = sale_id;
-        this.is_active = is_active;
+        this.id = id;
     }
 
     public int getAmount() {
@@ -53,19 +51,12 @@ public class GetVenta {
         this.date = date;
     }
 
-    public int getSale_id() {
-        return sale_id;
+    public int get_id() {
+        return id;
     }
 
-    public void setSale_id(int sale_id) {
-        this.sale_id = sale_id;
+    public void set_id(int id) {
+        this.id = id;
     }
 
-    public Boolean getIs_active() {
-        return is_active;
-    }
-
-    public void setIs_active(Boolean is_active) {
-        this.is_active = is_active;
-    }
 }
