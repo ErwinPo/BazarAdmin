@@ -6,10 +6,10 @@ import {
     Navigate,
 } from 'react-router-dom';
 import Ventas from './pages/Ventas';
-import Usuarios from './pages/Usuarios';
+import Usuarios from './components/Users/UsersView';
 import Estadisticas from './pages/Estadisticas';
 import RecordsView from "./components/Records/RecordsView";
-import Login from './pages/Login';
+import Login from './components/Login/Login';
 
 export const AuthContext = createContext();
 
@@ -44,14 +44,14 @@ function App() {
             {!authLoading && (
                 <Router>
                     <Routes>
-                        {!isLoggedIn && <Route path="/" element={<Login />} />}
+                        <Route path="/" element={isLoggedIn ? <Navigate to="/Ventas" /> : <Login />} />
                         {isLoggedIn && (
                             <>
                                 <Route path="/Ventas" element={<Ventas />} />
                                 <Route path="/Usuarios" element={<Usuarios />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
-                                <Route path="/*" element={<Navigate to="/Ventas" replace />} />
+                                <Route path="/*" element={<Navigate to="/Ventas" />} />
                             </>
                         )}
                     </Routes>
@@ -59,6 +59,7 @@ function App() {
             )}
         </AuthContext.Provider>
     );
+    
 }
 
 export default App;

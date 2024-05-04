@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import logo from "../assets/images/LogoHNP1.png";
+import logo from "../../assets/images/LogoHNP1.png";
 import classes from "./Login.module.css";
 
 export default function Login() {
@@ -12,7 +12,6 @@ export default function Login() {
   const [loginError, setLoginError] = useState(false);
 
   useEffect(() => {
-    // Al cargar el componente, eliminar los tokens del almacenamiento local
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
   }, []);
