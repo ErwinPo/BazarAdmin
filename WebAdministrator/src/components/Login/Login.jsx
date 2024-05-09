@@ -48,7 +48,6 @@ export default function Login() {
         }
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
-        navigate('/Ventas');
         window.location.reload();
       } catch (error) {
         toast.error(error.message);

@@ -22,6 +22,7 @@ function App() {
             const access_token = localStorage.getItem('access_token');
             if (access_token) {
                 setIsLoggedIn(true);
+                console.log("hola")
             }
             setAuthLoading(false);
         };
@@ -53,6 +54,9 @@ function App() {
                                 <Route path="/Registros" element={<RecordsView />} />
                                 <Route path="/*" element={<Navigate to="/Ventas" />} />
                             </>
+                        )}
+                        {!isLoggedIn && (
+                            <Route path="/*" element={<Navigate to="/" />} />
                         )}
                     </Routes>
                 </Router>
