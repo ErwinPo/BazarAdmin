@@ -31,6 +31,7 @@ const UsersView = () => {
     deleteModal: false,
     deletesModal: false,
     errorModal: false,
+    filter: 'all'
   });
 
 
@@ -399,16 +400,34 @@ const UsersView = () => {
   };
 
 
+  const applyFilter = (user) => {
+    const { filter } = state;
+    if (filter === 'all') return true; // Mostrar todos los usuarios
+    if (filter === 'admin') return user.is_superuser; // Mostrar solo administradores
+    if (filter === 'vendor') return !user.is_superuser; // Mostrar solo vendedores
+  };
+
+
   return (
-  	<div>
+  	<>
 		<Navbar />
 		<ToastContainer position="top-center" autoClose={3000} />
       <div className={classes.btn_container}>
         <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
         <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
+        <Form.Control 
+        className={classes.bButton}
+          as="select" 
+          value={state.filter} 
+          onChange={(e) => setState({ ...state, filter: e.target.value })}
+        >
+          <option value="all">Ver Todos</option>
+          <option value="admin">Ver Administradores</option>
+          <option value="vendor">Ver Vendedores</option>
+        </Form.Control>
       </div>
       <div className={classes.tableCover}>
-        <Table bordered responsive size='lg' variant='dark' className={classes.table}>
+        <Table responsive size='lg' variant='dark' className={classes.table}>
           <thead>
             <tr>
               <th></th>
@@ -421,7 +440,7 @@ const UsersView = () => {
           </thead>
           <tbody>
             {users.length > 0 ? (
-              users.map((user) => (
+              users.filter(applyFilter).map((user) => (
                 <tr key={user.id}>
                   <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} checked={state.selectedUserIds.includes(user.id)} /></td>
                   <td>{user.id}</td>
@@ -573,7 +592,7 @@ const UsersView = () => {
           <Btn color='success' onClick={hideModalError1}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
-	</div>
+	</>
 	);
 };
 

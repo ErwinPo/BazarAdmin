@@ -15,6 +15,19 @@
   padding-right: 20px;
 }
 
+.bButton {
+  background-color: white;
+  color:black;
+  border: 3px solid #F7C04A;
+  border-radius: 20px;
+  margin-top: 30px;
+  width: auto;
+  height: 45px;
+  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .addButton:hover, 
 .addButton:active {
   background-color: #F7C04A;

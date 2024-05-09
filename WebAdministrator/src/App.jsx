@@ -6,7 +6,7 @@ import {
     Navigate,
 } from 'react-router-dom';
 import Ventas from './pages/Ventas';
-import Usuarios from './components/Users/UsersView';
+import UsersView from './components/Users/UsersView';
 import Estadisticas from './pages/Estadisticas';
 import RecordsView from "./components/Records/RecordsView";
 import Login from './components/Login/Login';
@@ -49,7 +49,7 @@ function App() {
                         {isLoggedIn && (
                             <>
                                 <Route path="/Ventas" element={<Ventas />} />
-                                <Route path="/Usuarios" element={<Usuarios />} />
+                                <Route path="/Usuarios" element={<UsersView />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
                                 <Route path="/*" element={<Navigate to="/Ventas" />} />
