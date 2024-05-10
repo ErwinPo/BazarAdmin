@@ -5,16 +5,16 @@
 import Navbar from "../NavBar/Navbar";
 import React, { useState, useEffect } from 'react';
 import classes from './UsersView.module.css';
-import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Row, Col, Form, Image, Table } from 'react-bootstrap';
 import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
+import { useMediaQuery } from 'react-responsive';
 
 const UsersView = () => {
-
   const [users, setUsers] = useState([]);
   const [state, setState] = useState({
     selectedUserIds: [],
@@ -33,7 +33,6 @@ const UsersView = () => {
     errorModal: false,
     filter: 'all'
   });
-
 
   useEffect(() => {
     fetch("http://3.146.65.111:8000/bazar/users//", {
@@ -54,7 +53,6 @@ const UsersView = () => {
     });
   }, []);
 
-
   const handleChange = e => {
     const { name, value } = e.target;
     const newValue = name === 'is_superuser' ? (value === 'Administrador') : value;
@@ -66,7 +64,6 @@ const UsersView = () => {
       },
     });
   };
-
 
   const handleUsernameChange = (e) => {
     if (e.keyCode === 32) {
@@ -82,7 +79,6 @@ const UsersView = () => {
     }
   };
 
-
   const handleMailChange = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -97,7 +93,6 @@ const UsersView = () => {
     }
   };
   
-
   const handlePasswordChange = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -111,7 +106,6 @@ const UsersView = () => {
       });
     }
   };
-
 
   const handleCheckboxChange = (userId) => {
     setState((prevState) => {
@@ -128,26 +122,21 @@ const UsersView = () => {
     });
   };
   
-
   const showModalInsert = () => {
     setState({ ...state, insertModal: true });
   };
-
 
   const hideModalInsert = () => {
     setState({ ...state, insertModal: false });
   };
 
-
   const showModalEdit = (user) => {
     setState({ ...state, editModal: true, form: user});
   };
 
-
   const hideModalEdit = () => {
     setState({ ...state, editModal: false });
   };
-
 
   const showModalDelete = (user) => {
     const isAdminUser = user.is_superuser;
@@ -159,26 +148,21 @@ const UsersView = () => {
     }
   };
   
-
   const hideModalDelete = () => {
     setState({ ...state, deleteModal: false });
   };
-
 
   const showModalDeleteS = () => {
     setState({ ...state, deletesModal: true });
   };
 
-
   const hideModalDeleteS = () => {
     setState({ ...state, deletesModal: false });
   };
 
-
   const hideModalError1 = () => {
     setState({ ...state, errorModal: false });
   }
-
 
   const validateCForm = () => {
     const { id, username, email, password, is_superuser } = state.form;
@@ -230,7 +214,6 @@ const UsersView = () => {
     return true;
   };
   
-
   const handleCreateUser = () => {
     if (!validateCForm()) {
       return;
@@ -276,7 +259,6 @@ const UsersView = () => {
     });
   };
   
-
   const handleEditUser = () => {
     if (!validateUForm()) {
       return;
@@ -335,7 +317,6 @@ const UsersView = () => {
     });
   };
   
-
   const handleDeleteUser = () => {
     const { id } = state.form;
     fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
@@ -358,7 +339,6 @@ const UsersView = () => {
       setUsers(updatedUsers);
     })
   };
-
 
   const handleDeleteUsers = () => {
     const selectedAdminUsers = users.filter((user) =>
@@ -399,33 +379,40 @@ const UsersView = () => {
     }
   };
 
-
   const applyFilter = (user) => {
     const { filter } = state;
-    if (filter === 'all') return true; // Mostrar todos los usuarios
-    if (filter === 'admin') return user.is_superuser; // Mostrar solo administradores
-    if (filter === 'vendor') return !user.is_superuser; // Mostrar solo vendedores
+    if (filter === 'all') return true;
+    if (filter === 'admin') return user.is_superuser;
+    if (filter === 'vendor') return !user.is_superuser;
   };
 
+  const isLargeScreen = useMediaQuery({ maxWidth: 885 });
 
   return (
   	<>
-		<Navbar />
+		<Navbar/>
 		<ToastContainer position="top-center" autoClose={3000} />
-      <div className={classes.btn_container}>
+    <div className={classes.usersLog}>
+      <Row className={classes.options}>
+        <Col md={isLargeScreen ? 12 : 'auto'}>
         <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
+        </Col>
+        <Col md={isLargeScreen ? 12 : 'auto'}>
         <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
-        <Form.Control 
-        className={classes.bButton}
-          as="select" 
-          value={state.filter} 
-          onChange={(e) => setState({ ...state, filter: e.target.value })}
-        >
-          <option value="all">Ver Todos</option>
-          <option value="admin">Ver Administradores</option>
-          <option value="vendor">Ver Vendedores</option>
-        </Form.Control>
-      </div>
+        </Col>
+        <Col className={classes.options_user}>
+          <Form.Control 
+          className={classes.oButton}
+            as="select" 
+            value={state.filter} 
+            onChange={(e) => setState({ ...state, filter: e.target.value })}
+            >
+            <option value="all">Ver Todos</option>
+            <option value="admin">Ver Administradores</option>
+            <option value="vendor">Ver Vendedores</option>
+          </Form.Control>
+        </Col>
+      </Row>
       <div className={classes.tableCover}>
         <Table responsive size='lg' variant='dark' className={classes.table}>
           <thead>
@@ -468,7 +455,6 @@ const UsersView = () => {
         </Table>
       </div>
 
-
       <Modal isOpen={state.insertModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -503,7 +489,6 @@ const UsersView = () => {
           <Btn color='danger' onClick={hideModalInsert}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
-
 
       <Modal isOpen={state.editModal}>
         <ModalHeader className={classes.modal_header}>
@@ -540,7 +525,6 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
-
       <Modal isOpen={state.deleteModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -557,7 +541,6 @@ const UsersView = () => {
           <Btn color='danger' onClick={hideModalDelete}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
-
 
       <Modal isOpen={state.deletesModal}>
         <ModalHeader className={classes.modal_header}>
@@ -576,7 +559,6 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
-
       <Modal isOpen={state.errorModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -592,7 +574,8 @@ const UsersView = () => {
           <Btn color='success' onClick={hideModalError1}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
-	</>
+    </div>
+	  </>
 	);
 };
 

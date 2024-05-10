@@ -15,19 +15,6 @@
   padding-right: 20px;
 }
 
-.bButton {
-  background-color: white;
-  color:black;
-  border: 3px solid #F7C04A;
-  border-radius: 20px;
-  margin-top: 30px;
-  width: auto;
-  height: 45px;
-  margin-right: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
 .addButton:hover, 
 .addButton:active {
   background-color: #F7C04A;
@@ -81,6 +68,35 @@ label{
   justify-content: center;
 }
 
+.oButton {
+  background-color: white;
+  color:black;
+  border: 3px solid #F7C04A;
+  border-radius: 20px;
+  margin-top: 30px;
+  width: auto;
+  height: 45px;
+  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  align-self: center;
+}
+
+.options {
+  margin: 16px 0px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: end;
+  justify-content: left;
+  white-space: nowrap;
+  gap: 0px;
+}
+
+.options_user {
+  justify-content: right;
+  display: flex;
+}
+
 .tableCover div {
 	border-radius: 15px !important;
 }
@@ -111,5 +127,26 @@ label{
 }
 
 .tableCover {
-	margin: 30px 100px;
+  justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.usersLog {
+  margin: 0px 80px;
+}
+
+@media (max-width: 885px) {
+  .usersLog {
+      margin: 0px 24px;
+  }
+  .options_user  {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 468px) {
+  .usersLog {
+      margin: 0px 6px;
+  }
 }
