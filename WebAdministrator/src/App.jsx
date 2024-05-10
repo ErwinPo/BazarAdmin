@@ -22,7 +22,6 @@ function App() {
             const access_token = localStorage.getItem('access_token');
             if (access_token) {
                 setIsLoggedIn(true);
-                console.log("hola")
             }
             setAuthLoading(false);
         };
