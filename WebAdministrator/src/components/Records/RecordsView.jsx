@@ -78,7 +78,7 @@ const RecordsView = () => {
         .then(data => {
             setState({ ...state, sales: data ?? [] });
         })
-        .catch((error) => {console.log(error);});
+        .catch((error) => {console.log(error); setState({ ...state, sales: dummySales})});
     }, []);
 
     const handleStartDateChange = (date) => {
