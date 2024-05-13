@@ -34,6 +34,12 @@
 	border-radius: 0.25rem !important;
 }
 
+.dropdown-item.active,
+.dropdown-item:active {
+  --bs-dropdown-link-active-color: transparent;
+  --bs-dropdown-link-active-bg: transparent;
+}
+
 .emptyState td {
 	color: black !important;
 	font-weight: bold;
