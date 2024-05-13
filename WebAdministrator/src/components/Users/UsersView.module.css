@@ -68,14 +68,15 @@ label{
   justify-content: center;
 }
 
-.oButton {
-  background-color: white;
-  color:black;
-  border: 3px solid #F7C04A;
+.oButton button {
+  background-color: #F7C04A !important;
+  color: black !important;
   border-radius: 20px;
+  border-color: black !important;
   margin-top: 30px;
   width: auto;
   height: 45px;
+  padding-top: 5px;
   margin-right: 20px;
   padding-left: 20px;
   padding-right: 20px;

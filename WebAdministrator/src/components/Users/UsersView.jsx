@@ -5,7 +5,7 @@
 import Navbar from "../NavBar/Navbar";
 import React, { useState, useEffect } from 'react';
 import classes from './UsersView.module.css';
-import { Button, ButtonGroup, Row, Col, Form, Image, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Row, Col, Form, Image, Table, DropdownButton, Dropdown } from 'react-bootstrap';
 import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from 'react-toastify';
@@ -386,6 +386,17 @@ const UsersView = () => {
     if (filter === 'vendor') return !user.is_superuser;
   };
 
+  const getTitle = () => {
+    switch (state.filter) {
+      case 'admin':
+        return 'Ver Administradores';
+      case 'vendor':
+        return 'Ver Vendedores';
+      default:
+        return 'Ver Todos';
+    }
+  };
+
   const isLargeScreen = useMediaQuery({ maxWidth: 885 });
 
   return (
@@ -401,16 +412,11 @@ const UsersView = () => {
         <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
         </Col>
         <Col className={classes.options_user}>
-          <Form.Control 
-          className={classes.oButton}
-            as="select" 
-            value={state.filter} 
-            onChange={(e) => setState({ ...state, filter: e.target.value })}
-            >
-            <option value="all">Ver Todos</option>
-            <option value="admin">Ver Administradores</option>
-            <option value="vendor">Ver Vendedores</option>
-          </Form.Control>
+          <DropdownButton title={getTitle()} variant={null} className={classes.oButton}>
+            <Dropdown.Item onClick={() => setState({ ...state, filter: 'all' })}>Ver Todos</Dropdown.Item>
+            <Dropdown.Item onClick={() => setState({ ...state, filter: 'admin' })}>Ver Administradores</Dropdown.Item>
+            <Dropdown.Item onClick={() => setState({ ...state, filter: 'vendor' })}>Ver Vendedores</Dropdown.Item>
+          </DropdownButton>
         </Col>
       </Row>
       <div className={classes.tableCover}>
