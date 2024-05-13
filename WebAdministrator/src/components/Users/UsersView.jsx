@@ -432,7 +432,8 @@ const UsersView = () => {
             </tr>
           </thead>
           <tbody>
-            {users.length > 0 ? (
+          {users.length > 0 ? (
+            users.filter(applyFilter).length > 0 ? (
               users.filter(applyFilter).map((user) => (
                 <tr key={user.id}>
                   <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} checked={state.selectedUserIds.includes(user.id)} /></td>
@@ -454,9 +455,14 @@ const UsersView = () => {
               ))
             ) : (
               <tr className={classes.emptyState}>
-                <td colSpan='7'>No hay usuarios registrados hasta el momento</td>
+                <td colSpan='6'>No hay usuarios vendedores</td>
               </tr>
-            )}
+            )
+          ) : (
+            <tr className={classes.emptyState}>
+              <td colSpan='6'>No hay usuarios registrados hasta el momento</td>
+            </tr>
+          )}
           </tbody>
         </Table>
       </div>

@@ -3,9 +3,9 @@
  * Type: css file */
 
  .addButton {
-  background-color: #F7C04A;
+  background-color: #F7C04A !important;
   color:black;
-  border-color: black;
+  border-color: black !important;
   border-radius: 20px;
   margin-top: 30px;
   width: auto;
@@ -13,13 +13,6 @@
   margin-right: 20px;
   padding-left: 20px;
   padding-right: 20px;
-}
-
-.addButton:hover, 
-.addButton:active {
-  background-color: #F7C04A;
-  color:black;
-  border-color: black;
 }
 
 .btn_container {
