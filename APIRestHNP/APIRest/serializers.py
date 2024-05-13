@@ -30,6 +30,11 @@ class IntervalQuantitySalesSerializer(serializers.Serializer):
     interval_time = serializers.DateField()
     total_quantity = serializers.IntegerField()
     
+class DatesComparison(serializers.Serializer):
+    timeone = serializers.DateField()
+    timetwo = serializers.DateField()
+    growth_rate = serializers.FloatField()
+    
 class RankingSerializer(serializers.Serializer):
     user = serializers.CharField()
     username = serializers.CharField()

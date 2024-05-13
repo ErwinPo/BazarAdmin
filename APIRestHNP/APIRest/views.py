@@ -50,6 +50,17 @@ class SalesViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user)
+    
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+
+        # Agregar el nombre del usuario a cada objeto en la lista
+        for obj in data:
+            obj['username'] = get_username(obj['user_id'])
+
+        return Response(data)
         
 
 class PasswordRestView(views.APIView):
@@ -176,14 +187,27 @@ class SalesDateRangeQuantityView(views.APIView):
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')
         query_temporality = self.request.query_params.get('temporality')
+        
         queryset = callSalesDateRangeQuantity(query_start_date, query_end_date, query_temporality)
-        data = [{"interval_time": str(item[0]), "total_quantity": item[1]} for item in queryset]
-        serializer = IntervalQuantitySalesSerializer(data=data, many=True)
-        if serializer.is_valid():
-            return Response(serializer.data)
+        data_qty = [{"interval_time": str(item[0]), "total_quantity": item[1]} for item in queryset]
+        serializer_qty = IntervalQuantitySalesSerializer(data=data_qty, many=True)
+        
+        queryset = callCalculateSalesChangeQuantity(query_start_date, query_end_date, query_temporality)
+        data_comp = [{"timeone": item[0], "timetwo": item[1], "growth_rate": item[2]} for item in queryset]
+        serializer_comp = DatesComparison(data=data_comp, many=True)
+        
+        
+        
+        
+        if serializer_qty.is_valid() and serializer_comp.is_valid():
+            return Response({"qty":serializer_qty.data, "comp": serializer_comp.data})
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+            errors = {}
+            if not serializer_qty.is_valid():
+                errors['qty'] = serializer_qty.errors
+            if not serializer_comp.is_valid():
+                errors['comp'] = serializer_comp.errors
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
     
 class SalesDateRangeAmountView(views.APIView):
     permission_classes = [permissions.AllowAny]
@@ -192,13 +216,24 @@ class SalesDateRangeAmountView(views.APIView):
         query_start_date = self.request.query_params.get('start-date')
         query_end_date = self.request.query_params.get('end-date')
         query_temporality = self.request.query_params.get('temporality')
+        
         queryset = callSalesDateRangeAmount(query_start_date, query_end_date,query_temporality)
-        data = [{"interval_time": str(item[0]), "total_amount": item[1]} for item in queryset]
-        serializer = IntervalAmountSalesSerializer(data=data, many=True)
-        if serializer.is_valid():
-            return Response(serializer.data)
+        data_mnt = [{"interval_time": str(item[0]), "total_amount": item[1]} for item in queryset]
+        serializer_mnt = IntervalAmountSalesSerializer(data=data_mnt, many=True)
+        
+        queryset = callCalculateSalesChangeAmount(query_start_date, query_end_date,query_temporality)
+        data_comp = [{"timeone": item[0], "timetwo": item[1], "growth_rate": item[2]} for item in queryset]
+        serializer_comp = DatesComparison(data=data_comp, many=True)
+        
+        if serializer_mnt.is_valid() and serializer_comp.is_valid():
+            return Response({"qty":serializer_mnt.data, "comp": serializer_comp.data})
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            errors = {}
+            if not serializer_mnt.is_valid():
+                errors['mnt'] = serializer_mnt.errors
+            if not serializer_comp.is_valid():
+                errors['comp'] = serializer_comp.errors
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
   
 
 # ==========  With Date (Start - End) & Seller ID =================
@@ -212,12 +247,22 @@ class SalesDateRangeSellerQuantityView(views.APIView):
         query_end_date = self.request.query_params.get('end-date')
         query_temporality = self.request.query_params.get('temporality')
         queryset = callSalesDateRangeSellerQuantity(query_start_date, query_end_date, query_id, query_temporality)
-        data = [{"interval_time": str(item[0]), "total_quantity": item[1]} for item in queryset]
-        serializer = IntervalQuantitySalesSerializer(data=data, many=True)
-        if serializer.is_valid():
-            return Response(serializer.data)
+        data_qty = [{"interval_time": str(item[0]), "total_quantity": item[1]} for item in queryset]
+        serializer_qty = IntervalQuantitySalesSerializer(data=data_qty, many=True)
+        
+        queryset = callCalculateSalesChangeQuantityUser(query_start_date, query_end_date, query_id, query_temporality)
+        data_comp = [{"timeone": item[0], "timetwo": item[1], "growth_rate": item[2]} for item in queryset]
+        serializer_comp = DatesComparison(data=data_comp, many=True)
+        
+        if serializer_qty.is_valid() and serializer_comp.is_valid():
+            return Response({"qty":serializer_qty.data, "comp": serializer_comp.data})
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            errors = {}
+            if not serializer_qty.is_valid():
+                errors['mnt'] = serializer_qty.errors
+            if not serializer_comp.is_valid():
+                errors['comp'] = serializer_comp.errors
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 class SalesDateRangeSellerAmountView(views.APIView):
@@ -230,12 +275,23 @@ class SalesDateRangeSellerAmountView(views.APIView):
         query_end_date = self.request.query_params.get('end-date')
         query_temporality = self.request.query_params.get('temporality')
         queryset = callSalesDateRangeSellerAmount(query_start_date, query_end_date, query_id, query_temporality)
-        data = [{"interval_time": str(item[0]), "total_amount": item[1]} for item in queryset]
-        serializer = IntervalAmountSalesSerializer(data=data, many=True)
-        if serializer.is_valid():
-            return Response(serializer.data)
+        data_mnt = [{"interval_time": str(item[0]), "total_amount": item[1]} for item in queryset]
+        serializer_mnt = IntervalAmountSalesSerializer(data=data_mnt, many=True)
+        
+        
+        queryset = callCalculateSalesChangeAmountUser(query_start_date, query_end_date, query_id, query_temporality)
+        data_comp = [{"timeone": item[0], "timetwo": item[1], "growth_rate": item[2]} for item in queryset]
+        serializer_comp = DatesComparison(data=data_comp, many=True)
+        
+        if serializer_mnt.is_valid() and serializer_comp.is_valid():
+            return Response({"qty":serializer_mnt.data, "comp": serializer_comp.data})
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            errors = {}
+            if not serializer_mnt.is_valid():
+                errors['mnt'] = serializer_mnt.errors
+            if not serializer_comp.is_valid():
+                errors['comp'] = serializer_comp.errors
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def ventas(request):

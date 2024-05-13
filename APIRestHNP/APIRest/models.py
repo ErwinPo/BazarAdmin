@@ -21,14 +21,3 @@ class Sale(models.Model):
     amount = models.FloatField(default=0)
     quantity = models.IntegerField(default=0)
     date = models.DateTimeField(default=now, editable=False)
-    
-    def as_dict(self):
-        return { 
-                "amount": self.amount,
-                "user_id": self.user_id.id,
-                "quantity": self.quantity,
-                "date": self.date,
-                "id": self.id
-                }
-    
-
