@@ -11,6 +11,7 @@ const Estadisticas = () => {
     const [salesData, setSalesData] = useState([]); // State to hold sales data
     const [rangeOfDates, setRangeOfDates] = useState([]); // State to hold sales data
     const [bestSeller, setBestSeller] = useState()
+    const [loading, setLoading] = useState(true);
 
     // Function to handle data update from DatesDropdown component
     const handleSalesDataUpdate = (data) => {
@@ -56,15 +57,17 @@ const Estadisticas = () => {
         })
         .then(data => {
             setBestSeller(data);
-            
+            setLoading(false);
         })
         .catch(error => {
             console.error('Error:', error);
         });
     }, []);
         
-    console.log("Best seller", bestSeller[0].username)
-
+    // if (bestSeller) {
+    //     console.log(true);
+    // } 
+    
 
     return (
         <div>
@@ -82,7 +85,10 @@ const Estadisticas = () => {
             <Row>
                 <StatisticsCards title="Ingresos" data="$400000" increasePercentage="10%" />
                 <StatisticsCards title="Ventas Totales" data="7" increasePercentage="22%" />
-                <StatisticsCards title="Mejor Vendedor" data={bestSeller[0].username} />
+                <StatisticsCards
+                    title="Mejor Vendedor"
+                    data={loading ? "NA" : bestSeller ? bestSeller[0].username : "NA"}
+                />
             </Row>
             {/* Pass salesData state to SalesGraph component */}
             <SalesGraph salesData={salesData} />

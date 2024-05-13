@@ -1,9 +1,16 @@
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Button } from 'react-bootstrap';
+import { Dropdown, Modal, Button } from 'react-bootstrap/';
 import { useState, useEffect } from 'react';
+import classes from "./DatesDropdown.module.css";
+import DateRangePicker from '../DateRangePicker';
 
 const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
-    const [daysFromHandleDropdownItem, setdaysFromHandleDropdownItem] = useState([]);
+    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [showModal, setShowModal] = useState(false); // Changed from 'show' to 'showModal'
+
+    const handleClose = () => setShowModal(false); // Changed from 'setShowModal' to 'setShow'
+    const handleShowModal = () => setShowModal(true);
+    
 
     const getEndDate = () => {
         return new Date().toJSON().slice(0, 10);
@@ -19,17 +26,10 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
         const endDate = getEndDate();
         const currDate = getCurrentDate(endDate, days);
 
-        setdaysFromHandleDropdownItem([currDate, endDate]);
-        onRangeOfDatesUpdate([currDate, endDate])
-
+        setDaysFromHandleDropdownItem([currDate, endDate]);
+        onRangeOfDatesUpdate([currDate, endDate]);
+        setSelectedOption(days); // Update selected option
     };
-
-    // console.log("Date range: ",daysFromHandleDropdownItem)
-  
-    // useEffect(() => {
-      
-    //     console.log("Date range: ", ...daysFromHandleDropdownItem);
-    // }, []);
 
     useEffect(() => {
         const [startDate, endDate] = daysFromHandleDropdownItem;
@@ -46,33 +46,76 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
             })
             .then(data => {
                 onDataUpdate(data); 
-                console.log(onDataUpdate(data))  
+                console.log(...daysFromHandleDropdownItem)
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
-        
     }, [daysFromHandleDropdownItem]);
 
     return (
-        <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Rango de Fechas
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleDropdownItemClick(1)}>1 día</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleDropdownItemClick(7)}>7 días</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleDropdownItemClick(15)}>15 días</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleDropdownItemClick(30)}>30 días</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleDropdownItemClick(180)}>6 meses</Dropdown.Item>
-                <Dropdown.Item >Personalizar</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item eventKey="4">
-                    <Button>Aplicar Cambios</Button>
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>
+        <>
+            <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Rango de Fechas
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Dropdown.Item
+                        onClick={() => handleDropdownItemClick(1)}
+                        className={selectedOption === 1 ? classes.selectedOption : ""}
+                    >
+                        Hace 1 día
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={() => handleDropdownItemClick(7)}
+                        className={selectedOption === 7 ? classes.selectedOption : ""}
+                    >
+                        Hace 7 días
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={() => handleDropdownItemClick(15)}
+                        className={selectedOption === 15 ? classes.selectedOption : ""}
+                    >
+                        Hace 15 días
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={() => handleDropdownItemClick(30)}
+                        className={selectedOption === 30 ? classes.selectedOption : ""}
+                    >
+                        Hace 30 días
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={() => handleDropdownItemClick(180)}
+                        className={selectedOption === 180 ? classes.selectedOption : ""}
+                    >
+                        Hace 6 meses
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        onClick={handleShowModal}
+                        className={selectedOption === null ? classes.selectedOption : ""}
+                    >
+                        Personalizar
+                    </Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+            <Modal show={showModal} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Rango de fechas: Personalizable</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <DateRangePicker/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Aplicar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 };
 
