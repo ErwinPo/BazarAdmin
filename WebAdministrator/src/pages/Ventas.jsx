@@ -7,28 +7,48 @@ import { ToastContainer, toast } from "react-toastify";
 const Ventas = () => {
 	const [validated, setValidated] = useState(false);
 
-	useEffect(() => {
-        const successState = localStorage.getItem("successState");
-        if (successState === "true") {
-			toast.success("Venta registrada con éxito!");
-			setTimeout(() => {
-                localStorage.removeItem("successState"); 
-            }, 1000); 
-        }
-    }, []);
-
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
+		event.preventDefault();
 		const form = event.currentTarget;
 		
 		if(form.checkValidity() === false) {
 			event.preventDefault();
 			event.stopPropagation();
-			localStorage.setItem("successState", "false");
 			toast.error("Error: Datos ingresados no validos.");
+			setValidated(true);
 		} else {
-            localStorage.setItem("successState", "true"); 
+			try {
+				setValidated(true);
+				const response = await fetch("http://3.146.65.111:8000/bazar/registroventa/", {
+					method: "POST",
+					headers: {
+						"Content-Type" : "application/json"
+					},
+					body: JSON.stringify({
+						user_id: 1,
+						amount: form.elements.formMonto.value,
+						quantity: form.elements.formCantidad.value
+					})
+				});
+
+				if(!response.ok){
+					console.log(response);
+					throw new Error("Error al registrar la venta.");
+				}
+
+				toast.success("Venta registrada con éxito!");
+
+				form.elements.formMonto.value = "";
+				form.elements.formCantidad.value = "";
+				setValidated(false);
+
+			} catch (error) {
+				console.error("Error: ", error.message);
+				toast.error("Error al registrar la venta.");
+			}
+             
 		}
-		setValidated(true);
+		//setValidated(true);
 	};
 
 	return (
