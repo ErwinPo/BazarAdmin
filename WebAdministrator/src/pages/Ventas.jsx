@@ -19,10 +19,11 @@ const Ventas = () => {
 		} else {
 			try {
 				setValidated(true);
-				const response = await fetch("http://3.146.65.111:8000/bazar/registroventa/", {
+				const response = await fetch("http://3.146.65.111:8000/bazar/sales//", {
 					method: "POST",
 					headers: {
-						"Content-Type" : "application/json"
+						'Content-Type' : 'application/json',
+						'Authorization': `Bearer ${localStorage.getItem('access_token')}`
 					},
 					body: JSON.stringify({
 						user_id: 1,
