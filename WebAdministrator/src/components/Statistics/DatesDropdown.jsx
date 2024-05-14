@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import classes from "./DatesDropdown.module.css";
 import DateRangePicker from '../DateRangePicker';
 
-const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
+const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpdate }) => {
     const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
     const [showModal, setShowModal] = useState(false); // Changed from 'show' to 'showModal'
@@ -33,8 +33,27 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
 
     useEffect(() => {
         const [startDate, endDate] = daysFromHandleDropdownItem;
-        
+    
         if (startDate && endDate) {
+            // Fetch to get total items
+            fetch(`http://3.146.65.111:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=daily`, {
+                method: "GET"
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar los datos del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                onItemsDataUpdate(data)
+                // console.log("Items data:", data)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    
+            // Fetch to get total sales amount
             fetch(`http://3.146.65.111:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=daily`, {
                 method: "GET"
             })
@@ -45,14 +64,14 @@ const DatesDropdown = ({ onDataUpdate, onRangeOfDatesUpdate }) => {
                 return response.json();
             })
             .then(data => {
-                onDataUpdate(data); 
-                console.log(...daysFromHandleDropdownItem)
+                onSalesDataUpdate(data);
             })
             .catch(error => {
                 console.error('Error:', error);
             });
         }
     }, [daysFromHandleDropdownItem]);
+    
 
     return (
         <>

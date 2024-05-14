@@ -6,22 +6,82 @@ import UsersDropdown from "../components/Statistics/UsersDropdown";
 import classes from "../components/Statistics/StatisticsDropdowns.module.css";
 import StatisticsCards from "../components/Statistics/StatisticsCards";
 import SalesGraph from "../components/Statistics/SalesGraph";
+import DateRangePicker from "../components/DateRangePicker";
 
 const Estadisticas = () => {
     const [salesData, setSalesData] = useState([]); // State to hold sales data
     const [rangeOfDates, setRangeOfDates] = useState([]); // State to hold sales data
     const [bestSeller, setBestSeller] = useState()
     const [loading, setLoading] = useState(true);
+    const [totalSales, setTotalSales] = useState(0);
+    const [itemsData, setItemsData] = useState(0);
+    const [salesDataPercentage, setSalesDataPercentage] = useState()
+    const [totalItems, setTotalItems] = useState(0)
+    const [itemsDataPercentage, setItemsPercentage] = useState()
 
     // Function to handle data update from DatesDropdown component
     const handleSalesDataUpdate = (data) => {
         setSalesData(data);
+
+        if(itemsData){
+            console.log('Items Data: ',itemsData)
+        }
+
+        
     };
 
     // Function to handle data update from DatesDropdown component
     const handleRangeOfDates = (data) => {
         setRangeOfDates(data);
     };
+
+    // Function to handle data update from DatesDropdown component
+    const handleItemsDataUpdate = (data) => {
+        setItemsData(data);
+    };
+
+    useEffect(() => {
+        // Calculate total sales amount
+
+        console.log(salesData)
+
+        const sales = salesData.qty
+        const salesPercentage = salesData.comp
+
+        const items = itemsData.qty
+        const itemsPercentage = itemsData.comp
+
+        if(items){
+            let total = 0
+            items.forEach(item => {
+                total += item.total_quantity
+            })
+            console.log("Total items: ",total)
+            setTotalItems(total)
+        }
+        
+        if(sales){
+            let total = 0
+            sales.forEach(sale => {
+                total += sale.total_amount
+            });
+            // total = total.toFixed(2)
+            setTotalSales(total.toFixed(2))
+        } 
+
+        if(salesPercentage){
+            setSalesDataPercentage(Math.round(salesPercentage[0].growth_rate) + '%')
+        }
+
+        if(itemsPercentage){
+            setItemsPercentage(Math.round(itemsPercentage[0].growth_rate) + '%')
+        }
+        
+
+        
+    }, [salesData, itemsData]);
+    
+
 
     const dummySalesData = [
         { interval_time: "2024-04-01T00:00:00.000Z", total_amount: 1000 },
@@ -76,15 +136,22 @@ const Estadisticas = () => {
                 <Col md={{offset: 2}} xs lg="2">Filtros:</Col>
                 <Col xs lg="2">
                     {/* Pass handleSalesDataUpdate function as prop */}
-                    <DatesDropdown onDataUpdate={handleSalesDataUpdate} onRangeOfDatesUpdate={handleRangeOfDates} start/>
+                    <DatesDropdown 
+                        onSalesDataUpdate={handleSalesDataUpdate} 
+                        onRangeOfDatesUpdate={handleRangeOfDates} 
+                        onItemsDataUpdate={handleItemsDataUpdate} 
+                    start/>
                 </Col>
                 <Col xs lg="2">
                     <UsersDropdown rangeOfDates={rangeOfDates} />
                 </Col>
+               
+                    
+               
             </Row>
             <Row>
-                <StatisticsCards title="Ingresos" data="$400000" increasePercentage="10%" />
-                <StatisticsCards title="Ventas Totales" data="7" increasePercentage="22%" />
+                <StatisticsCards title="Ingresos" data={totalSales} increasePercentage={salesDataPercentage} />
+                <StatisticsCards title="Ventas Totales" data={totalItems} increasePercentage={itemsDataPercentage} />
                 <StatisticsCards
                     title="Mejor Vendedor"
                     data={loading ? "NA" : bestSeller ? bestSeller[0].username : "NA"}

@@ -5,6 +5,7 @@ import increaseArrow from '../../assets/images/icon_arrow.png';
 
 const StatisticsCards = (props) => {
 
+
     
 
     return(

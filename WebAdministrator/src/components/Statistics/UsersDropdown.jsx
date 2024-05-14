@@ -26,8 +26,12 @@ const UsersDropdown = () => {
     }, []);
 
     const handleUserClick = (userId) => {
-        setSelectedUser(userId);
-        // Handle any other actions related to user selection
+        if (selectedUser === userId) {
+            // If the same user is clicked again, deselect it
+            setSelectedUser(null);
+        } else {
+            setSelectedUser(userId);
+        }
     };
 
 
