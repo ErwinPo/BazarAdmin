@@ -15,7 +15,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
     const [checkedColumn, setCheckedColumn] = useState(columnCheck || false);
-    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'desc' });
 
     useEffect(() => {
         const startIdx = (page - 1) * itemsPerPage;
@@ -33,7 +33,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                 aValue = new Date(aValue);
                 bValue = new Date(bValue);
             } 
-            else if (sortConfig.key !== 'user_id') {
+            else if (sortConfig.key !== 'username') {
                 aValue = parseFloat(aValue);
                 bValue = parseFloat(bValue);
             }
@@ -67,9 +67,9 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
     };
 
     const requestSort = (key) => {
-        let direction = 'asc';
-        if (sortConfig.key === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+            direction = 'asc';
         }
         setSortConfig({ key, direction });
     };
@@ -97,7 +97,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                         <th onClick={() => requestSort('date')}>Fecha <span className={classes.thArrow}>{getArrow('date')}</span></th>
                         <th onClick={() => requestSort('amount')}>Monto <span className={classes.thArrow}>{getArrow('amount')}</span></th>
                         <th onClick={() => requestSort('quantity')}>Cantidad <span className={classes.thArrow}>{getArrow('quantity')}</span></th>
-                        <th onClick={() => requestSort('user_id')}>Vendedor <span className={classes.thArrow}>{getArrow('user_id')}</span></th>
+                        <th onClick={() => requestSort('username')}>Vendedor <span className={classes.thArrow}>{getArrow('username')}</span></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -116,7 +116,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 <td>{moment(sale.date).format('DD/MM/YYYY - HH:mm:ss')}</td>
                                 <td className={classes.alignStart}>$ {sale.amount}</td>
                                 <td>{sale.quantity}</td>
-                                <td>{sale.user_id}</td>
+                                <td>{sale.username}</td>
                                 <td>
                                     <ButtonGroup className={classes.buttons}>
                                         <Button
