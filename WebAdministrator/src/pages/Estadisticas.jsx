@@ -18,6 +18,8 @@ const Estadisticas = () => {
     const [salesDataPercentage, setSalesDataPercentage] = useState()
     const [totalItems, setTotalItems] = useState(0)
     const [itemsDataPercentage, setItemsPercentage] = useState()
+    const [userId, setUserId] = useState()
+    const [userData, setUserData] = useState()
 
     // Function to handle data update from DatesDropdown component
     const handleSalesDataUpdate = (data) => {
@@ -40,10 +42,18 @@ const Estadisticas = () => {
         setItemsData(data);
     };
 
+    const handleUserIdUpdate = (data) => {
+        setUserId(data);
+    };
+
+    const handleUserDataUpdate = (data) => {
+        setUserData(data);
+    };
+
     useEffect(() => {
         // Calculate total sales amount
 
-        console.log(salesData)
+        // console.log(salesData)
 
         const sales = salesData.qty
         const salesPercentage = salesData.comp
@@ -56,7 +66,7 @@ const Estadisticas = () => {
             items.forEach(item => {
                 total += item.total_quantity
             })
-            console.log("Total items: ",total)
+            // console.log("Total items: ",total)
             setTotalItems(total)
         }
         
@@ -139,11 +149,17 @@ const Estadisticas = () => {
                     <DatesDropdown 
                         onSalesDataUpdate={handleSalesDataUpdate} 
                         onRangeOfDatesUpdate={handleRangeOfDates} 
-                        onItemsDataUpdate={handleItemsDataUpdate} 
+                        onItemsDataUpdate={handleItemsDataUpdate}
+                        currentUserId={userId}
+                        currentUserData={userData}
                     start/>
                 </Col>
                 <Col xs lg="2">
-                    <UsersDropdown rangeOfDates={rangeOfDates} />
+                    <UsersDropdown 
+                        onUserIdUpdate={handleUserIdUpdate} 
+                        onUserDataUpdate={handleUserDataUpdate}
+                        rangeOfDates={rangeOfDates} 
+                    />
                 </Col>
                
                     

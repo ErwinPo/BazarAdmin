@@ -23,9 +23,7 @@
 
 .stack{
    
-    float: right;
-    margin-right: 0px;
-    margin-left: auto;
+    margin: auto;
     margin-top: 4rem;
     margin-bottom: 4rem;
 }

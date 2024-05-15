@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import classes from "./DatesDropdown.module.css";
 import DateRangePicker from '../DateRangePicker';
 
-const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpdate }) => {
+const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpdate, currentUserId, currentUserData }) => {
     const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
     const [showModal, setShowModal] = useState(false); // Changed from 'show' to 'showModal'
@@ -33,10 +33,21 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
 
     useEffect(() => {
         const [startDate, endDate] = daysFromHandleDropdownItem;
+
+        console.log("Current user id dates dropdown: ",currentUserId)
+        if(currentUserId === undefined){
+            console.log("Usuario no existe")
+        }
+        console.log("Current user data", currentUserData)
+        // console.log("Current user data", currentUserData.id)
+        // console.log("Current user data", currentUserId)
+        // console.log("Current user id", currentUserData.id)
+        // console.log("Current user id", currentUserData.id)
+
     
         if (startDate && endDate) {
             // Fetch to get total items
-            fetch(`http://3.146.65.111:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=daily`, {
+            fetch(`http://3.146.65.111:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=daily&id=${currentUserData.id}`, {
                 method: "GET"
             })
             .then(response => {
@@ -47,14 +58,14 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             })
             .then(data => {
                 onItemsDataUpdate(data)
-                // console.log("Items data:", data)
+                console.log("Items data:", data.qty)
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     
             // Fetch to get total sales amount
-            fetch(`http://3.146.65.111:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=daily`, {
+            fetch(`http://3.146.65.111:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=daily&id=${currentUserData.id}`, {
                 method: "GET"
             })
             .then(response => {
@@ -69,8 +80,9 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             .catch(error => {
                 console.error('Error:', error);
             });
+            console.log(...daysFromHandleDropdownItem)
         }
-    }, [daysFromHandleDropdownItem]);
+    }, [daysFromHandleDropdownItem, currentUserId]);
     
 
     return (
