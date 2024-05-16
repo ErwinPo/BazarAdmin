@@ -66,9 +66,7 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             })
             .then(data => {
                 onItemsDataUpdate(data)
-                console.log(itemsFetch)
-                console.log(salesFetch)
-                console.log("Items data:", data)
+                // console.log("Items data:", data)
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -99,7 +97,8 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
         <>
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    Rango de Fechas
+                    {daysFromHandleDropdownItem.length > 0  ? `${daysFromHandleDropdownItem[0]} - ${daysFromHandleDropdownItem[1]}` : 'Rango de Fechas'}
+                    
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item

@@ -6,7 +6,7 @@ import UsersDropdown from "../components/Statistics/UsersDropdown";
 import classes from "../components/Statistics/StatisticsDropdowns.module.css";
 import StatisticsCards from "../components/Statistics/StatisticsCards";
 import SalesGraph from "../components/Statistics/SalesGraph";
-import DateRangePicker from "../components/DateRangePicker";
+
 
 const Estadisticas = () => {
     const [salesData, setSalesData] = useState([]); // State to hold sales data
@@ -18,18 +18,11 @@ const Estadisticas = () => {
     const [salesDataPercentage, setSalesDataPercentage] = useState()
     const [totalItems, setTotalItems] = useState(0)
     const [itemsDataPercentage, setItemsPercentage] = useState()
-    const [userId, setUserId] = useState()
     const [userData, setUserData] = useState()
 
     // Function to handle data update from DatesDropdown component
     const handleSalesDataUpdate = (data) => {
         setSalesData(data);
-
-        if(itemsData){
-            console.log('Items Data: ',itemsData)
-        }
-
-        
     };
 
     // Function to handle data update from DatesDropdown component
@@ -42,9 +35,7 @@ const Estadisticas = () => {
         setItemsData(data);
     };
 
-    const handleUserIdUpdate = (data) => {
-        setUserId(data);
-    };
+
 
     const handleUserDataUpdate = (data) => {
         setUserData(data);
@@ -93,28 +84,6 @@ const Estadisticas = () => {
     
 
 
-    const dummySalesData = [
-        { interval_time: "2024-04-01T00:00:00.000Z", total_amount: 1000 },
-        { interval_time: "2024-04-02T00:00:00.000Z", total_amount: 1200 },
-        { interval_time: "2024-04-03T00:00:00.000Z", total_amount: 800 },
-        { interval_time: "2024-04-04T00:00:00.000Z", total_amount: 1500 },
-        { interval_time: "2024-04-05T00:00:00.000Z", total_amount: 2000 },
-        { interval_time: "2024-04-06T00:00:00.000Z", total_amount: 1800 },
-        { interval_time: "2024-04-07T00:00:00.000Z", total_amount: 2200 }
-    ];
-    
-    // Pass this dummy data to your SalesGraph component
-
-    
-
-    // useEffect(() => {
-    //     // console.log("Sales Data: ", ...salesData);
-    // }, [salesData]);
-
-    // useEffect(() => {
-    //     // console.log("Range of dates Estadisticas: ", ...rangeOfDates);
-    // }, [rangeOfDates]);
-
     useEffect(() => {
         fetch('http://3.146.65.111:8000/bazar/ranking/', {
             method: 'GET'
@@ -150,15 +119,12 @@ const Estadisticas = () => {
                         onSalesDataUpdate={handleSalesDataUpdate} 
                         onRangeOfDatesUpdate={handleRangeOfDates} 
                         onItemsDataUpdate={handleItemsDataUpdate}
-                        currentUserId={userId}
                         currentUserData={userData}
                     start/>
                 </Col>
                 <Col xs lg="2">
                     <UsersDropdown 
-                        onUserIdUpdate={handleUserIdUpdate} 
                         onUserDataUpdate={handleUserDataUpdate}
-                        rangeOfDates={rangeOfDates} 
                     />
                 </Col>
                

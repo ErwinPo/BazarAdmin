@@ -11,7 +11,7 @@ const SalesGraph = ({salesData}) => {
                     <Card className={classes.card}>
                         <h4 className={classes.text}> Estadísticas - Ganancias a través del tiempo </h4>
                         <div>
-                            <h4>No available data for now</h4>
+                            <h4>Seleccione alguno de los filtros para empezar a visualizar datos.</h4>
                         </div>
                     </Card>
                 </Col>
@@ -33,7 +33,7 @@ const SalesGraph = ({salesData}) => {
     intervalTimes.sort((a, b) => a - b);
 
     // console.log(totalAmounts)
-    // console.log(intervalTimes)
+    // console.log(...intervalTimes)
 
     return (
         <Row className={classes.row}>

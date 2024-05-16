@@ -31,9 +31,6 @@
     float: right;
     margin: auto;
     font-size: 1.25rem;
-    text-align: center;
-    align-items: baseline;
-    justify-content: baseline;
     display: flex;
     color: #009641;
     font-weight: bold;
@@ -45,4 +42,14 @@
     float:right
 }
 
+.arrowImg{
+    height: 30px;
+    width: 30px;
+    float: right;
+    margin: auto;
+    font-size: 1.25rem;
+    text-align: center;
+    align-items: baseline;
+    justify-content: baseline;
+}
 
