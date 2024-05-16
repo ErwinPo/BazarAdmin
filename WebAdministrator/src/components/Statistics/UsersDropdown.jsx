@@ -9,6 +9,30 @@ const UsersDropdown = ({rangeOfDates, onUserIdUpdate, onUserDataUpdate}) => {
 
     // console.log("Selected user: ",selectedUser)
 
+    // http://3.146.65.111:8000/bazar//sales-date-range-amount-seller/?start-date=2024-05-14&end-date=2024-05-15&temporality=daily&id=18
+
+
+
+    useEffect(() => {
+        fetch('http://3.146.65.111:8000/bazar/sales-date-range-quantity-seller/?start-date=2024-05-09&end-date=2024-05-16&temporality=daily&id=18', {
+            method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al cargar los datos del servidor');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data")
+            console.log(data)
+            
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, []);
+
     useEffect(() => {
         fetch('http://3.146.65.111:8000/bazar/users//', {
             method: 'GET'
