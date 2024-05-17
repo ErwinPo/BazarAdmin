@@ -71,11 +71,15 @@ const Estadisticas = () => {
         } 
 
         if(salesPercentage){
+            
             setSalesDataPercentage(Math.round(salesPercentage[0].growth_rate) + '%')
+            console.log(Math.round(salesPercentage[0].growth_rate) + '%')
         }
 
         if(itemsPercentage){
+            
             setItemsPercentage(Math.round(itemsPercentage[0].growth_rate) + '%')
+            console.log(Math.round(itemsPercentage[0].growth_rate) + '%')
         }
         
 

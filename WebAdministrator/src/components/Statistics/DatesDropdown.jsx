@@ -7,6 +7,7 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
     const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
     const [showModal, setShowModal] = useState(false); // Changed from 'show' to 'showModal'
+    const [temporality, setTemporality] = useState('')
 
     const handleClose = () => setShowModal(false); // Changed from 'setShowModal' to 'setShow'
     const handleShowModal = () => setShowModal(true);
@@ -21,6 +22,28 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
         endDate.setDate(endDate.getDate() - days); // Subtracting days directly from the date
         return endDate.toJSON().slice(0, 10);
     };
+
+    const calculateDifferenceInDays = () => {
+        const [startDate, endDate] = daysFromHandleDropdownItem;
+        if (!startDate || !endDate) return;
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const differenceInTime = end.getTime() - start.getTime();
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+        return differenceInDays;
+    };
+
+    const handleTemporality = () => {
+        differenceInDays = calculateDifferenceInDays()
+
+        if (differenceInDays > 0 && differenceInDays <= 27){
+            setTemporality('daily')
+        }
+
+    }
+
+    console.log("Difference in days: ",calculateDifferenceInDays())
 
     const handleDropdownItemClick = (days) => {
         const endDate = getEndDate();
