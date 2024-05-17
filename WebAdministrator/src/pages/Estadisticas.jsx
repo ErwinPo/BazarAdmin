@@ -144,7 +144,7 @@ const Estadisticas = () => {
                 />
             </Row>
             {/* Pass salesData state to SalesGraph component */}
-            <SalesGraph salesData={salesData} />
+            <SalesGraph salesData={salesData} itemsData={itemsData} />
         </div>
     );
 };
