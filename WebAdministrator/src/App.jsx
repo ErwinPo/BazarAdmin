@@ -10,6 +10,7 @@ import Usuarios from './pages/Usuarios';
 import Estadisticas from './pages/Estadisticas';
 import RecordsView from "./components/Records/RecordsView";
 import Login from './pages/Login';
+import Download from './pages/Download';
 
 export const AuthContext = createContext();
 
@@ -51,6 +52,7 @@ function App() {
                                 <Route path="/Usuarios" element={<Usuarios />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
+                                <Route path="/Descarga" element={<Download />} />
                                 <Route path="/*" element={<Navigate to="/Ventas" replace />} />
                             </>
                         )}

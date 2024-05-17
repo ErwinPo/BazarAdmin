@@ -55,6 +55,9 @@ const Navbar = () => {
         <li>
           <NavLink to="/Registros">Registros</NavLink>
         </li>
+        <li>
+          <NavLink to="/Descarga">App</NavLink>
+        </li>
         {isMobile && (
           <li>
             <button onClick={handleLogout} className={classes.nav_btn_link}>
