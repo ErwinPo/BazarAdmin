@@ -23,37 +23,37 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const RecordsView = () => {      
     const dummySales = [
-        { id: 1, date: '2024-04-24 1:22:33', amount: 1.00, quantity: 2, user_id: 'John Doe' },
-        { id: 2, date: '2024-04-04 1:22:33', amount: 1.00, quantity: 3, user_id: 'Jane Smith' },
-        { id: 3, date: '2024-04-04 1:22:33', amount: 200.69, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 4, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { id: 5, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, user_id: 'Eve Williams' },
-        { id: 6, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, user_id: 'John Doe' },
-        { id: 7, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, user_id: 'Jane Smith' },
-        { id: 8, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 9, date: '2024-04-04 1:22:33', amount: 120.12, quantity: 2, user_id: 'Bob Brown' },
-        { id: 10, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, user_id: 'Eve Williams' },
-        { id: 11, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, user_id: 'John Doe' },
-        { id: 12, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, user_id: 'Jane Smith' },
-        { id: 13, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 14, date: '2024-04-04 1:22:33', amount: 120.00, quantity: 2, user_id: 'Bob Brown' },
-        { id: 15, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, user_id: 'Eve Williams' },
-        { id: 16, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, user_id: 'John Doe' },
-        { id: 17, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, user_id: 'Jane Smith' },
-        { id: 18, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 19, date: '2024-04-04 1:22:33', amount: 120.00, quantity: 2, user_id: 'Bob Brown' },
-        { id: 20, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, user_id: 'Eve Williams' },
-        { id: 21, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, user_id: 'John Doe' },
-        { id: 22, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, user_id: 'Jane Smith' },
-        { id: 23, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 24, date: '2024-04-04 1:22:33', amount: 900.00, quantity: 2, user_id: 'Bob Brown' },
-        { id: 25, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, user_id: 'Eve Williams' },
+        { id: 1, date: '2024-04-24 1:22:33', amount: 1.00, quantity: 2, username: 'John Doe' },
+        { id: 2, date: '2024-04-04 1:22:33', amount: 1.00, quantity: 3, username: 'Jane Smith' },
+        { id: 3, date: '2024-04-04 1:22:33', amount: 200.69, quantity: 1, username: 'Alice Johnson' },
+        { id: 4, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, username: 'Bob Brown' },
+        { id: 5, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 6, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 7, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 8, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 9, date: '2024-04-04 1:22:33', amount: 120.12, quantity: 2, username: 'Bob Brown' },
+        { id: 10, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 11, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 12, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 13, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 14, date: '2024-04-04 1:22:33', amount: 120.00, quantity: 2, username: 'Bob Brown' },
+        { id: 15, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 16, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 17, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 18, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 19, date: '2024-04-04 1:22:33', amount: 120.00, quantity: 2, username: 'Bob Brown' },
+        { id: 20, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 21, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 22, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 23, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 24, date: '2024-04-04 1:22:33', amount: 900.00, quantity: 2, username: 'Bob Brown' },
+        { id: 25, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
     ];
 
     const lowDate = moment().subtract(6, 'months').toDate();
     const highestAmount = 10000;
 
-    const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, user_id: 'John Doe' });
+    const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, username: 'John Doe' });
     const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
     const [page, setPage] = useState(1);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -77,8 +77,9 @@ const RecordsView = () => {
         .then((response) => response.json())
         .then(data => {
             setState({ ...state, sales: data ?? [] });
+            console.log(data);
         })
-        .catch((error) => {console.log(error); setState({ ...state, sales: dummySales})});
+        .catch((error) => {console.log(error);});
     }, []);
 
     const handleStartDateChange = (date) => {
@@ -287,7 +288,7 @@ const RecordsView = () => {
             {header: "Fecha", key: "date", width: 25 },
             {header: "Monto", key: "amount", width: 15, },
             {header: "Cantidad", key: "quantity", width: 10, },
-            {header: "Vendedor", key: "user_id", width: 25, },
+            {header: "Vendedor", key: "username", width: 25, },
         ];
 
         sheet.getColumn(3).numFmt = '$#,##0.00';
@@ -298,7 +299,7 @@ const RecordsView = () => {
                 date: moment(sale.date).format('DD/MM/YYYY - HH:mm:ss'),
                 amount: Number(sale.amount),
                 quantity: sale.quantity,
-                user_id: sale.user_id,
+                username: sale.username,
             });
         });
 

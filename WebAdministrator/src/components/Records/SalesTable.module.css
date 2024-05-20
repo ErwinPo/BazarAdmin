@@ -95,6 +95,10 @@
 	font-weight: normal;
 }
 
+.table th:hover {
+	cursor: pointer;
+}
+
 .thArrow {
     font-size: 18px;
 }
