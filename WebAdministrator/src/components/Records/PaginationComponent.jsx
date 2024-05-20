@@ -2,13 +2,26 @@
  * File: PaginationComponent.jsx
  * Type: component */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './PaginationComponent.module.css';
 import { Pagination } from 'react-bootstrap';
 
 const PaginationComponent = ({ totalPages, page, handlePageChange }) => {
-  const isSmallScreen = window.innerWidth <= 768;
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 638);
   const maxPageItems = isSmallScreen ? 2 : 10;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 638);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   
   let startPage = 1;
   if (totalPages > maxPageItems) {

@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import classes from './RecordsView.module.css';
-import DateRangePicker from "./DateRangePicker";
+import DateRangePicker from './DateRangePicker';
 import iconExport from '../../assets/images/icon_export.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 import ModalDelete from './ModalDelete';
@@ -17,42 +17,43 @@ import ValueRangePicker from "./ValueRangePicker";
 import { Button, Col, Image, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
+import ExcelJS from 'exceljs';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const RecordsView = () => {      
     const dummySales = [
-        { id: 1, date: '2024-04-24 1:22:33', amount: 1, quantity: 2, user_id: 'John Doe' },
-        { id: 2, date: '2024-04-04 1:22:33', amount: 1, quantity: 3, user_id: 'Jane Smith' },
-        { id: 3, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 4, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { id: 5, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { id: 6, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { id: 7, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { id: 8, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 9, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { id: 10, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { id: 11, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { id: 12, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { id: 13, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 14, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { id: 15, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { id: 16, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { id: 17, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { id: 18, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 19, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, user_id: 'Bob Brown' },
-        { id: 20, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
-        { id: 21, date: '2024-04-04 1:22:33', amount: 100, quantity: 2, user_id: 'John Doe' },
-        { id: 22, date: '2024-04-04 1:22:33', amount: 150, quantity: 3, user_id: 'Jane Smith' },
-        { id: 23, date: '2024-04-04 1:22:33', amount: 200, quantity: 1, user_id: 'Alice Johnson' },
-        { id: 24, date: '2024-04-04 1:22:33', amount: 900, quantity: 2, user_id: 'Bob Brown' },
-        { id: 25, date: '2024-04-04 1:22:33', amount: 180, quantity: 4, user_id: 'Eve Williams' },
+        { id: 1, date: '2024-04-24 1:22:33', amount: 1.00, quantity: 2, username: 'John Doe' },
+        { id: 2, date: '2024-04-04 1:22:33', amount: 1.00, quantity: 3, username: 'Jane Smith' },
+        { id: 3, date: '2024-04-04 1:22:33', amount: 200.69, quantity: 1, username: 'Alice Johnson' },
+        { id: 4, date: '2024-04-04 1:22:33', amount: 120, quantity: 2, username: 'Bob Brown' },
+        { id: 5, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 6, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 7, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 8, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 9, date: '2024-04-04 1:22:33', amount: 120.12, quantity: 2, username: 'Bob Brown' },
+        { id: 10, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 11, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 12, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 13, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 14, date: '2024-04-04 1:22:33', amount: 120.00, quantity: 2, username: 'Bob Brown' },
+        { id: 15, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 16, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 17, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 18, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 19, date: '2024-04-04 1:22:33', amount: 120.00, quantity: 2, username: 'Bob Brown' },
+        { id: 20, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 21, date: '2024-04-04 1:22:33', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 22, date: '2024-04-04 1:22:33', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 23, date: '2024-04-04 1:22:33', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 24, date: '2024-04-04 1:22:33', amount: 900.00, quantity: 2, username: 'Bob Brown' },
+        { id: 25, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
     ];
 
     const lowDate = moment().subtract(6, 'months').toDate();
     const highestAmount = 10000;
 
-    const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, user_id: 'John Doe' });
+    const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, username: 'John Doe' });
     const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
     const [page, setPage] = useState(1);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -76,6 +77,7 @@ const RecordsView = () => {
         .then((response) => response.json())
         .then(data => {
             setState({ ...state, sales: data ?? [] });
+            console.log(data);
         })
         .catch((error) => {console.log(error);});
     }, []);
@@ -118,7 +120,6 @@ const RecordsView = () => {
         setState({ ...state, maxValue: value, page: 1 });
     };
     
-
     const handlePageChange = () => {
         setState({ ...state, columnCheck: false, selectedRows: [] });
     };
@@ -255,6 +256,66 @@ const RecordsView = () => {
         sale.amount >= state.minValue && sale.amount <= state.maxValue
     );
 
+    const exportData = async () => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet("My Sheet");
+        
+        for (let colNumber = 1; colNumber <= 5; colNumber++) { // Columns A to E
+            const cell = sheet.getCell(1, colNumber); // Row 1, current column
+            cell.border = {
+                top: {style: "thin", color: { argb: "ff000000" } },
+                left: {style: "thin", color: { argb: "ff000000" } },
+                bottom: {style: "thin", color: { argb: "ff000000" } },
+                right: {style: "thin", color: { argb: "ff000000" } },
+            };
+        
+            cell.fill = {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "ff539165" },
+            };
+        
+            cell.font = {
+                family: 4,
+                size: 12,
+                bold: true,
+                color: { argb: "ffffffff" }
+            };
+        }       
+
+        sheet.columns = [
+            {header: "ID", key: "id", width: 10, },
+            {header: "Fecha", key: "date", width: 25 },
+            {header: "Monto", key: "amount", width: 15, },
+            {header: "Cantidad", key: "quantity", width: 10, },
+            {header: "Vendedor", key: "username", width: 25, },
+        ];
+
+        sheet.getColumn(3).numFmt = '$#,##0.00';
+
+        filteredSales.map((sale) => {
+            sheet.addRow({
+                id: sale.id,
+                date: moment(sale.date).format('DD/MM/YYYY - HH:mm:ss'),
+                amount: Number(sale.amount),
+                quantity: sale.quantity,
+                username: sale.username,
+            });
+        });
+
+        workbook.xlsx.writeBuffer().then(function (data) {
+            const blob = new Blob([data], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.href = url;
+            anchor.download = "ventas.xlsx";
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+        });
+    };
+
     const isLargeScreen = useMediaQuery({ minWidth: 992, maxWidth: 1300 });
 
     return (
@@ -263,7 +324,7 @@ const RecordsView = () => {
             <div className={classes.salesLog}>
                 <Row className={classes.filters}>
                     <Col lg={isLargeScreen ? 12 : 'auto'}>
-                        <Button className={classes.button} variant="warning" >
+                        <Button className={classes.button} variant="warning" onClick={exportData} >
                             <Image className={classes.image} src={iconExport} />
                             <span>
                                 Exportar

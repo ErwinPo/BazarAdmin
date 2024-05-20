@@ -6,10 +6,10 @@ import {
     Navigate,
 } from 'react-router-dom';
 import Ventas from './pages/Ventas';
-import Usuarios from './pages/Usuarios';
+import Usuarios from './components/Users/UsersView';
 import Estadisticas from './pages/Estadisticas';
 import RecordsView from "./components/Records/RecordsView";
-import Login from './pages/Login';
+import Login from './components/Login/Login';
 import Download from './pages/Download';
 
 export const AuthContext = createContext();
@@ -45,7 +45,7 @@ function App() {
             {!authLoading && (
                 <Router>
                     <Routes>
-                        {!isLoggedIn && <Route path="/" element={<Login />} />}
+                        <Route path="/" element={isLoggedIn ? <Navigate to="/Ventas" /> : <Login />} />
                         {isLoggedIn && (
                             <>
                                 <Route path="/Ventas" element={<Ventas />} />
@@ -61,6 +61,7 @@ function App() {
             )}
         </AuthContext.Provider>
     );
+    
 }
 
 export default App;

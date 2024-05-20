@@ -36,6 +36,38 @@
 	width: auto;
 }
 
+.drpBtn button {
+	border-radius: 25px;
+	border: 1px solid #AA7606;
+}
+
+.pagination {
+	display: flex;
+	justify-content: end;
+	margin: 8px;
+}
+
+.paginationOptions {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+	margin: 8px;
+	gap: 55px;
+}
+
+.paginationRow {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.paginationText {
+	font-size: 16px;
+	margin-top: 12px;
+	display: flex;
+	align-items: center;
+}
+
 .tableCover {
 	justify-content: center;
 	align-items: center;
@@ -63,6 +95,31 @@
 	font-weight: normal;
 }
 
+.table th:hover {
+	cursor: pointer;
+}
+
 .thArrow {
     font-size: 18px;
+}
+
+@media (max-width: 576px) {
+	.paginationRow {
+		flex-direction: column;
+		align-items: center;
+		margin: 24px 0px;
+		gap:12px
+	}
+
+	.paginationOptions {
+			flex-direction: column;
+			align-items: center;
+			gap: 36px;
+	}
+
+	.pagination {
+		margin: 0px;
+		flex-direction: column;
+		align-items: center;
+}
 }

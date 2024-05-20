@@ -1,10 +1,10 @@
 /* Copyright 2024 BitBrothers
- * File: UsersTable.jsx
+ * File: UsersView.jsx
  * Type: component */
 
-// imports
+import Navbar from "../NavBar/Navbar";
 import React, { useState, useEffect } from 'react';
-import classes from './UsersTable.module.css';
+import classes from './UsersView.module.css';
 import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
 import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 
-const UsersTable = () => {
+const UsersView = () => {
 
   const [users, setUsers] = useState([]);
   const [state, setState] = useState({
@@ -30,8 +30,7 @@ const UsersTable = () => {
     editModal: false,
     deleteModal: false,
     deletesModal: false,
-    errorModal1: false,
-    errorModal2: false,
+    errorModal: false,
   });
 
 
@@ -153,7 +152,7 @@ const UsersTable = () => {
     const isAdminUser = user.is_superuser;
     const adminCount = users.filter(u => u.is_superuser).length;
     if (isAdminUser && adminCount === 1) {
-      setState({ ...state, errorModal1: true, form: user });
+      setState({ ...state, errorModal: true, form: user });
     } else {
       setState({ ...state, deleteModal: true, form: user });
     }
@@ -176,15 +175,11 @@ const UsersTable = () => {
 
 
   const hideModalError1 = () => {
-    setState({ ...state, errorModal1: false });
-  }
-
-  const hideModalError2 = () => {
-    setState({ ...state, errorModal2: false });
+    setState({ ...state, errorModal: false });
   }
 
 
-  const validateForm = () => {
+  const validateCForm = () => {
     const { id, username, email, password, is_superuser } = state.form;
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -204,25 +199,39 @@ const UsersTable = () => {
     } else if (isEmailExists) {
       toast.error("El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.");
       return false;
-    } /*else if (!passwordPattern.test(password)) {
+    } else if (!passwordPattern.test(password)) {
       toast.error("La contraseña debe tener al menos 8 caracteres y al menos un número.");
       return false;
-    }*/
+    }
     return true;
   };
 
-
-  const generateUniqueId = () => {
-    let newId = users.length + 1;
-    while (users.some(user => user.id === newId)) {
-      newId++;
+  const validateUForm = () => {
+    const { id, username, email, is_superuser } = state.form;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const lowercaseUsername = username.toLowerCase();
+    const lowercaseMail = email.toLowerCase();
+    const isUsernameExists = users.some(user => user.id !== id && user.username.toLowerCase() === lowercaseUsername);
+    const isEmailExists = users.some(user => user.id !== id && user.email.toLowerCase() === lowercaseMail);
+    if (!username || !email || is_superuser === '') {
+      toast.error("Por favor, complete todos los campos.");
+      return false;
+    } else if (isUsernameExists) {
+      toast.error("El nombre de usuario ya existe. Por favor, elija otro nombre.");
+      return false;
+    } else if (!emailPattern.test(email)) {
+      toast.error("Por favor, ingrese un correo electrónico válido.");
+      return false;
+    } else if (isEmailExists) {
+      toast.error("El correo electrónico ya está registrado. Por favor, utilice otro correo electrónico.");
+      return false;
     }
-    return newId;
-  };  
+    return true;
+  };
   
 
   const handleCreateUser = () => {
-    if (!validateForm()) {
+    if (!validateCForm()) {
       return;
     }
     const { username, email, password, is_superuser } = state.form;
@@ -267,23 +276,23 @@ const UsersTable = () => {
   };
   
 
-  const handleSaveUser = () => {
-    if (!validateForm()) {
+  const handleEditUser = () => {
+    if (!validateUForm()) {
       return;
     }
-    const { id, username, email, password, is_superuser } = state.form;
+    const { id, username, email, is_superuser } = state.form;
     const editedUserIndex = users.findIndex(user => user.id === id);
     const editedUser = users[editedUserIndex];
+    const { password, ...editedUserWithoutPassword } = editedUser;
     const adminCount = users.filter(user => user.is_superuser).length;
     if (editedUser.is_superuser && !is_superuser && adminCount === 1) {
       toast.error("No se puede cambiar el tipo de usuario ya que solo hay un administrador en el sistema.");
       return;
     }
     const updatedUser = {
-      ...editedUser,
+      ...editedUserWithoutPassword,
       username: username,
       email: email,
-      password: password,
       is_superuser: is_superuser
     };
     fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
@@ -350,7 +359,7 @@ const UsersTable = () => {
   };
 
 
-  const handleDeleteSelectedUsers = () => {
+  const handleDeleteUsers = () => {
     const selectedAdminUsers = users.filter((user) =>
       state.selectedUserIds.includes(user.id) && user.is_superuser
     );
@@ -359,16 +368,17 @@ const UsersTable = () => {
       setState({
         ...state,
         deletesModal: false,
-        errorModal2: true,
+        errorModal: true,
       });
     } else {
       const deletedUserIds = state.selectedUserIds;
-      fetch("http://3.146.65.111:8000/bazar/users//", {
+      console.log(deletedUserIds);
+      fetch("http://3.146.65.111:8000/bazar/delete-users/", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userIds: deletedUserIds }),
+        body: JSON.stringify({ users: deletedUserIds}),
       })
         .then(() => {
           toast.success("Usuarios seleccionados eliminados con éxito.");
@@ -387,12 +397,12 @@ const UsersTable = () => {
         });
     }
   };
-  
-  
-  
+
+
   return (
-    <>
-      <ToastContainer position="top-center" autoClose={3000} />
+  	<div>
+		<Navbar />
+		<ToastContainer position="top-center" autoClose={3000} />
       <div className={classes.btn_container}>
         <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
         <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
@@ -405,7 +415,6 @@ const UsersTable = () => {
               <th>ID</th>
               <th>Nombre</th>
               <th>Correo</th>
-              <th>Contraseña</th>
               <th>Tipo Usuario</th>
               <th></th>
             </tr>
@@ -418,7 +427,6 @@ const UsersTable = () => {
                   <td>{user.id}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
-                  <td>{'•'.repeat(user.password.length)}</td>
                   <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
                   <td>
                     <ButtonGroup className={classes.buttons}>
@@ -508,7 +516,7 @@ const UsersTable = () => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={handleSaveUser}>Guardar</Btn>
+          <Btn color='success' onClick={handleEditUser}>Guardar</Btn>
           <Btn color='danger' onClick={hideModalEdit}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
@@ -544,13 +552,13 @@ const UsersTable = () => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={handleDeleteSelectedUsers}>Confirmar</Btn>
+          <Btn color='success' onClick={handleDeleteUsers}>Confirmar</Btn>
           <Btn color='danger' onClick={hideModalDeleteS}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
 
 
-      <Modal isOpen={state.errorModal1}>
+      <Modal isOpen={state.errorModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
             <h3>Error</h3>
@@ -565,25 +573,8 @@ const UsersTable = () => {
           <Btn color='success' onClick={hideModalError1}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
-
-      <Modal isOpen={state.errorModal2}>
-        <ModalHeader className={classes.modal_header}>
-          <div>
-            <h3>Error</h3>
-          </div>
-        </ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <label>No es posible eliminar estos usuarios ya que uno de los usuarios que deseas eliminar es el único administrador del sistema</label>
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Btn color='success' onClick={hideModalError2}>Aceptar</Btn>
-        </ModalFooter>
-      </Modal>
-
-    </>
-  );
+	</div>
+	);
 };
 
-export default UsersTable;
+export default UsersView;

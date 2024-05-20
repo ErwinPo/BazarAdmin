@@ -9,14 +9,13 @@ import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 import moment from 'moment';
 import PaginationComponent from './PaginationComponent';
-import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Dropdown, DropdownButton, Form, Image, Row, Table } from 'react-bootstrap';
 
 const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows, toggleDeleteModal, setCurrentSaleIdDelete, toggleEditModal, setCurrentSaleEdit }) => {
-    const itemsPerPage = 9; // Number of elements per page
-
+    const [itemsPerPage, setItemsPerPage] = useState(5);
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
     const [checkedColumn, setCheckedColumn] = useState(columnCheck || false);
-    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'desc' });
 
     useEffect(() => {
         const startIdx = (page - 1) * itemsPerPage;
@@ -34,7 +33,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                 aValue = new Date(aValue);
                 bValue = new Date(bValue);
             } 
-            else if (sortConfig.key !== 'user_id') {
+            else if (sortConfig.key !== 'username') {
                 aValue = parseFloat(aValue);
                 bValue = parseFloat(bValue);
             }
@@ -68,9 +67,9 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
     };
 
     const requestSort = (key) => {
-        let direction = 'asc';
-        if (sortConfig.key === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
+        let direction = 'desc';
+        if (sortConfig.key === key && sortConfig.direction === 'desc') {
+            direction = 'asc';
         }
         setSortConfig({ key, direction });
     };
@@ -92,13 +91,14 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 className={classes.checkBox}
                                 checked={checkedColumn}
                                 onChange={(event) => handleSelectAllChange(event, pageSales)}
+                                aria-label="Select all sales"
                             />
                         </th>
                         <th onClick={() => requestSort('id')}>ID Venta <span className={classes.thArrow}>{getArrow('id')}</span></th>
                         <th onClick={() => requestSort('date')}>Fecha <span className={classes.thArrow}>{getArrow('date')}</span></th>
                         <th onClick={() => requestSort('amount')}>Monto <span className={classes.thArrow}>{getArrow('amount')}</span></th>
                         <th onClick={() => requestSort('quantity')}>Cantidad <span className={classes.thArrow}>{getArrow('quantity')}</span></th>
-                        <th onClick={() => requestSort('user_id')}>Vendedor <span className={classes.thArrow}>{getArrow('user_id')}</span></th>
+                        <th onClick={() => requestSort('username')}>Vendedor <span className={classes.thArrow}>{getArrow('username')}</span></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -117,7 +117,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 <td>{moment(sale.date).format('DD/MM/YYYY - HH:mm:ss')}</td>
                                 <td className={classes.alignStart}>$ {sale.amount}</td>
                                 <td>{sale.quantity}</td>
-                                <td>{sale.user_id}</td>
+                                <td>{sale.username}</td>
                                 <td>
                                     <ButtonGroup className={classes.buttons}>
                                         <Button
@@ -151,8 +151,30 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                     )}
                 </tbody>
             </Table>
-            {totalPages > 1 &&
-              <PaginationComponent totalPages={totalPages} page={page} handlePageChange={handlePaginationChange} />
+            {sales.length > 6 &&
+            <Row className={classes.paginationRow}>
+                <Col className={classes.paginationOptions}>
+                    <DropdownButton
+                        as={ButtonGroup}
+                        key={'dropdown-items-per-page'}
+                        id={'dropdown-items-per-page'}
+                        title={`Ventas por página: ${itemsPerPage}`}
+                        onSelect={(eventKey) => setItemsPerPage(parseInt(eventKey))}
+                        className={classes.drpBtn}
+                        variant="warning"
+                    >
+                        {[5, 10, 15, 20, 50, 100, sales.length].filter(option => option <= sales.length).map((perPage) => (
+                            <Dropdown.Item key={perPage} eventKey={perPage}>
+                                {perPage}
+                            </Dropdown.Item>
+                        ))}
+                    </DropdownButton>
+                    <p className={classes.paginationText}><strong>Total Results:&nbsp;&nbsp;</strong> {sales.length}</p>
+                </Col>
+                <Col className={classes.pagination}>
+                    <PaginationComponent totalPages={totalPages} page={page} handlePageChange={handlePaginationChange} />
+                </Col>
+            </Row>
             }
         </div>
     );
