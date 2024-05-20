@@ -91,6 +91,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                                 className={classes.checkBox}
                                 checked={checkedColumn}
                                 onChange={(event) => handleSelectAllChange(event, pageSales)}
+                                aria-label="Select all sales"
                             />
                         </th>
                         <th onClick={() => requestSort('id')}>ID Venta <span className={classes.thArrow}>{getArrow('id')}</span></th>

@@ -79,7 +79,7 @@ const RecordsView = () => {
             setState({ ...state, sales: data ?? [] });
             console.log(data);
         })
-        .catch((error) => {console.log(error); setState({ ...state, sales: dummySales})});
+        .catch((error) => {console.log(error);});
     }, []);
 
     const handleStartDateChange = (date) => {
