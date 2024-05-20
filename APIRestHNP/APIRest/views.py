@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
     serializer_class = UserSerializer
     
     def perform_create(self, serializer):
@@ -61,7 +61,23 @@ class SalesViewSet(viewsets.ModelViewSet):
             obj['username'] = get_username(obj['user_id'])
 
         return Response(data)
+
+class ChangePassword(views.APIView):
+    permission_classes = [IsSuperuser]
+    
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = serializer.validated_data.get('user')
+            password = serializer.validated_data.get('new_password')
+            
+            user = User.objects.get(id=user_id)
+            user.set_password(password)
+            user.save()
+            
+            return Response({"message": "Password has been changed"}, status=status.HTTP_200_OK)
         
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordRestView(views.APIView):
     permission_classes = [permissions.AllowAny]
@@ -92,7 +108,7 @@ class PasswordRestView(views.APIView):
         
 # ============= Delete Many Users =================
 class DeleteManyUsersView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -153,9 +169,9 @@ class RankingView(views.APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self,request):
-        print(request.user.id)
+        
         queryset = callRanking()
-        print(queryset)
+        
         data = [{"user": item[0], "username": item[1], "amount": item[2]} for item in queryset]
         serializer = RankingSerializer(data=data, many=True)
         if serializer.is_valid():
