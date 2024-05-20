@@ -1,10 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Navigate,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Ventas from './pages/Ventas';
 import UsersView from './components/Users/UsersView';
 import Estadisticas from './pages/Estadisticas';
@@ -16,16 +13,26 @@ export const AuthContext = createContext();
 function App() {
     const [authLoading, setAuthLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [expirationMessage, setExpirationMessage] = useState("");
 
     useEffect(() => {
         const checkAuth = async () => {
             const access_token = localStorage.getItem('access_token');
-            if (access_token) {
-                setIsLoggedIn(true);
+            const login_time = localStorage.getItem('login_time');
+            if (access_token && login_time) {
+                const now = new Date().getTime();
+                const timeElapsed = now - parseInt(login_time);
+                const time_ms = 8 * 60 * 60 * 1000;
+                if (timeElapsed > time_ms) {
+                    handleLogout("Su sesión ha expirado");
+                } else {
+                    setIsLoggedIn(true);
+                    setTimeout(() => handleLogout("Su sesión ha expirado"), time_ms - timeElapsed);
+                }
             }
             setAuthLoading(false);
         };
-        
+
         checkAuth();
     }, []);
 
@@ -33,14 +40,24 @@ function App() {
         setIsLoggedIn(true);
     };
 
-    const handleLogout = () => {
+    const handleLogout = (message) => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('login_time');
         setIsLoggedIn(false);
+        setExpirationMessage(message);
     };
+
+    useEffect(() => {
+        if (expirationMessage) {
+            toast.error(expirationMessage);
+            setExpirationMessage(""); // Clear the message after showing the toast
+        }
+    }, [expirationMessage]);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleLogout }}>
+            <ToastContainer position="top-center" autoClose={3000} />
             {!authLoading && (
                 <Router>
                     <Routes>
@@ -62,7 +79,6 @@ function App() {
             )}
         </AuthContext.Provider>
     );
-    
 }
 
 export default App;
