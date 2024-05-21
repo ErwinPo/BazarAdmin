@@ -27,9 +27,9 @@ class ChangePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
     user = serializers.IntegerField(required=True)
     
-    def validate_new_password(self, value):
-        validate_password(value)
-        return value
+    # def validate_new_password(self, value):
+    #     validate_password(value)
+    #     return value
 
 class IntervalAmountSalesSerializer(serializers.Serializer):
     interval_time = serializers.DateField()
