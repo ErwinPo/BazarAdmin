@@ -576,17 +576,20 @@ const UsersView = () => {
                   <td>{user.email}</td>
                   <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
                   <td>
-                    <ButtonGroup className={classes.buttons}>
-                      <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
-                        <Image className={classes.image} src={iconPencil} />
-                      </Button>
-                      <Button variant="link" className={classes.noBorder} onClick={() => showModalChange(user)}>
-                        <Image className={classes.image} src={iconCPassword} />
-                      </Button>
+                  <ButtonGroup className={classes.buttons}>
+                    <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
+                      <Image className={classes.image} src={iconPencil} />
+                    </Button>
+                    <Button variant="link" className={classes.noBorder} onClick={() => showModalChange(user)}>
+                      <Image className={classes.image} src={iconCPassword} />
+                    </Button>
+                    {/* Condición para mostrar el botón de eliminar */}
+                    {user.id !== 1 && (
                       <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
                         <Image className={classes.image} src={iconTrash} />
                       </Button>
-                    </ButtonGroup>
+                    )}
+                  </ButtonGroup>
                   </td>
                 </tr>
               ))
@@ -676,9 +679,15 @@ const UsersView = () => {
           <FormGroup>
             <label>Tipo de Usuario:</label>
             <select className='form-control' name='is_superuser' onChange={handleChange} value={state.form.is_superuser ? 'Administrador' : 'Vendedor'}>
-              <option value='' disabled>Selecciona una opción</option>
-              <option value='Administrador'>Administrador</option>
-              <option value='Vendedor'>Vendedor</option>
+              {state.form.id === 1 ? (
+                <option value='Administrador'>Administrador</option>
+              ) : (
+                <>
+                  <option value='' disabled>Selecciona una opción</option>
+                  <option value='Administrador'>Administrador</option>
+                  <option value='Vendedor'>Vendedor</option>
+                </>
+              )}
             </select>
           </FormGroup>
         </ModalBody>
@@ -696,6 +705,14 @@ const UsersView = () => {
         </ModalHeader>
         <ModalBody>
           {state.errorMessage && <div className={classes.error_message}>{state.errorMessage}</div>}
+          <FormGroup>
+            <label>Id:</label>
+            <input className='form-control' readOnly type='text' value={state.form.id} />
+          </FormGroup>
+          <FormGroup>
+            <label>Nombre de Usuario:</label>
+            <input className='form-control' readOnly type='text' value={state.form.username} />
+          </FormGroup>
           <FormGroup>
             <label>Nueva Contraseña:</label>
             <div className={classes.password_input}>
