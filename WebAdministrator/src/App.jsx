@@ -7,6 +7,7 @@ import UsersView from './components/Users/UsersView';
 import Estadisticas from './pages/Estadisticas';
 import RecordsView from "./components/Records/RecordsView";
 import Login from './components/Login/Login';
+import Download from './pages/Download';
 
 export const AuthContext = createContext();
 
@@ -68,7 +69,8 @@ function App() {
                                 <Route path="/Usuarios" element={<UsersView />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
-                                <Route path="/*" element={<Navigate to="/Ventas" />} />
+                                <Route path="/Descarga" element={<Download />} />
+                                <Route path="/*" element={<Navigate to="/Ventas" replace />} />
                             </>
                         )}
                         {!isLoggedIn && (
