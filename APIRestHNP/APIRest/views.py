@@ -157,7 +157,8 @@ class SalesPerUserView(views.APIView):
     permission_classes = [permissions.AllowAny]
         
     def get(self, request):
-        query_id = self.request.query_params.get('id')
+        query_id = request.user.id
+        print(query_id)
         queryset = Sale.objects.filter(user_id=query_id)
         serializer = SalesSerializer(queryset, many=True)
         return Response(serializer.data)
