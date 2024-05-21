@@ -97,6 +97,19 @@ label{
   display: flex;
 }
 
+.password_input {
+  position: relative;
+}
+
+.password_toggle_btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: white;
+  border: none;
+}
+
 .tableCover div {
 	border-radius: 15px !important;
 }

@@ -22,7 +22,7 @@ function App() {
             if (access_token && login_time) {
                 const now = new Date().getTime();
                 const timeElapsed = now - parseInt(login_time);
-                const time_ms = 8 * 60 * 60 * 1000;
+                const time_ms = 4 * 60 * 60 * 1000;
                 if (timeElapsed > time_ms) {
                     handleLogout("Su sesión ha expirado");
                 } else {
@@ -51,7 +51,7 @@ function App() {
     useEffect(() => {
         if (expirationMessage) {
             toast.error(expirationMessage);
-            setExpirationMessage(""); // Clear the message after showing the toast
+            setExpirationMessage("");
         }
     }, [expirationMessage]);
 
