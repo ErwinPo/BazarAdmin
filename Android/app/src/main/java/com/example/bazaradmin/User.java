@@ -8,7 +8,8 @@ public class User {
         this.refresh = refresh;
         this.access = access;
     }
-
+    public User() {
+    }
     public String getRefresh() {
         return refresh;
     }

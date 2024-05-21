@@ -1,5 +1,10 @@
 package com.example.bazaradmin;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.GetChars;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
@@ -11,13 +16,17 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface ApiService {
-    @GET("ventas/")
-    Call<Ventas> getVentas();
+public interface ApiService{
+
+    //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+    @GET("sales//")
+    Call<ArrayList<GetVenta>> getVentas();
 
     //@GET("sales//")
     //Call<GetVenta> getLastVenta(@Query("sale_id") int sale_id);
@@ -33,5 +42,8 @@ public interface ApiService {
 
     @GET("ranking/")
     Call<ArrayList<RankedUser>> getRanking();
+
+    @GET("sales-per-user/?id={id}")
+    Call<ArrayList<Ventas>> getVentasUser(@Path("id") int id, @Header("access") String access);
 }
 

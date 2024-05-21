@@ -15,21 +15,25 @@
         android:networkSecurityConfig="@xml/networl_security_config">
         <activity
             android:name=".RegistroActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".HistorialActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".RankingActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -13,7 +13,7 @@ public class Login {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String correo) {
         this.username = username;
     }
 

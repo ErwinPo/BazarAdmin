@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.MyViewHolder
         holder.fecha.setText(dateFormat.format(sale.date));
         holder.quantity.setText(String.valueOf(sale.quantity));
         holder.sale_id.setText("#"+String.valueOf(sale.id));
+        Log.i("ID OF SALE", String.valueOf(sale.id));
     }
 
 

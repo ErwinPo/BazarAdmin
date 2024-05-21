@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class GetVenta {
 
-    int amount;
+    float amount;
     int quantity;
     int user_id;
     Timestamp date;
@@ -19,11 +19,11 @@ public class GetVenta {
         this.id = id;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

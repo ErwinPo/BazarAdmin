@@ -1,5 +1,7 @@
 package com.example.bazaradmin;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -34,7 +36,7 @@ import  retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegistroActivity extends AppCompatActivity{
-    Button register, delete;
+    Button register, delete, logout;
     EditText monto, cantidad;
     TextView ventanumber, ventadate, ventaquantity, ventasale;
     int user_id = 1;
@@ -58,7 +60,7 @@ public class RegistroActivity extends AppCompatActivity{
         delete = findViewById(R.id.delete);
         monto = findViewById(R.id.monto);
         cantidad = findViewById(R.id.cantidad);
-
+        logout = findViewById(R.id.logout);
         ventanumber = findViewById(R.id.ventaid);
         ventadate = findViewById(R.id.fecha);
         ventaquantity = findViewById(R.id.cantidadsmall);
@@ -70,6 +72,18 @@ public class RegistroActivity extends AppCompatActivity{
         //ventadate.setText(lastventa.date.toString());
         //ventaquantity.setText(lastventa.quantity);
         //ventasale.setText(lastventa.amount);
+
+        SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().remove("access").commit();
+                sp.edit().remove("refresh").commit();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                overridePendingTransition(0,0);
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,16 +180,16 @@ public class RegistroActivity extends AppCompatActivity{
 
     private void getLastSale(){
 
-        Call<Ventas> call = service.getVentas();
+        Call<ArrayList<GetVenta>> call = service.getVentas();
         Log.i("2","2");
-        call.clone().enqueue(new Callback<Ventas>() {
+        call.clone().enqueue(new Callback<ArrayList<GetVenta>>() {
             @Override
-            public void onResponse(Call<Ventas> call, Response<Ventas> response) {
+            public void onResponse(Call<ArrayList<GetVenta>> call, Response<ArrayList<GetVenta>> response) {
                 String responseString = "RCode: " + response.code();
                 Log.i("RCODE", responseString);
                 if (response.isSuccessful()) {
-                    Ventas ventas = response.body();
-                    lastventa = ventas.registros.get(ventas.registros.size()-1);
+                    ArrayList<GetVenta> ventas = response.body();
+                    lastventa = ventas.get(ventas.size()-1);
                     Log.i("ID OF LAST SALE", String.valueOf(lastventa.id));
 
                     ventasale.setText("$"+String.valueOf(lastventa.amount));
@@ -187,7 +201,7 @@ public class RegistroActivity extends AppCompatActivity{
                 }
             }
             @Override
-            public void onFailure(Call<Ventas> call, Throwable t) {
+            public void onFailure(Call<ArrayList<GetVenta>> call, Throwable t) {
                 Log.i("FAIL", t.toString());
                 call.cancel();
             };

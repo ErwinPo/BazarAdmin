@@ -19,6 +19,16 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toTopOf="@id/Historial"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/exit"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/Historial"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/barra_Menu"
         style="@style/barraMenu"
@@ -32,9 +42,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/barra_Menu"
         app:layout_constraintTop_toBottomOf="@id/Historial"
         android:id="@+id/historialRecyclerView"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

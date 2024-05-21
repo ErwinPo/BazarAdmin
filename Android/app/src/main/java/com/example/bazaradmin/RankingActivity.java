@@ -7,10 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -30,7 +34,7 @@ public class RankingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<RankedUser> rankedList;
     RankingAdapter myAdapter;
-
+    Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,18 @@ public class RankingActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rankingRecycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        logout = findViewById(R.id.logout);
+        SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().remove("access").commit();
+                sp.edit().remove("refresh").commit();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                overridePendingTransition(0,0);
+            }
+        });
 
         RankingChangeListener();
 
