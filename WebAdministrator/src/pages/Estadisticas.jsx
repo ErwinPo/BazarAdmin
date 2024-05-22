@@ -20,6 +20,8 @@ const Estadisticas = () => {
     const [itemsDataPercentage, setItemsPercentage] = useState()
     const [userData, setUserData] = useState()
 
+    // const access_token = localStorage.getItem('access_token');
+
     // Function to handle data update from DatesDropdown component
     const handleSalesDataUpdate = (data) => {
         setSalesData(data);
@@ -115,27 +117,29 @@ const Estadisticas = () => {
     return (
         <div>
             <Navbar />
+            <Container fluid>
             <Row className={classes.row}>
-                <Col md={{offset: 2}} xs lg="2">Filtros:</Col>
-                <Col xs lg="2">
-                    {/* Pass handleSalesDataUpdate function as prop */}
-                    <DatesDropdown 
-                        onSalesDataUpdate={handleSalesDataUpdate} 
-                        onRangeOfDatesUpdate={handleRangeOfDates} 
-                        onItemsDataUpdate={handleItemsDataUpdate}
-                        currentUserData={userData}
-                    start/>
+                <Col md={{ span: 2, offset: 2 }} sm={4} xs={12}>Filtros:</Col>
+                <Col md={2} sm={4} xs={12}>
+                {/* Pass handleSalesDataUpdate function as prop */}
+                <DatesDropdown 
+                    onSalesDataUpdate={handleSalesDataUpdate} 
+                    onRangeOfDatesUpdate={handleRangeOfDates} 
+                    onItemsDataUpdate={handleItemsDataUpdate}
+                    currentUserData={userData}
+                    start
+                />
                 </Col>
-                <Col xs lg="2">
-                    <UsersDropdown 
-                        onUserDataUpdate={handleUserDataUpdate}
-                    />
+                <Col md={2} sm={4} xs={12}>
+                <UsersDropdown 
+                    onUserDataUpdate={handleUserDataUpdate}
+                />
                 </Col>
-               
-                    
-               
             </Row>
-            <Row>
+            </Container>
+
+
+            <Row className={classes.statisticsCardsRow}>
                 <StatisticsCards title="Ingresos" data={totalSales} increasePercentage={salesDataPercentage} />
                 <StatisticsCards title="Ventas Totales" data={totalItems} increasePercentage={itemsDataPercentage} />
                 <StatisticsCards

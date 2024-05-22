@@ -6,6 +6,8 @@ const UsersDropdown = ({ onUserDataUpdate }) => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    // const access_token = localStorage.getItem('access_token');
+
 
 
     // useEffect(() => {
@@ -31,6 +33,9 @@ const UsersDropdown = ({ onUserDataUpdate }) => {
     useEffect(() => {
         fetch('http://3.146.65.111:8000/bazar/users//', {
             method: 'GET'
+            // headers: {
+            //     'Authorization': `BEARER ${access_token}`
+            // }
         })
         .then(response => {
             if (!response.ok) {

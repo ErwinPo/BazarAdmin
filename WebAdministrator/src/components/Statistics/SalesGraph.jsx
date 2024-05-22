@@ -58,7 +58,7 @@ const SalesGraph = ({ salesData, itemsData }) => {
         <Col md="10" className={classes.col}>
           <Card className={classes.card}>
             <h4 className={classes.text}> Estadísticas - Ganancias a través del tiempo </h4>
-            <Stack direction="row" sx={{ width: '90%' }} className={classes.stack}>
+            <Stack direction="row" sx={{ width: '100%' }} className={classes.stack}>
               <BarChart
                 slotProps={{
                   noDataOverlay: { message: 'No data to display in this chart' },

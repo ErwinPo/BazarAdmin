@@ -14,3 +14,15 @@
     font-weight:700;
 }
 
+
+@media (max-width: 1300px) {
+
+    .statisticsCardsRow{
+        display: block;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+

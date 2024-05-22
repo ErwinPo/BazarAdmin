@@ -12,7 +12,7 @@ const StatisticsCards = (props) => {
 
     return(
         <Col md="2" className={classes.col}>
-            <Card className={classes.card} style={{ width: '15rem', height: '10rem' }}> 
+            <Card className={classes.card} > 
                 
                     <Card.Body>
                         <Card.Title className={classes.title} >{props.title}</Card.Title>
