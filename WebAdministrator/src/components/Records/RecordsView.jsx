@@ -168,7 +168,7 @@ const RecordsView = () => {
     };
 
     const handleDeleteSelected = async () => {
-        deleteSelectedSale(state.selectedRows);
+        deleteSelectedSales(state.selectedRows);
     };
 
     const deleteSale = (id) => {
@@ -194,7 +194,7 @@ const RecordsView = () => {
         });
     };      
 
-    const deleteSelectedSale = (sale_ids) => {
+    const deleteSelectedSales = (sale_ids) => {
         // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
             method: "DELETE",
