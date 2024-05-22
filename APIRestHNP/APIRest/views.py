@@ -17,9 +17,15 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.views.decorators.csrf import csrf_exempt
 
 
+class UserData(views.APIView):
+    permission_classes = [IsNotSuperuser]
+    
+    def get(self, request):
+        return Response({"user_id": request.user.id, "username" : request.user.username} , status=status.HTTP_200_OK)
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [IsSuperuser]
     serializer_class = UserSerializer
     
     def perform_create(self, serializer):
@@ -45,7 +51,7 @@ class UserViewSet(viewsets.ModelViewSet):
     
 class SalesViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
     serializer_class = SalesSerializer
     
     def perform_create(self, serializer):
@@ -88,7 +94,7 @@ class PasswordRestView(views.APIView):
             try:
                 user = User.objects.get(email=email)
             except Exception as e:
-                return Response({"error": f"Hubo un error: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({"error": f"Hubo un error: {e}"}, status=status.HTTP_400_BAD_REQUEST)
 
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
@@ -131,7 +137,7 @@ class DeleteManyUsersView(views.APIView):
 
 # ============= Delete Many Sales =================
 class DeleteManySalesView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -154,7 +160,7 @@ class DeleteManySalesView(views.APIView):
 # ============= Sales Per User ====================
     
 class SalesPerUserView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
         
     def get(self, request):
         query_id = request.user.id
@@ -167,7 +173,7 @@ class SalesPerUserView(views.APIView):
 # ============= Ranking =========================
 
 class RankingView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
     
     def get(self,request):
         
@@ -183,7 +189,7 @@ class RankingView(views.APIView):
 # =========== IsSuperuser =====================
 
 class IsSuperuserView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsNotSuperuser]
     
     def get(self, request):
         return Response({"is_superuser":request.user.is_superuser}, status=status.HTTP_200_OK)    
@@ -198,7 +204,7 @@ class IsSuperuserView(views.APIView):
 # ==========  With Date (Start - End) =================        
     
 class SalesDateRangeQuantityView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -227,7 +233,7 @@ class SalesDateRangeQuantityView(views.APIView):
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
     
 class SalesDateRangeAmountView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -256,7 +262,7 @@ class SalesDateRangeAmountView(views.APIView):
 # ==========  With Date (Start - End) & Seller ID =================
     
 class SalesDateRangeSellerQuantityView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         query_id = self.request.query_params.get('id')
@@ -283,7 +289,7 @@ class SalesDateRangeSellerQuantityView(views.APIView):
     
     
 class SalesDateRangeSellerAmountView(views.APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsSuperuser]
     
     def get(self, request):
         print(request.user.id)
@@ -309,46 +315,3 @@ class SalesDateRangeSellerAmountView(views.APIView):
             if not serializer_comp.is_valid():
                 errors['comp'] = serializer_comp.errors
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-@csrf_exempt
-def ventas(request):
-    # Initialize response
-    response = {}
-
-    # Check if the request method is POST
-    if request.method != "GET":
-        response = {"message": "Operacion no valida"}
-        return JsonResponse(response, status=405, content_type="application/json")  # Method Not Allowed
-
-
-    # Get all data of venta table
-    registros = Sale.objects.all()
-    # Convertir objetos de modelo a diccionarios
-    registros_dict = [registro.as_dict() for registro in registros]
-
-    # Assuming you want to return the parsed JSON data
-    response = { "message": "Consulta Exitosa" , "registros": registros_dict}
-    return JsonResponse(response, status=200, content_type="application/json")
-
-@csrf_exempt
-def registroventa(request):
-    # Initialize response
-    response = {}
-
-    # Check if the request method is POST
-    if request.method != "POST":
-        response = {"message": "Operacion no valida"}
-        return JsonResponse(response, status=405)  # Method Not Allowed
-
-    # Get the request body
-    try:
-        info = json.loads(request.body)
-    except json.JSONDecodeError:
-        response = {"message": "Error de formato en los datos"}
-        return JsonResponse(response, status=400)  # Bad Request
-
-    registro = Sale.objects.create(user_id_id = int(info["user_id"]) ,amount = int(info["amount"]),quantity = int(info["quantity"]))
-
-    # Assuming you want to return the parsed JSON data
-    response = {"message": "Registro exitoso"}
-    return JsonResponse(response, status=200, content_type="application/json")

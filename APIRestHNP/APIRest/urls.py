@@ -22,8 +22,7 @@ urlpatterns = [
     path("change-password/", ChangePassword.as_view(), name="ChangePassword"),
     path("password-reset/", PasswordRestView.as_view(), name="PasswordReset"), # Email to reset password
     path("is-superuser/", IsSuperuserView.as_view(), name="IsSuperuser"),
-    path("registroventa/", registroventa, name="registroventa"),
-    path("ventas/", ventas, name="ventas"),
+    path("user-data/", UserData.as_view(), name="UserData")
 ]
 
 
