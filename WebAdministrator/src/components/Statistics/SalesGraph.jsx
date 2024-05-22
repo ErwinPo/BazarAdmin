@@ -54,8 +54,8 @@ const SalesGraph = ({ salesData, itemsData }) => {
 
   return (
     <>
-      <Row className={classes.row}>
-        <Col md="10" className={classes.col}>
+      <Row className={`${classes.row} justify-content-center`}>
+        <Col lg={10} md={12} sm={12} className={classes.col}>
           <Card className={classes.card}>
             <h4 className={classes.text}> Estadísticas - Ganancias a través del tiempo </h4>
             <Stack direction="row" sx={{ width: '100%' }} className={classes.stack}>
@@ -70,7 +70,7 @@ const SalesGraph = ({ salesData, itemsData }) => {
                 height={400}
               />
             </Stack>
-            <Box className="d-flex justify-content-end">
+            <Box className="d-flex justify-content-end mt-3">
               <Button variant="contained" color="primary" style={{ textTransform: 'none' }} onClick={handleToggle}>
                 {isSales ? 'Ventas' : 'Objetos'}
               </Button>

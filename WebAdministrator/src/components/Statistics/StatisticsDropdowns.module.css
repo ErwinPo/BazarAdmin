@@ -12,6 +12,7 @@
 
 .col{
     font-weight:700;
+    flex: 1;
 }
 
 
@@ -19,10 +20,18 @@
 
     .statisticsCardsRow{
         display: block;
-        width: 100%;
         justify-content: center;
         align-items: center;
     }
 
+}
+
+@media (min-width: 750px) and (max-width: 1250px){
+    .row{
+        gap: 10rem;
+        flex-wrap: wrap;
+        justify-content: center; /* Centra los elementos en el eje principal */
+        gap: 2rem; /* Espaciado entre las columnas */
+    }
 }
 

@@ -1,78 +1,64 @@
-
-
-.card{
+.card {
     border-color: #3F497F;
     background-color: #E9E9E9;
     font-weight: 700;
-    width: 18rem;
+    width: 45%;
     height: 10rem;
 }
 
-.col{
-    margin:auto;
-    justify-content: space-between;
+.col {
+    margin: auto;
     display: flex;
+    justify-content: center;
 }
 
-.title{
+.title {
     font-size: medium;
     font-weight: bold;
     text-align: left;
 }
 
-.text{
+.text {
     font-size: xx-large;
     text-align: left;
-   
 }
 
-
-
-.img{
+.img {
     padding-top: 1.5rem;
     float: right;
-    margin: auto;
     font-size: 1.25rem;
     display: flex;
     color: #009641;
     font-weight: bold;
 }
 
-
-
-.percentage{
-    float:right
+.percentage {
+    float: right;
 }
 
-.arrowImg{
+.arrowImg {
     height: 30px;
     width: 30px;
     float: right;
-    margin: auto;
     font-size: 1.25rem;
     text-align: center;
     align-items: baseline;
     justify-content: baseline;
 }
 
-
 @media (max-width: 1300px) {
-
-    .card{
+    .card {
         margin-bottom: 1rem;
         width: 100%;
-        
-
     }
 
-    .col{
-        width: 85%;
+    .col {
+        width: 100%;
         justify-content: center;
         align-items: center;
-        justify-content: center;
     }
 
-
-
+    .text {
+        font-size: large;
+    }
 }
-

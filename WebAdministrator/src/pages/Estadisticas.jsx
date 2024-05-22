@@ -118,35 +118,31 @@ const Estadisticas = () => {
         <div>
             <Navbar />
             <Container fluid>
-            <Row className={classes.row}>
-                <Col md={{ span: 2, offset: 2 }} sm={4} xs={12}>Filtros:</Col>
-                <Col md={2} sm={4} xs={12}>
-                {/* Pass handleSalesDataUpdate function as prop */}
-                <DatesDropdown 
-                    onSalesDataUpdate={handleSalesDataUpdate} 
-                    onRangeOfDatesUpdate={handleRangeOfDates} 
-                    onItemsDataUpdate={handleItemsDataUpdate}
-                    currentUserData={userData}
-                    start
-                />
-                </Col>
-                <Col md={2} sm={4} xs={12}>
-                <UsersDropdown 
-                    onUserDataUpdate={handleUserDataUpdate}
-                />
-                </Col>
-            </Row>
+                <Row className={classes.row}>
+                    <Col md={{ span: 2, offset: 2 }} sm={4} xs={12}>Filtros:</Col>
+                    <Col md={2} sm={4} xs={12}>
+                        <DatesDropdown 
+                            onSalesDataUpdate={handleSalesDataUpdate} 
+                            onRangeOfDatesUpdate={handleRangeOfDates} 
+                            onItemsDataUpdate={handleItemsDataUpdate}
+                            currentUserData={userData}
+                            start
+                        />
+                    </Col>
+                    <Col md={2} sm={4} xs={12}>
+                        <UsersDropdown onUserDataUpdate={handleUserDataUpdate} />
+                    </Col>
+                </Row>
+
+                <Row className={`${classes.statisticsCardsRow} justify-content-center`} noGutters>
+                    <StatisticsCards title="Ingresos" data={totalSales} increasePercentage={salesDataPercentage} />
+                    <StatisticsCards title="Ventas Totales" data={totalItems} increasePercentage={itemsDataPercentage} />
+                    <StatisticsCards
+                        title="Mejor Vendedor"
+                        data={loading ? "NA" : bestSeller ? bestSeller[0].username : "NA"}
+                    />
+                </Row>
             </Container>
-
-
-            <Row className={classes.statisticsCardsRow}>
-                <StatisticsCards title="Ingresos" data={totalSales} increasePercentage={salesDataPercentage} />
-                <StatisticsCards title="Ventas Totales" data={totalItems} increasePercentage={itemsDataPercentage} />
-                <StatisticsCards
-                    title="Mejor Vendedor"
-                    data={loading ? "NA" : bestSeller ? bestSeller[0].username : "NA"}
-                />
-            </Row>
             {/* Pass salesData state to SalesGraph component */}
             <SalesGraph salesData={salesData} itemsData={itemsData} />
         </div>
