@@ -6,6 +6,7 @@ const Download = () => {
     return(
         <div>
             <Navbar/>
+            <br/>
             <h1 className={classes.header_title}>¡Descarga la Aplicacion Móvil!</h1>
             <h5 className={classes.text_under}>Disponible solo para dispositivos Android</h5>
             <img src="src/assets/images/qr_test.png" alt="QR Code" className={classes.qr_image}/>
