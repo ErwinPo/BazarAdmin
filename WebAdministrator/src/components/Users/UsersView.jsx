@@ -37,12 +37,13 @@ const UsersView = () => {
     editModal: false,
     changeModal: false,
     deleteModal: false,
+    deleteselfModal: false,
     deletesModal: false,
-    errorModal: false,
     filter: 'all'
   });
 
   const token = localStorage.getItem('access_token');
+  const userId = localStorage.getItem('user_id');
 
   useEffect(() => {
     fetch("http://3.146.65.111:8000/bazar/users//", {
@@ -205,8 +206,9 @@ const UsersView = () => {
   const showModalDelete = (user) => {
     const isAdminUser = user.is_superuser;
     const adminCount = users.filter(u => u.is_superuser).length;
-    if (isAdminUser && adminCount === 1) {
-      setState({ ...state, errorModal: true, form: user });
+    const idUser = parseInt(userId);
+    if (idUser === user.id) {
+      setState({ ...state, deleteselfModal: true, form: user });
     } else {
       setState({ ...state, deleteModal: true, form: user });
     }
@@ -216,6 +218,10 @@ const UsersView = () => {
     setState({ ...state, deleteModal: false });
   };
 
+  const hideModalDeleteSelf = () => {
+    setState({ ...state, deleteselfModal: false });
+  };
+
   const showModalDeleteS = () => {
     setState({ ...state, deletesModal: true });
   };
@@ -223,10 +229,6 @@ const UsersView = () => {
   const hideModalDeleteS = () => {
     setState({ ...state, deletesModal: false });
   };
-
-  const hideModalError1 = () => {
-    setState({ ...state, errorModal: false });
-  }
 
   const validateCForm = () => {
     const { id, username, email, password, passwordCon, is_superuser } = state.form;
@@ -474,13 +476,6 @@ const UsersView = () => {
       state.selectedUserIds.includes(user.id) && user.is_superuser
     );
     const totalAdminUsers = users.filter((user) => user.is_superuser).length;
-    if (selectedAdminUsers.length === totalAdminUsers) {
-      setState({
-        ...state,
-        deletesModal: false,
-        errorModal: true,
-      });
-    } else {
       const deletedUserIds = state.selectedUserIds;
       console.log(deletedUserIds);
       fetch("http://3.146.65.111:8000/bazar/delete-users/", {
@@ -506,7 +501,6 @@ const UsersView = () => {
           console.error("Error:", error);
           toast.error("Error al eliminar los usuarios seleccionados");
         });
-    }
   };
 
   const applyFilter = (user) => {
@@ -562,30 +556,53 @@ const UsersView = () => {
               <th>Nombre</th>
               <th>Correo</th>
               <th>Tipo Usuario</th>
-              <th></th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
           {users.length > 0 ? (
             users.filter(applyFilter).length > 0 ? (
               users.filter(applyFilter).map((user) => (
-                <tr key={user.id}>
-                  <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} checked={state.selectedUserIds.includes(user.id)} /></td>
+                <tr key={user.id} style={{ fontWeight: parseInt(user.id) === parseInt(userId) ? 'bold' : 'normal' }}>
+                  <td>
+                    {(parseInt(userId) !== parseInt(user.id) && ((parseInt(userId) === 1) || (!user.is_superuser && parseInt(userId) !== 1))) ? (
+                      <Form.Check 
+                        className={classes.checkBox} 
+                        onChange={() => handleCheckboxChange(user.id)} 
+                        checked={state.selectedUserIds.includes(user.id)} 
+                      />
+                    ) : null}
+                  </td>
                   <td>{user.id}</td>
-                  <td>{user.username}</td>
+                  <td>{user.username} {parseInt(user.id) === parseInt(userId) && "(tú)"}</td>
                   <td>{user.email}</td>
                   <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
                   <td>
                   <ButtonGroup className={classes.buttons}>
-                    <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
-                      <Image className={classes.image} src={iconPencil} />
-                    </Button>
-                    <Button variant="link" className={classes.noBorder} onClick={() => showModalChange(user)}>
-                      <Image className={classes.image} src={iconCPassword} />
-                    </Button>
-                    {/* Condición para mostrar el botón de eliminar */}
-                    {user.id !== 1 && (
+                    {userId === '1' || !user.is_superuser || parseInt(user.id) === parseInt(userId) ? (
+                      <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
+                        <Image className={classes.image} src={iconPencil} />
+                      </Button>
+                    ) : (
+                      <Button variant="link" className={`${classes.noBorder}`} disabled>
+                        <Image className={classes.image} src={iconPencil} />
+                      </Button>
+                    )}
+                    {userId === '1' || !user.is_superuser || parseInt(user.id) === parseInt(userId) ? (
+                      <Button variant="link" className={classes.noBorder} onClick={() => showModalChange(user)}>
+                        <Image className={classes.image} src={iconCPassword} />
+                      </Button>
+                    ) : (
+                      <Button variant="link" className={`${classes.noBorder}`} disabled>
+                        <Image className={classes.image} src={iconCPassword} />
+                      </Button>
+                    )}
+                    {(user.id !== 1) && (userId === '1' || !user.is_superuser || parseInt(user.id) === parseInt(userId)) ? (
                       <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
+                        <Image className={classes.image} src={iconTrash} />
+                      </Button>
+                    ) : (
+                      <Button variant="link" className={`${classes.noBorder}`} disabled>
                         <Image className={classes.image} src={iconTrash} />
                       </Button>
                     )}
@@ -679,7 +696,7 @@ const UsersView = () => {
           <FormGroup>
             <label>Tipo de Usuario:</label>
             <select className='form-control' name='is_superuser' onChange={handleChange} value={state.form.is_superuser ? 'Administrador' : 'Vendedor'}>
-              {state.form.id === 1 ? (
+              {state.form.id === parseInt(userId)? (
                 <option value='Administrador'>Administrador</option>
               ) : (
                 <>
@@ -755,6 +772,23 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
+      <Modal isOpen={state.deleteselfModal}>
+        <ModalHeader className={classes.modal_header}>
+          <div>
+            <h3>Eliminar Tu Usuario</h3>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <label>¿Estás seguro que deseas eliminar tu propio usuario? Tu cuenta se eliminará definitivamente</label>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Btn color='success' onClick={handleDeleteUser}>Confirmar</Btn>
+          <Btn color='danger' onClick={hideModalDeleteSelf }>Cancelar</Btn>
+        </ModalFooter>
+      </Modal>
+
       <Modal isOpen={state.deletesModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -772,21 +806,6 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={state.errorModal}>
-        <ModalHeader className={classes.modal_header}>
-          <div>
-            <h3>Error</h3>
-          </div>
-        </ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <label>No es posible eliminar este usuario ya que debe existir al menos un usuario de tipo Administrador</label>
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Btn color='success' onClick={hideModalError1}>Aceptar</Btn>
-        </ModalFooter>
-      </Modal>
     </div>
 	  </>
 	);

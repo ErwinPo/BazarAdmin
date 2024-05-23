@@ -46,6 +46,7 @@ function App() {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('login_time');
+        localStorage.removeItem('user_id');
         setIsLoggedIn(false);
         setExpirationMessage(message);
     };
@@ -63,7 +64,7 @@ function App() {
             {!authLoading && (
                 <Router>
                     <Routes>
-                        <Route path="/" element={isLoggedIn ? <Navigate to="/Ventas" /> : <Login />} />
+                        <Route path="/" element={isLoggedIn ? <Navigate to="/Usuarios" /> : <Login />} />
                         <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
                         {isLoggedIn && (
                             <>
@@ -72,7 +73,7 @@ function App() {
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
                                 <Route path="/Registros" element={<RecordsView />} />
                                 <Route path="/Descarga" element={<Download />} />
-                                <Route path="/*" element={<Navigate to="/Ventas" replace />} />
+                                <Route path="/*" element={<Navigate to="/Usuarios" replace />} />
                             </>
                         )}
                         {!isLoggedIn && (

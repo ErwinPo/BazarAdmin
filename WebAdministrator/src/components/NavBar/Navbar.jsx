@@ -23,6 +23,8 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('login_time');
+    localStorage.removeItem('user_id');
     navigate('/');
     window.location.reload();
   };
