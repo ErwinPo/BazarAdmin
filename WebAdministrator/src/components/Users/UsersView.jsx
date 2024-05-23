@@ -5,17 +5,21 @@
 import Navbar from "../NavBar/Navbar";
 import React, { useState, useEffect } from 'react';
 import classes from './UsersView.module.css';
-import { Button, ButtonGroup, Form, Image, Table } from 'react-bootstrap';
+import { Button, ButtonGroup, Row, Col, Form, Image, Table, DropdownButton, Dropdown } from 'react-bootstrap';
 import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
+import iconShow from '../../assets/images/eye_show.png';
+import iconHide from '../../assets/images/eye_hide.png';
+import iconCPassword from '../../assets/images/change_password.png';
+import { useMediaQuery } from 'react-responsive';
 
 const UsersView = () => {
-
   const [users, setUsers] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
   const [state, setState] = useState({
     selectedUserIds: [],
     isAnyUserSelected: false,
@@ -24,19 +28,29 @@ const UsersView = () => {
       username: '',
       email: '',
       password: '',
-      is_superuser: ''
+      passwordCon: '',
+      is_superuser: '',
+      new_password: '',
+      new_passwordCon: ''
     },
     insertModal: false,
     editModal: false,
+    changeModal: false,
     deleteModal: false,
     deletesModal: false,
     errorModal: false,
+    filter: 'all'
   });
 
+  const token = localStorage.getItem('access_token');
 
   useEffect(() => {
     fetch("http://3.146.65.111:8000/bazar/users//", {
-      method: "GET"
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
     })
     .then(response => {
       if (!response.ok) {
@@ -51,8 +65,7 @@ const UsersView = () => {
       console.error('Error:', error);
       toast.error("Error al cargar los datos del servidor");
     });
-  }, []);
-
+  }, [token]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -65,7 +78,6 @@ const UsersView = () => {
       },
     });
   };
-
 
   const handleUsernameChange = (e) => {
     if (e.keyCode === 32) {
@@ -81,7 +93,6 @@ const UsersView = () => {
     }
   };
 
-
   const handleMailChange = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
@@ -96,8 +107,7 @@ const UsersView = () => {
     }
   };
   
-
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange1 = (e) => {
     if (e.keyCode === 32) {
       e.preventDefault();
     } else{
@@ -111,6 +121,47 @@ const UsersView = () => {
     }
   };
 
+  const handlePasswordChange2 = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    } else{
+      setState({
+        ...state,
+        form: {
+          ...state.form,
+          passwordCon: e.target.value
+        }
+      });
+    }
+  };
+
+  const handlePasswordChange3 = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    } else{
+      setState({
+        ...state,
+        form: {
+          ...state.form,
+          new_password: e.target.value
+        }
+      });
+    }
+  };
+
+  const handlePasswordChange4 = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+    } else{
+      setState({
+        ...state,
+        form: {
+          ...state.form,
+          new_passwordCon: e.target.value
+        }
+      });
+    }
+  };
 
   const handleCheckboxChange = (userId) => {
     setState((prevState) => {
@@ -127,26 +178,29 @@ const UsersView = () => {
     });
   };
   
-
   const showModalInsert = () => {
     setState({ ...state, insertModal: true });
   };
-
 
   const hideModalInsert = () => {
     setState({ ...state, insertModal: false });
   };
 
-
   const showModalEdit = (user) => {
     setState({ ...state, editModal: true, form: user});
   };
-
 
   const hideModalEdit = () => {
     setState({ ...state, editModal: false });
   };
 
+  const showModalChange = (user) => {
+    setState({ ...state, changeModal: true, form: user});
+  };
+
+  const hideModalChange= () => {
+    setState({ ...state, changeModal: false });
+  };
 
   const showModalDelete = (user) => {
     const isAdminUser = user.is_superuser;
@@ -158,36 +212,31 @@ const UsersView = () => {
     }
   };
   
-
   const hideModalDelete = () => {
     setState({ ...state, deleteModal: false });
   };
-
 
   const showModalDeleteS = () => {
     setState({ ...state, deletesModal: true });
   };
 
-
   const hideModalDeleteS = () => {
     setState({ ...state, deletesModal: false });
   };
-
 
   const hideModalError1 = () => {
     setState({ ...state, errorModal: false });
   }
 
-
   const validateCForm = () => {
-    const { id, username, email, password, is_superuser } = state.form;
+    const { id, username, email, password, passwordCon, is_superuser } = state.form;
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const lowercaseUsername = username.toLowerCase();
     const lowercaseMail = email.toLowerCase();
     const isUsernameExists = users.some(user => user.id !== id && user.username.toLowerCase() === lowercaseUsername);
     const isEmailExists = users.some(user => user.id !== id && user.email.toLowerCase() === lowercaseMail);
-    if (!username || !email || !password || is_superuser === '') {
+    if (!username || !email || !password || !passwordCon || is_superuser === '') {
       toast.error("Por favor, complete todos los campos.");
       return false;
     } else if (isUsernameExists) {
@@ -201,6 +250,9 @@ const UsersView = () => {
       return false;
     } else if (!passwordPattern.test(password)) {
       toast.error("La contraseña debe tener al menos 8 caracteres y al menos un número.");
+      return false;
+    } else if (password !== passwordCon) {
+      toast.error("Las contraseñas no coinciden.");
       return false;
     }
     return true;
@@ -228,8 +280,23 @@ const UsersView = () => {
     }
     return true;
   };
-  
 
+  const validatePasswordForm = () => {
+    const { id, new_password, new_passwordCon} = state.form;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!new_password || !new_passwordCon) {
+      toast.error("Por favor, complete todos los campos.");
+      return false;
+    } else if (!passwordPattern.test(new_password)) {
+      toast.error("La contraseña debe tener al menos 8 caracteres y al menos un número.");
+      return false;
+    } else if (new_password !== new_passwordCon) {
+      toast.error("Las contraseñas no coinciden.");
+      return false;
+    }
+    return true;
+  };
+  
   const handleCreateUser = () => {
     if (!validateCForm()) {
       return;
@@ -244,6 +311,7 @@ const UsersView = () => {
     fetch("http://3.146.65.111:8000/bazar/users//", {
       method: "POST",
       headers: {
+        'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(newUser)
@@ -264,6 +332,7 @@ const UsersView = () => {
           username: '',
           email: '',
           password: '',
+          passwordCon: '',
           is_superuser: ''
         } 
       });
@@ -275,7 +344,6 @@ const UsersView = () => {
     });
   };
   
-
   const handleEditUser = () => {
     if (!validateUForm()) {
       return;
@@ -298,6 +366,7 @@ const UsersView = () => {
     fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
       method: "PUT",
       headers: {
+        'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(updatedUser)
@@ -333,12 +402,54 @@ const UsersView = () => {
       toast.error("Error al editar el usuario");
     });
   };
-  
 
+  const handleChangePassword = () => {
+    if (!validatePasswordForm()) {
+      return;
+    }
+    const { id, new_password } = state.form;
+    fetch(`http://3.146.65.111:8000/bazar/change-password/`, {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user: id, new_password: new_password })
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.log(response.data.new_password);
+        throw new Error('Error al cambiar la contraseña');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Contraseña cambiada exitosamente:", data);
+      toast.success("Contraseña cambiada exitosamente.");
+      setState({
+        ...state,
+        changeModal: false,
+        form: {
+          id: '',
+          new_password: '',
+          new_passwordCon: ''
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      toast.error("Error al cambiar la contraseña");
+    });
+  }
+  
   const handleDeleteUser = () => {
     const { id } = state.form;
     fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
     })
     .then(() => {
       setState({
@@ -358,7 +469,6 @@ const UsersView = () => {
     })
   };
 
-
   const handleDeleteUsers = () => {
     const selectedAdminUsers = users.filter((user) =>
       state.selectedUserIds.includes(user.id) && user.is_superuser
@@ -376,6 +486,7 @@ const UsersView = () => {
       fetch("http://3.146.65.111:8000/bazar/delete-users/", {
         method: "DELETE",
         headers: {
+          'Authorization': `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ users: deletedUserIds}),
@@ -398,17 +509,52 @@ const UsersView = () => {
     }
   };
 
+  const applyFilter = (user) => {
+    const { filter } = state;
+    if (filter === 'all') return true;
+    if (filter === 'admin') return user.is_superuser;
+    if (filter === 'vendor') return !user.is_superuser;
+  };
+
+  const getTitle = () => {
+    switch (state.filter) {
+      case 'admin':
+        return 'Ver Administradores';
+      case 'vendor':
+        return 'Ver Vendedores';
+      default:
+        return 'Ver Todos';
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const isLargeScreen = useMediaQuery({ maxWidth: 885 });
 
   return (
-  	<div>
-		<Navbar />
+  	<>
+		<Navbar/>
 		<ToastContainer position="top-center" autoClose={3000} />
-      <div className={classes.btn_container}>
+    <div className={classes.usersLog}>
+      <Row className={classes.options}>
+        <Col md={isLargeScreen ? 12 : 'auto'}>
         <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
+        </Col>
+        <Col md={isLargeScreen ? 12 : 'auto'}>
         <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
-      </div>
+        </Col>
+        <Col className={classes.options_user}>
+          <DropdownButton title={getTitle()} variant={null} className={classes.oButton}>
+            <Dropdown.Item onClick={() => setState({ ...state, filter: 'all' })}>Ver Todos</Dropdown.Item>
+            <Dropdown.Item onClick={() => setState({ ...state, filter: 'admin' })}>Ver Administradores</Dropdown.Item>
+            <Dropdown.Item onClick={() => setState({ ...state, filter: 'vendor' })}>Ver Vendedores</Dropdown.Item>
+          </DropdownButton>
+        </Col>
+      </Row>
       <div className={classes.tableCover}>
-        <Table bordered responsive size='lg' variant='dark' className={classes.table}>
+        <Table responsive size='lg' variant='dark' className={classes.table}>
           <thead>
             <tr>
               <th></th>
@@ -420,8 +566,9 @@ const UsersView = () => {
             </tr>
           </thead>
           <tbody>
-            {users.length > 0 ? (
-              users.map((user) => (
+          {users.length > 0 ? (
+            users.filter(applyFilter).length > 0 ? (
+              users.filter(applyFilter).map((user) => (
                 <tr key={user.id}>
                   <td><Form.Check className={classes.checkBox} onChange={() => handleCheckboxChange(user.id)} checked={state.selectedUserIds.includes(user.id)} /></td>
                   <td>{user.id}</td>
@@ -429,26 +576,36 @@ const UsersView = () => {
                   <td>{user.email}</td>
                   <td>{user.is_superuser ? 'Administrador' : 'Vendedor'}</td>
                   <td>
-                    <ButtonGroup className={classes.buttons}>
-                      <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
-                        <Image className={classes.image} src={iconPencil} />
-                      </Button>
+                  <ButtonGroup className={classes.buttons}>
+                    <Button variant="link" className={classes.noBorder} onClick={() => showModalEdit(user)}>
+                      <Image className={classes.image} src={iconPencil} />
+                    </Button>
+                    <Button variant="link" className={classes.noBorder} onClick={() => showModalChange(user)}>
+                      <Image className={classes.image} src={iconCPassword} />
+                    </Button>
+                    {/* Condición para mostrar el botón de eliminar */}
+                    {user.id !== 1 && (
                       <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
                         <Image className={classes.image} src={iconTrash} />
                       </Button>
-                    </ButtonGroup>
+                    )}
+                  </ButtonGroup>
                   </td>
                 </tr>
               ))
             ) : (
               <tr className={classes.emptyState}>
-                <td colSpan='7'>No hay usuarios registrados hasta el momento</td>
+                <td colSpan='6'>No hay usuarios vendedores</td>
               </tr>
-            )}
+            )
+          ) : (
+            <tr className={classes.emptyState}>
+              <td colSpan='6'>No hay usuarios registrados hasta el momento</td>
+            </tr>
+          )}
           </tbody>
         </Table>
       </div>
-
 
       <Modal isOpen={state.insertModal}>
         <ModalHeader className={classes.modal_header}>
@@ -468,7 +625,21 @@ const UsersView = () => {
           </FormGroup>
           <FormGroup>
             <label>Contraseña:</label>
-            <input className='form-control' name='password' type='text' onChange={handleChange} onKeyDown={handlePasswordChange} />
+            <div className={classes.password_input}>
+              <input className='form-control' name='password' type={showPassword ? 'text' : 'password'} onChange={handleChange} onKeyDown={handlePasswordChange1} />
+              <button className={classes.password_toggle_btn} onClick={togglePasswordVisibility}>
+                <img className={classes.image} src={showPassword ? iconHide : iconShow} alt={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'} />
+              </button>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <label>Confirmar Contraseña:</label>
+            <div className={classes.password_input}>
+              <input className='form-control' name='passwordCon' type={showPassword ? 'text' : 'password'} onChange={handleChange} onKeyDown={handlePasswordChange2} />
+              <button className={classes.password_toggle_btn} onClick={togglePasswordVisibility}>
+                <img className={classes.image} src={showPassword ? iconHide : iconShow} alt={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'} />
+              </button>
+            </div>
           </FormGroup>
           <FormGroup>
             <label>Tipo de Usuario:</label>
@@ -484,7 +655,6 @@ const UsersView = () => {
           <Btn color='danger' onClick={hideModalInsert}>Cancelar</Btn>
         </ModalFooter>
       </Modal>
-
 
       <Modal isOpen={state.editModal}>
         <ModalHeader className={classes.modal_header}>
@@ -509,9 +679,15 @@ const UsersView = () => {
           <FormGroup>
             <label>Tipo de Usuario:</label>
             <select className='form-control' name='is_superuser' onChange={handleChange} value={state.form.is_superuser ? 'Administrador' : 'Vendedor'}>
-              <option value='' disabled>Selecciona una opción</option>
-              <option value='Administrador'>Administrador</option>
-              <option value='Vendedor'>Vendedor</option>
+              {state.form.id === 1 ? (
+                <option value='Administrador'>Administrador</option>
+              ) : (
+                <>
+                  <option value='' disabled>Selecciona una opción</option>
+                  <option value='Administrador'>Administrador</option>
+                  <option value='Vendedor'>Vendedor</option>
+                </>
+              )}
             </select>
           </FormGroup>
         </ModalBody>
@@ -521,6 +697,46 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
+      <Modal isOpen={state.changeModal}>
+        <ModalHeader className={classes.modal_header}>
+          <div>
+            <h3>Cambiar Contraseña</h3>
+          </div>
+        </ModalHeader>
+        <ModalBody>
+          {state.errorMessage && <div className={classes.error_message}>{state.errorMessage}</div>}
+          <FormGroup>
+            <label>Id:</label>
+            <input className='form-control' readOnly type='text' value={state.form.id} />
+          </FormGroup>
+          <FormGroup>
+            <label>Nombre de Usuario:</label>
+            <input className='form-control' readOnly type='text' value={state.form.username} />
+          </FormGroup>
+          <FormGroup>
+            <label>Nueva Contraseña:</label>
+            <div className={classes.password_input}>
+              <input className='form-control' name='new_password' type={showPassword ? 'text' : 'password'} onChange={handleChange} onKeyDown={handlePasswordChange3} />
+              <button className={classes.password_toggle_btn} onClick={togglePasswordVisibility}>
+                <img className={classes.image} src={showPassword ? iconHide : iconShow} alt={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'} />
+              </button>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <label>Confirmar Nueva Contraseña:</label>
+            <div className={classes.password_input}>
+              <input className='form-control' name='new_passwordCon' type={showPassword ? 'text' : 'password'} onChange={handleChange} onKeyDown={handlePasswordChange4} />
+              <button className={classes.password_toggle_btn} onClick={togglePasswordVisibility}>
+                <img className={classes.image} src={showPassword ? iconHide : iconShow} alt={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'} />
+              </button>
+            </div>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Btn color='success' onClick={handleChangePassword}>Guardar</Btn>
+          <Btn color='danger' onClick={hideModalChange}>Cancelar</Btn>
+        </ModalFooter>
+      </Modal>
 
       <Modal isOpen={state.deleteModal}>
         <ModalHeader className={classes.modal_header}>
@@ -539,7 +755,6 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
-
       <Modal isOpen={state.deletesModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -557,7 +772,6 @@ const UsersView = () => {
         </ModalFooter>
       </Modal>
 
-
       <Modal isOpen={state.errorModal}>
         <ModalHeader className={classes.modal_header}>
           <div>
@@ -573,7 +787,8 @@ const UsersView = () => {
           <Btn color='success' onClick={hideModalError1}>Aceptar</Btn>
         </ModalFooter>
       </Modal>
-	</div>
+    </div>
+	  </>
 	);
 };
 

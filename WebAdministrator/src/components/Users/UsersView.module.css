@@ -1,11 +1,11 @@
 /* Copyright 2024 BitBrothers
- * File: UsersTable.module.css
+ * File: UsersView.module.css
  * Type: css file */
 
  .addButton {
-  background-color: #F7C04A;
+  background-color: #F7C04A !important;
   color:black;
-  border-color: black;
+  border-color: black !important;
   border-radius: 20px;
   margin-top: 30px;
   width: auto;
@@ -13,13 +13,6 @@
   margin-right: 20px;
   padding-left: 20px;
   padding-right: 20px;
-}
-
-.addButton:hover, 
-.addButton:active {
-  background-color: #F7C04A;
-  color:black;
-  border-color: black;
 }
 
 .btn_container {
@@ -39,6 +32,12 @@
 
 .checkBox input:focus{
 	border-radius: 0.25rem !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  --bs-dropdown-link-active-color: transparent;
+  --bs-dropdown-link-active-bg: transparent;
 }
 
 .emptyState td {
@@ -66,6 +65,49 @@ label{
   background-color: #539165;
   color:white;
   justify-content: center;
+}
+
+.oButton button {
+  background-color: #F7C04A !important;
+  color: black !important;
+  border-radius: 20px;
+  border-color: black !important;
+  margin-top: 30px;
+  width: auto;
+  height: 45px;
+  padding-top: 5px;
+  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  align-self: center;
+}
+
+.options {
+  margin: 16px 0px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: end;
+  justify-content: left;
+  white-space: nowrap;
+  gap: 0px;
+}
+
+.options_user {
+  justify-content: right;
+  display: flex;
+}
+
+.password_input {
+  position: relative;
+}
+
+.password_toggle_btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: white;
+  border: none;
 }
 
 .tableCover div {
@@ -98,5 +140,26 @@ label{
 }
 
 .tableCover {
-	margin: 30px 100px;
+  justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.usersLog {
+  margin: 0px 80px;
+}
+
+@media (max-width: 885px) {
+  .usersLog {
+      margin: 0px 24px;
+  }
+  .options_user  {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 468px) {
+  .usersLog {
+      margin: 0px 6px;
+  }
 }
