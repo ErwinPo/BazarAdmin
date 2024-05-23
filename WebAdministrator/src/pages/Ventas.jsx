@@ -7,6 +7,7 @@ import moment from "moment";
 import SalesTable from "../components/Records/SalesTable";
 import ModalEdit from "../components/Records/ModalEdit";
 import ModalDelete from "../components/Records/ModalDelete";
+import iconTrash from '../assets/images/icon_trash.png';
 
 const Ventas = () => {
 	const [validated, setValidated] = useState(false);
@@ -87,6 +88,10 @@ const Ventas = () => {
 
 	const handleDelete = (saleId) => {
         deleteSale(saleId);
+    };
+
+	const toggleDeleteSelectedModal = () => {
+        setState({ ...state, deleteSelectedModalOpen: !state.deleteSelectedModalOpen });
     };
 
 	const deleteSale = (id) => {
@@ -205,22 +210,32 @@ const Ventas = () => {
 				</Button>
 			</Form>
 			<br/>
-			<SalesTable 
-                columnCheck={state.columnCheck}
-                sales={filteredSales} 
-                page={page}
-                handlePageChange={handlePageChange}
-                handleSelectAllChange={handleSelectAllChange}
-                setPage={setPage} 
-                onRowSelect={handleRowSelect}
-                selectedRows={state.selectedRows}
-                toggleDeleteModal={toggleDeleteModal}
-                setCurrentSaleIdDelete={setCurrentSaleIdDelete}
-                setCurrentSaleEdit={setCurrentSaleEdit}
-                toggleEditModal={toggleEditModal}
-            />
-			<ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} setCurrentSaleEdit={setCurrentSaleEdit} />
-			<ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
+			<div className={classes.salesLog}>
+				{state.selectedRows.length > 0 && (
+                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteSelectedModal} >
+                        <Image className={classes.image} src={iconTrash} />
+                        <span>
+                            Eliminar Seleccionados
+                        </span>
+                    </Button>
+                )}
+				<SalesTable 
+                	columnCheck={state.columnCheck}
+                	sales={filteredSales} 
+                	page={page}
+                	handlePageChange={handlePageChange}
+                	handleSelectAllChange={handleSelectAllChange}
+                	setPage={setPage} 
+                	onRowSelect={handleRowSelect}
+                	selectedRows={state.selectedRows}
+                	toggleDeleteModal={toggleDeleteModal}
+                	setCurrentSaleIdDelete={setCurrentSaleIdDelete}
+                	setCurrentSaleEdit={setCurrentSaleEdit}
+                	toggleEditModal={toggleEditModal}
+            	/>
+				<ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} setCurrentSaleEdit={setCurrentSaleEdit} />
+				<ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
+			</div>
 		</div>
 	);
 };
