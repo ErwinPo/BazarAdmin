@@ -8,6 +8,7 @@ import Estadisticas from './pages/Estadisticas';
 import RecordsView from "./components/Records/RecordsView";
 import Login from './components/Login/Login';
 import Download from './pages/Download';
+import ResetPassword from './pages/ResetPassword';
 
 export const AuthContext = createContext();
 
@@ -63,6 +64,7 @@ function App() {
                 <Router>
                     <Routes>
                         <Route path="/" element={isLoggedIn ? <Navigate to="/Ventas" /> : <Login />} />
+                        <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
                         {isLoggedIn && (
                             <>
                                 <Route path="/Ventas" element={<Ventas />} />
