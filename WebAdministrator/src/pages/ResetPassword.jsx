@@ -19,10 +19,11 @@ const ResetPassword = () => {
             event.preventDefault();
 			event.stopPropagation();
             toast.error("Error: Contraseña no valida.");
-
+            
+            setValidated(true);
             form.elements.passwordGrp.value = "";
             form.elements.passwordConGrp.value = "";
-            setValidated(true);
+            
         } else {
             if(form.elements.passwordGrp.value != form.elements.passwordConGrp.value){
                 event.preventDefault();
@@ -47,13 +48,13 @@ const ResetPassword = () => {
             <Form noValidate validated={validated} onSubmit={handleChangePassword}>
                 <Form.Group className={classes.form_grp} controlId="passwordGrp">
                     <Form.Label>Nueva Contraseña</Form.Label>
-                    <Form.Control pattern={passwordPattern} className={classes.control_input} required />
+                    <Form.Control type="password" pattern={passwordPattern} className={classes.control_input} required />
                     <Form.Control.Feedback type="invalid">La contraseña debe tener al menos 8 caracteres y al menos un número.</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className={classes.form_grp} controlId="passwordConGrp">
                     <Form.Label>Confirmación de Nueva Contraseña</Form.Label>
-                    <Form.Control pattern={passwordPattern} className={classes.control_input} required />
+                    <Form.Control type="password" pattern={passwordPattern} className={classes.control_input} required />
                     <Form.Control.Feedback type="invalid">La contraseña debe tener al menos 8 caracteres y al menos un número.</Form.Control.Feedback>
                 </Form.Group>
 
