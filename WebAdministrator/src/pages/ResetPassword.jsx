@@ -5,13 +5,12 @@ import { Button, Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 
 const ResetPassword = () => {
-    const {uidb64} = useParams();
-    const {token} = useParams();
+    const {uidb64, token} = useParams();
     const [validated, setValidated] = useState(false);
     const passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
     const navigate = useNavigate();
 
-    const handleChangePassword = (event) => {
+    const handleChangePassword = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
 
@@ -19,7 +18,7 @@ const ResetPassword = () => {
             event.preventDefault();
 			event.stopPropagation();
             toast.error("Error: Contraseña no valida.");
-            
+
             setValidated(true);
             form.elements.passwordGrp.value = "";
             form.elements.passwordConGrp.value = "";
@@ -34,8 +33,31 @@ const ResetPassword = () => {
                 form.elements.passwordConGrp.value = "";
                 setValidated(false);
             } else {
-                setValidated(true);
-                navigate("/");
+                try {
+				    setValidated(true);
+				    const response = await fetch(`http://3.146.65.111:8000/bazar/password-reset-confirm/${uidb64}/${token}/`, {
+					    method: "POST",
+					    headers: {
+						    'Content-Type' : 'application/json'
+					    },
+					    body: JSON.stringify({
+						    new_password: form.elements.passwordGrp.value
+					    })
+				    });
+
+				    if(!response.ok){
+                        const responseData = await response.json();
+					    console.log(responseData);
+					    throw new Error(responseData.message || "Error al cambiar la contraseña");
+				    }
+
+				    toast.success("Contraseña cambiada con éxito!");
+                    navigate("/");
+
+			    } catch (error) {
+				    console.error("Error: ", error.message);
+				    toast.error("Error al cambiar la contraseña");
+			    }
             }
         }
     }
