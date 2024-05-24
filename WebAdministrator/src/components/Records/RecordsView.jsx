@@ -72,7 +72,11 @@ const RecordsView = () => {
 
     useEffect(() => {
         fetch("http://3.146.65.111:8000/bazar/sales//", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
         })
         .then((response) => response.json())
         .then(data => {
@@ -174,7 +178,11 @@ const RecordsView = () => {
     const deleteSale = (id) => {
         // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
         })
         .then(response => {
             if (response.ok) {
@@ -199,7 +207,8 @@ const RecordsView = () => {
         fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             },
             body: JSON.stringify({ sales: sale_ids})
         })
@@ -228,7 +237,8 @@ const RecordsView = () => {
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             },
             body: JSON.stringify({ 'amount': amount, 'quantity': quantity })
         })

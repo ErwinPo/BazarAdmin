@@ -31,7 +31,11 @@ const Ventas = () => {
 
 	useEffect(() => {
         fetch("http://3.146.65.111:8000/bazar/sales//", {
-            method: "GET"
+            method: "GET",
+			headers: {
+				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+				"Content-Type": "application/json"
+			}
         })
         .then((response) => response.json())
         .then(data => {
@@ -97,7 +101,11 @@ const Ventas = () => {
 	const deleteSale = (id) => {
         // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
-            method: "DELETE"
+            method: "DELETE",
+			headers: {
+				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+				"Content-Type": "application/json"
+			}
         })
         .then(response => {
             if (response.ok) {
@@ -122,6 +130,7 @@ const Ventas = () => {
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
+				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ 'amount': amount, 'quantity': quantity })
@@ -190,7 +199,6 @@ const Ventas = () => {
 
 	return (
 		<div>
-			<ToastContainer position="top-center" autoClose={false}/>
 			<Navbar />
 			<Form noValidate validated={validated} onSubmit={handleSubmit}>
 				<Form.Group className={classes.form_grp} controlId="formMonto">
