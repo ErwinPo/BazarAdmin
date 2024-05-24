@@ -1,7 +1,7 @@
 import { Dropdown, Modal, Button } from 'react-bootstrap/';
 import { useState, useEffect } from 'react';
 import classes from "./DatesDropdown.module.css";
-import DateRangePicker from '../DateRangePicker';
+import DateRangePicker from '../Records/DateRangePicker';
 
 const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpdate, currentUserId, currentUserData }) => {
     const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([]);
