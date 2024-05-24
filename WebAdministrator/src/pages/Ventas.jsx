@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/NavBar/Navbar";
 import classes from "./Ventas.module.css";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Image } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 import SalesTable from "../components/Records/SalesTable";
 import ModalEdit from "../components/Records/ModalEdit";
 import ModalDelete from "../components/Records/ModalDelete";
+import ModalDeleteSelected from "../components/Records/ModalDeleteSelected";
 import iconTrash from '../assets/images/icon_trash.png';
 
 const Ventas = () => {
@@ -98,6 +99,10 @@ const Ventas = () => {
         setState({ ...state, deleteSelectedModalOpen: !state.deleteSelectedModalOpen });
     };
 
+	const handleDeleteSelected = async () => {
+        deleteSelectedSales(state.selectedRows);
+    };
+
 	const deleteSale = (id) => {
         // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
@@ -152,6 +157,36 @@ const Ventas = () => {
             toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
         });
     };    
+
+	const deleteSelectedSales = (sale_ids) => {
+        // console.log(id)
+        fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            },
+            body: JSON.stringify({ sales: sale_ids})
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log(sale_ids)
+                const updatedSales = state.sales.filter(sale => !sale_ids.includes(sale.id));
+                setState({ ...state, sales: updatedSales, deleteSelectedModalOpen: false });
+                setPage(1);
+                toast.success("Ventas seleccionadas eliminadas con éxito.");
+            }
+            else {
+                console.error(response)
+                toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+                setState({ ...state, deleteSelectedModalOpen: false });
+            }
+        })
+        .catch(error => {
+            console.error("Error deleting sale:", error);
+            toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+        });
+    };
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -243,6 +278,7 @@ const Ventas = () => {
             	/>
 				<ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} setCurrentSaleEdit={setCurrentSaleEdit} />
 				<ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
+				<ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
 			</div>
 		</div>
 	);
