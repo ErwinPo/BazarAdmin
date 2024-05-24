@@ -23,7 +23,8 @@ urlpatterns = [
     path("password-reset/", PasswordRestView.as_view(), name="PasswordReset"), # Email to reset password
     path("is-superuser/", IsSuperuserView.as_view(), name="IsSuperuser"),
     path("user-data/", UserData.as_view(), name="UserData"),
-    path("password-reset-confirm/<uidb64>/<token>/", PasswordResetConfirm.as_view(), name="PasswordResetConfirm")
+    path("password-reset-confirm/<uidb64>/<token>/", PasswordResetConfirm.as_view(), name="PasswordResetConfirm"),
+    path("download-apk-hnp/", ApplicationDownloadView.as_view(), name="ApplicationDownload")
 ]
 
 

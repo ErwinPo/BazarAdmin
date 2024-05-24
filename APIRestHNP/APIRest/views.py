@@ -1,9 +1,11 @@
 import pdb
 import json
+import os
 from .utils import *
 from .models import *
 from .serializers import *
 from .permissions import *
+from django.core.files import File
 from django.http import JsonResponse
 from django.db import transaction
 from django.contrib.auth.tokens import default_token_generator
@@ -15,6 +17,7 @@ from rest_framework import permissions, viewsets, views, status
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.views.decorators.csrf import csrf_exempt
+from django.http import FileResponse, Http404
 
 
 class UserData(views.APIView):
@@ -134,6 +137,18 @@ class PasswordRestView(views.APIView):
         else:
             return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         
+
+class ApplicationDownloadView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request):
+        file_path = os.path.join(os.getcwd(), 'APK.jpg')
+        if os.path.exists(file_path):        
+            response = FileResponse(open(file_path, 'rb'))
+            response['Content-Disposition'] = 'attachment; filename="AppHNP.apk"'
+            return response
+        else:
+            raise Http404("Archivo No Encontrado")
         
 # ============= Delete Many Users =================
 class DeleteManyUsersView(views.APIView):
