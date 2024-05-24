@@ -67,6 +67,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
     };
 
     const requestSort = (key) => {
+        handlePageChange();
         let direction = 'desc';
         if (sortConfig.key === key && sortConfig.direction === 'desc') {
             direction = 'asc';

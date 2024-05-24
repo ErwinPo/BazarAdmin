@@ -52,6 +52,7 @@ const RecordsView = () => {
 
     const lowDate = moment().subtract(6, 'months').toDate();
     const highestAmount = 10000;
+    const token = localStorage.getItem('access_token');
 
     const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, username: 'John Doe' });
     const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
@@ -74,14 +75,13 @@ const RecordsView = () => {
         fetch("http://3.146.65.111:8000/bazar/sales//", {
             method: "GET",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             }
         })
         .then((response) => response.json())
         .then(data => {
             setState({ ...state, sales: data ?? [] });
-            console.log(data);
         })
         .catch((error) => {console.log(error);});
     }, []);
@@ -176,12 +176,11 @@ const RecordsView = () => {
     };
 
     const deleteSale = (id) => {
-        // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "DELETE",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             }
         })
         .then(response => {
@@ -203,18 +202,16 @@ const RecordsView = () => {
     };      
 
     const deleteSelectedSales = (sale_ids) => {
-        // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
             method: "DELETE",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({ sales: sale_ids})
         })
         .then(response => {
             if (response.ok) {
-                console.log(sale_ids)
                 const updatedSales = state.sales.filter(sale => !sale_ids.includes(sale.id));
                 setState({ ...state, sales: updatedSales, deleteSelectedModalOpen: false });
                 setPage(1);
@@ -233,12 +230,11 @@ const RecordsView = () => {
     };      
 
     const editSale = (amount, id, quantity, sale_index) => {
-        // console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({ 'amount': amount, 'quantity': quantity })
         })

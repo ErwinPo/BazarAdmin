@@ -1,3 +1,7 @@
+/* Copyright 2024 BitBrothers
+ * File: Login.jsx
+ * Type: component */
+
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from 'react-toastify';
 import logo from "../../assets/images/LogoHNP1.png";
@@ -13,6 +17,8 @@ export default function Login() {
     useEffect(() => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('login_time');
+        localStorage.removeItem('user_id');
     }, []);
 
     async function signIn(e) {
@@ -49,6 +55,17 @@ export default function Login() {
                 localStorage.setItem('access_token', data.access);
                 localStorage.setItem('refresh_token', data.refresh);
                 localStorage.setItem('login_time', now.toString());
+                const userDataResponse = await fetch('http://3.146.65.111:8000/bazar/user-data', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${data.access}`
+                    }
+                });
+                const userData = await userDataResponse.json();
+                if (!userDataResponse.ok) {
+                    throw new Error('Error al obtener los datos del usuario.');
+                }
+                localStorage.setItem('user_id', userData.user_id);
                 window.location.reload();
             } catch (error) {
                 toast.error(error.message);
@@ -56,7 +73,7 @@ export default function Login() {
                 setPassword("");
             }
         }
-    }
+    }    
 
     function handleUserChange(e) {
         setUser(e.target.value);

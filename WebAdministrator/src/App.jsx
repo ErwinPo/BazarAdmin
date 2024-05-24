@@ -46,6 +46,7 @@ function App() {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('login_time');
+        localStorage.removeItem('user_id');
         setIsLoggedIn(false);
         setExpirationMessage(message);
     };
