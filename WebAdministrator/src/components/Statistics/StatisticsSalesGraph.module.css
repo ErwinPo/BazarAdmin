@@ -50,3 +50,13 @@
     }
 
 }
+
+
+
+@media (max-width: 1300px) and (min-width: 992px) {
+
+    .col{
+        width: 100%;
+    }
+
+}

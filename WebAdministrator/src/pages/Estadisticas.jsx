@@ -93,6 +93,9 @@ const Estadisticas = () => {
     useEffect(() => {
         fetch('http://3.146.65.111:8000/bazar/ranking/', {
             method: 'GET'
+            // headers: {
+            //'Authorization': `BEARER ${access_token}`
+            // }
         })
         .then(response => {
             if (!response.ok) {
