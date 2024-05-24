@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import classes from "./Navbar.module.css";
 import logo from "../../assets/images/LogoHNP.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 980);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 980);
+      setIsMobile(window.innerWidth <= 845);
     };
 
     window.addEventListener("resize", handleResize);
@@ -18,6 +19,15 @@ const Navbar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('login_time');
+    localStorage.removeItem('user_id');
+    navigate('/');
+    window.location.reload();
+  };
 
   return (
     <nav>
@@ -47,19 +57,22 @@ const Navbar = () => {
         <li>
           <NavLink to="/Registros">Registros</NavLink>
         </li>
+        <li>
+          <NavLink to="/Descarga">App</NavLink>
+        </li>
         {isMobile && (
           <li>
-            <NavLink to="/" className={classes.nav_btn_link}>
+            <button onClick={handleLogout} className={classes.nav_btn_link}>
               Cerrar Sesión
-            </NavLink>
+            </button>
           </li>
         )}
       </ul>
       {!isMobile && (
         <div className={classes.logout_container}>
-          <NavLink to="/" className={classes.nav_btn_link}>
+          <button onClick={handleLogout} className={classes.nav_btn_link}>
             Cerrar Sesión
-          </NavLink>
+          </button>
         </div>
       )}
     </nav>

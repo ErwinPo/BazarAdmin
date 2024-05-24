@@ -1,0 +1,166 @@
+/* Copyright 2024 BitBrothers
+ * File: UsersView.module.css
+ * Type: css file */
+
+ .addButton {
+  background-color: #F7C04A !important;
+  color:black;
+  border-color: black !important;
+  border-radius: 20px;
+  margin-top: 30px;
+  width: auto;
+  height: 45px;
+  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn_container {
+  display: flex;
+  margin-left: 100px;
+  justify-content: left;
+}
+
+ .buttons {
+	gap: 12px;
+}
+
+.checkBox {
+	height: 25px;
+	width: auto;
+}
+
+.checkBox input:focus{
+	border-radius: 0.25rem !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  --bs-dropdown-link-active-color: transparent;
+  --bs-dropdown-link-active-bg: transparent;
+}
+
+.emptyState td {
+	color: black !important;
+	font-weight: bold;
+	padding: 25px;
+} 
+
+.error_message{
+  color: red;
+}
+
+.image {
+	height: 20px;
+	width: auto;
+}
+
+label{
+  width: 100%;
+  text-align: left;
+  padding-bottom: 8px;
+}
+
+.modal_header{
+  background-color: #539165;
+  color:white;
+  justify-content: center;
+}
+
+.oButton button {
+  background-color: #F7C04A !important;
+  color: black !important;
+  border-radius: 20px;
+  border-color: black !important;
+  margin-top: 30px;
+  width: auto;
+  height: 45px;
+  padding-top: 5px;
+  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  align-self: center;
+}
+
+.options {
+  margin: 16px 0px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: end;
+  justify-content: left;
+  white-space: nowrap;
+  gap: 0px;
+}
+
+.options_user {
+  justify-content: right;
+  display: flex;
+}
+
+.password_input {
+  position: relative;
+}
+
+.password_toggle_btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: white;
+  border: none;
+}
+
+.tableCover div {
+	border-radius: 15px !important;
+}
+
+.tableCover table {
+	border: 1px solid black;
+}
+
+.table td {
+	background-color: white;
+	color: black;
+}
+
+.table td {
+	background-color: white;
+	color: black;
+    border-left: none; 
+    border-right: none;
+}
+
+.table th {
+	background-color: #539165;
+	font-weight: normal;
+  border-left: none; 
+  border-right: none;
+	justify-content: start !important;
+	align-content: start !important;
+}
+
+.tableCover {
+  justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.usersLog {
+  margin: 0px 80px;
+}
+
+@media (max-width: 885px) {
+  .usersLog {
+      margin: 0px 24px;
+  }
+  .options_user  {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 468px) {
+  .usersLog {
+      margin: 0px 6px;
+  }
+}
+

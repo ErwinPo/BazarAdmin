@@ -1,0 +1,52 @@
+.register_btn{
+    background-color: #F7C04A;
+    font-size: 15px;
+    border-radius: 100px;
+    margin-top: 3%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: center;
+    padding: 13px;
+    width: 150px;
+}
+
+.form_grp{
+    margin-top: 3%;
+    margin-left: 5%;
+    width: 60%;
+    text-align: left;
+    font-family: sans-serif;
+}
+
+.control_input{
+    background-color: #D9D9D9;
+    border-radius: 30px;
+    border: none;
+    padding: 8px;
+}
+
+.success_txt{
+    color: #F7C04A;
+    display: flex;
+    margin-left: 5%;
+}
+
+.salesLog{
+    margin: 0px 70px;
+}
+
+.buttonDeleteAll {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 25px;
+    border: 1px solid #AA7606;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+}
+
+.image {
+	height: 20px;
+	width: auto;
+}

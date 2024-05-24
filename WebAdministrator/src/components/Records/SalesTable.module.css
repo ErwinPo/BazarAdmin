@@ -1,0 +1,125 @@
+/* Copyright 2024 BitBrothers
+ * File: SalesTable.module.css
+ * Type: css file */
+
+ .alignStart {
+    text-align: center;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.buttons {
+	gap: 12px;
+}
+
+.checkBox {
+	height: 25px;
+	width: auto;
+}
+
+.checkBox input {
+	margin-top: 0px;
+}
+
+.checkBox input:focus {
+	border-radius: 0.25rem !important;
+}
+
+.emptyState td {
+	color: black !important;
+	font-weight: bold;
+	padding: 25px !important;
+} 
+
+.image {
+	height: 20px;
+	width: auto;
+}
+
+.drpBtn button {
+	border-radius: 25px;
+	border: 1px solid #AA7606;
+}
+
+.pagination {
+	display: flex;
+	justify-content: end;
+	margin: 8px;
+}
+
+.paginationOptions {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+	margin: 8px;
+	gap: 55px;
+}
+
+.paginationRow {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.paginationText {
+	font-size: 16px;
+	margin-top: 12px;
+	display: flex;
+	align-items: center;
+}
+
+.tableCover {
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.tableCover div {
+	border-radius: 15px !important;
+}
+
+.tableCover table {
+	border: 1px solid black;
+}
+
+.table td {
+	background-color: white;
+	color: black;
+	height: fit-content;
+	padding: 0px;
+	vertical-align: middle;
+}
+
+.table th {
+	background-color: #539165;
+	font-weight: normal;
+}
+
+.table th:hover {
+	cursor: pointer;
+}
+
+.thArrow {
+    font-size: 18px;
+}
+
+@media (max-width: 576px) {
+	.paginationRow {
+		flex-direction: column;
+		align-items: center;
+		margin: 24px 0px;
+		gap:12px
+	}
+
+	.paginationOptions {
+			flex-direction: column;
+			align-items: center;
+			gap: 36px;
+	}
+
+	.pagination {
+		margin: 0px;
+		flex-direction: column;
+		align-items: center;
+}
+}

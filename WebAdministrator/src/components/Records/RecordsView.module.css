@@ -1,17 +1,20 @@
 /* Copyright 2024 BitBrothers
- * File: Registros.module.css
+ * File: Records.module.css
  * Type: css file */
 
 body {
     text-align: center;
-    font-size: 1em;
+    font-size: 14px;
 }
 
 .filters {
-    margin: 25px;
+    margin: 16px 0px;
+    margin-bottom: 24px;
     display: flex;
+    align-items: end;
     justify-content: center;
-    align-items: center;
+    white-space: nowrap;
+    gap: 0px;
 }
 
 .button {
@@ -35,13 +38,32 @@ body {
   margin-bottom: 24px;
 }
 
+.errorMessage {
+  color: #cc0000;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 12px;
+  margin-bottom: 18px;
+  border: solid red 2px;
+  border-radius: 15px;
+  width: fit-content;
+  padding: 8px;
+  display: inline-block;
+  text-align: center;
+}
+
 .image {
 	height: 20px;
 	width: auto;
 }
 
+.modal_header{
+  background-color: #539165;
+  color:white;
+  justify-content: center;
+}
+
 .pickers {
-    margin: 12px 6px;
     text-align: center;
 }
 
@@ -64,5 +86,17 @@ body {
 }
 
 .salesLog {
-  margin: 0px 30px;
+  margin: 0px 70px;
+}
+
+@media (max-width: 768px) {
+  .salesLog {
+      margin: 0px 24px;
+  }
+}
+
+@media (max-width: 468px) {
+  .salesLog {
+      margin: 0px 6px;
+  }
 }
