@@ -8,6 +8,7 @@
     justify-content: center;
     padding: 13px;
     width: 150px;
+    border: 1px solid black;
 }
 
 .form_grp{
@@ -41,7 +42,7 @@
     align-items: center;
     gap: 12px;
     border-radius: 25px;
-    border: 1px solid #AA7606;
+    border: 1px solid #000000;
     padding: 12px 16px;
     margin-bottom: 24px;
 }
@@ -49,4 +50,9 @@
 .image {
 	height: 20px;
 	width: auto;
+}
+
+.recordsTxt{
+    display: flex;
+    font-weight: bold;
 }

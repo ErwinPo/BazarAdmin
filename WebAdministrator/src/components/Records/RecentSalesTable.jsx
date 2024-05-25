@@ -11,7 +11,7 @@ import moment from 'moment';
 import PaginationComponent from './PaginationComponent';
 import { Button, ButtonGroup, Col, Dropdown, DropdownButton, Form, Image, Row, Table } from 'react-bootstrap';
 
-const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows, toggleDeleteModal, setCurrentSaleIdDelete, toggleEditModal, setCurrentSaleEdit }) => {
+const RecentSalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows, toggleDeleteModal, setCurrentSaleIdDelete, toggleEditModal, setCurrentSaleEdit }) => {
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
     const [checkedColumn, setCheckedColumn] = useState(columnCheck || false);
@@ -152,33 +152,8 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                     )}
                 </tbody>
             </Table>
-            {sales.length > 6 &&
-            <Row className={classes.paginationRow}>
-                <Col className={classes.paginationOptions}>
-                    <DropdownButton
-                        as={ButtonGroup}
-                        key={'dropdown-items-per-page'}
-                        id={'dropdown-items-per-page'}
-                        title={`Ventas por página: ${itemsPerPage}`}
-                        onSelect={(eventKey) => setItemsPerPage(parseInt(eventKey))}
-                        className={classes.drpBtn}
-                        variant="warning"
-                    >
-                        {[5, 10, 15, 20, 50, 100, sales.length].filter(option => option <= sales.length).map((perPage) => (
-                            <Dropdown.Item key={perPage} eventKey={perPage}>
-                                {perPage}
-                            </Dropdown.Item>
-                        ))}
-                    </DropdownButton>
-                    <p className={classes.paginationText}><strong>Ventas totales:&nbsp;&nbsp;</strong> {sales.length}</p>
-                </Col>
-                <Col className={classes.pagination}>
-                    <PaginationComponent totalPages={totalPages} page={page} handlePageChange={handlePaginationChange} />
-                </Col>
-            </Row>
-            }
         </div>
     );
 };
 
-export default SalesTable;
+export default RecentSalesTable;

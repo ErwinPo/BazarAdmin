@@ -4,7 +4,7 @@ import classes from "./Ventas.module.css";
 import { Button, Form, Image } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
-import SalesTable from "../components/Records/SalesTable";
+import RecentSalesTable from "../components/Records/RecentSalesTable";
 import ModalEdit from "../components/Records/ModalEdit";
 import ModalDelete from "../components/Records/ModalDelete";
 import ModalDeleteSelected from "../components/Records/ModalDeleteSelected";
@@ -254,6 +254,7 @@ const Ventas = () => {
 			</Form>
 			<br/>
 			<div className={classes.salesLog}>
+				<p className={classes.recordsTxt}>Registros más recientes</p>
 				{state.selectedRows.length > 0 && (
                     <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteSelectedModal} >
                         <Image className={classes.image} src={iconTrash} />
@@ -262,7 +263,7 @@ const Ventas = () => {
                         </span>
                     </Button>
                 )}
-				<SalesTable 
+				<RecentSalesTable 
                 	columnCheck={state.columnCheck}
                 	sales={filteredSales} 
                 	page={page}
