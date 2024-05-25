@@ -8,7 +8,7 @@ import classes from './UsersView.module.css';
 import { Button, ButtonGroup, Row, Col, Form, Image, Table, DropdownButton, Dropdown } from 'react-bootstrap';
 import { Button as Btn, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import iconPencil from '../../assets/images/icon_pencil.png';
 import iconTrash from '../../assets/images/icon_trash.png';
@@ -204,8 +204,6 @@ const UsersView = () => {
   };
 
   const showModalDelete = (user) => {
-    const isAdminUser = user.is_superuser;
-    const adminCount = users.filter(u => u.is_superuser).length;
     const idUser = parseInt(userId);
     if (idUser === user.id) {
       setState({ ...state, deleteselfModal: true, form: user });
@@ -471,36 +469,65 @@ const UsersView = () => {
     })
   };
 
+  const handleDeleteSelf = () => {
+    const { id } = state.form;
+    fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+    })
+    .then(() => {
+      setState({
+        ...state,
+        deleteselfModal: false,
+        form: {
+          id: '',
+          username: '',
+          email: '',
+          password: '',
+          is_superuser: ''
+        }
+      });
+      toast.success("Usuario eliminado con éxito.");
+      const updatedUsers = users.filter(user => user.id !== id);
+      setUsers(updatedUsers);
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('login_time');
+      localStorage.removeItem('user_id');
+      navigate('/');
+      window.location.reload();
+    })
+  };
+
   const handleDeleteUsers = () => {
-    const selectedAdminUsers = users.filter((user) =>
-      state.selectedUserIds.includes(user.id) && user.is_superuser
-    );
-    const totalAdminUsers = users.filter((user) => user.is_superuser).length;
-      const deletedUserIds = state.selectedUserIds;
-      console.log(deletedUserIds);
-      fetch("http://3.146.65.111:8000/bazar/delete-users/", {
-        method: "DELETE",
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ users: deletedUserIds}),
-      })
-        .then(() => {
-          toast.success("Usuarios seleccionados eliminados con éxito.");
-          const updatedUsers = users.filter((user) => !deletedUserIds.includes(user.id));
-          setUsers(updatedUsers);
-          setState({
-            ...state,
-            deletesModal: false,
-            selectedUserIds: [],
-            isAnyUserSelected: false,
-          });
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          toast.error("Error al eliminar los usuarios seleccionados");
-        });
+    const deletedUserIds = state.selectedUserIds;
+    console.log(deletedUserIds);
+    fetch("http://3.146.65.111:8000/bazar/delete-users/", {
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ users: deletedUserIds}),
+    })
+    .then(() => {
+      toast.success("Usuarios seleccionados eliminados con éxito.");
+      const updatedUsers = users.filter((user) => !deletedUserIds.includes(user.id));
+      setUsers(updatedUsers);
+      setState({
+        ...state,
+        deletesModal: false,
+        selectedUserIds: [],
+        isAnyUserSelected: false,
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      toast.error("Error al eliminar los usuarios seleccionados");
+    });
   };
 
   const applyFilter = (user) => {
@@ -525,16 +552,24 @@ const UsersView = () => {
     setShowPassword(!showPassword);
   };
 
+  const sortUsers = (users) => {
+    const userId = parseInt(localStorage.getItem('user_id'));
+    const loggedInUser = users.find(user => parseInt(user.id) === userId);
+    const otherUsers = users.filter(user => parseInt(user.id) !== userId);
+    otherUsers.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    return loggedInUser ? [loggedInUser, ...otherUsers] : users;
+  };
+
+
   const isLargeScreen = useMediaQuery({ maxWidth: 885 });
 
   return (
   	<>
 		<Navbar/>
-		<ToastContainer position="top-center" autoClose={3000} />
     <div className={classes.usersLog}>
       <Row className={classes.options}>
         <Col md={isLargeScreen ? 12 : 'auto'}>
-        <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Agregar Usuario</Button>
+        <Button variant="warning" className={classes.addButton} onClick={showModalInsert}>Crear Usuario</Button>
         </Col>
         <Col md={isLargeScreen ? 12 : 'auto'}>
         <Button variant="warning" className={classes.addButton} onClick={showModalDeleteS} disabled={!state.isAnyUserSelected}>Eliminar Seleccionados</Button>
@@ -562,7 +597,7 @@ const UsersView = () => {
           <tbody>
           {users.length > 0 ? (
             users.filter(applyFilter).length > 0 ? (
-              users.filter(applyFilter).map((user) => (
+              sortUsers(users.filter(applyFilter)).map((user) => (
                 <tr key={user.id} style={{ fontWeight: parseInt(user.id) === parseInt(userId) ? 'bold' : 'normal' }}>
                   <td>
                     {(parseInt(userId) !== parseInt(user.id) && ((parseInt(userId) === 1) || (!user.is_superuser && parseInt(userId) !== 1))) ? (
@@ -780,11 +815,11 @@ const UsersView = () => {
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <label>¿Estás seguro que deseas eliminar tu propio usuario? Tu cuenta se eliminará definitivamente</label>
+            <label>¿Estás seguro que deseas eliminar tu propio usuario? Tu cuenta se eliminará de manera definitiva</label>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Btn color='success' onClick={handleDeleteUser}>Confirmar</Btn>
+          <Btn color='success' onClick={handleDeleteSelf}>Confirmar</Btn>
           <Btn color='danger' onClick={hideModalDeleteSelf }>Cancelar</Btn>
         </ModalFooter>
       </Modal>
