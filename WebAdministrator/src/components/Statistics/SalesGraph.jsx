@@ -61,7 +61,7 @@ const SalesGraph = ({ salesData, itemsData }) => {
             <Stack direction="row" sx={{ width: '100%' }} className={classes.stack}>
               <BarChart
                 slotProps={{
-                  noDataOverlay: { message: 'No data to display in this chart' },
+                  noDataOverlay: { message: 'Seleccione algún filtro para ver los datos.' },
                 }}
                 dataset={data.length > 0 ? data : []}
                 xAxis={[{ scaleType: 'band', dataKey: 'interval_time' }]}

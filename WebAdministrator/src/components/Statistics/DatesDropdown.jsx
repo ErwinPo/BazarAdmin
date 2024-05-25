@@ -1,7 +1,8 @@
 import { Dropdown, Modal, Button } from 'react-bootstrap/';
 import { useState, useEffect } from 'react';
 import classes from "./DatesDropdown.module.css";
-import DateRangePicker from '../DateRangePicker';
+import DateRangePicker from '../Records/DateRangePicker';
+import { toast } from 'react-toastify';
 
 const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpdate, currentUserId, currentUserData }) => {
     const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([]);
@@ -10,6 +11,9 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [temporality, setTemporality] = useState(null);
+
+    const access_token = localStorage.getItem('access_token');
+
 
     const handleClose = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
@@ -82,16 +86,23 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
     useEffect(() => {
         const [startDate, endDate] = daysFromHandleDropdownItem;
         if (!startDate || !endDate || !temporality) return;
-
+    
         let itemsFetch = `http://3.146.65.111:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
         let salesFetch = `http://3.146.65.111:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
-
+    
         if (currentUserData) {
             itemsFetch = `http://3.146.65.111:8000/bazar/sales-date-range-quantity-seller/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}&id=${currentUserData.id}`;
             salesFetch = `http://3.146.65.111:8000/bazar/sales-date-range-amount-seller/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}&id=${currentUserData.id}`;
         }
-
-        fetch(itemsFetch, { method: "GET" })
+    
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        };
+    
+        fetch(itemsFetch, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al cargar los datos del servidor');
@@ -103,9 +114,10 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             })
             .catch(error => {
                 console.error('Error:', error);
+                toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
             });
-
-        fetch(salesFetch, { method: "GET" })
+    
+        fetch(salesFetch, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al cargar los datos del servidor');
@@ -118,11 +130,11 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             .catch(error => {
                 console.error('Error:', error);
             });
-
+    
         console.log("Rango de fechas: ", daysFromHandleDropdownItem);
         console.log("Temporalidad: ", temporality);
     }, [daysFromHandleDropdownItem, temporality, currentUserData]);
-
+    
     return (
         <>
             <Dropdown>
