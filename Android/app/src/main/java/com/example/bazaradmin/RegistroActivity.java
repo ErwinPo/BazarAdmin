@@ -209,18 +209,22 @@ public class RegistroActivity extends AppCompatActivity{
             @Override
             public void onResponse(Call<ArrayList<GetVenta>> call, Response<ArrayList<GetVenta>> response) {
                 String responseString = "RCode: " + response.code();
-                Log.i("RCODE", responseString);
+                Log.i("PPPPPP", responseString);
                 if (response.isSuccessful()) {
                     ArrayList<GetVenta> ventas = response.body();
-                    lastventa = ventas.get(ventas.size()-1);
-                    Log.i("ID OF LAST SALE", String.valueOf(lastventa.id));
+                    try {
+                        lastventa = ventas.get(ventas.size()-1);
+                        Log.i("ID OF LAST SALE", String.valueOf(lastventa.id));
 
-                    ventasale.setText("$"+String.valueOf(lastventa.amount));
+                        ventasale.setText("$"+String.valueOf(lastventa.amount));
 
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("d/M - hh:mm", new Locale("es","ES"));
-                    ventadate.setText(dateFormat.format(lastventa.date));
-                    ventaquantity.setText(String.valueOf(lastventa.quantity));
-                    ventanumber.setText("#"+String.valueOf(lastventa.id));
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("d/M - hh:mm", new Locale("es","ES"));
+                        ventadate.setText(dateFormat.format(lastventa.date));
+                        ventaquantity.setText(String.valueOf(lastventa.quantity));
+                        ventanumber.setText("#"+String.valueOf(lastventa.id));
+                    } catch (Exception e) {
+                        Log.i("ERROR", "ERROR");
+                    }
                 }
             }
             @Override

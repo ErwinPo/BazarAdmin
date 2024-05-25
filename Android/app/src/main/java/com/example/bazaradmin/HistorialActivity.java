@@ -123,17 +123,21 @@ public class HistorialActivity extends AppCompatActivity {
                 String responseString = "RCode: " + response.code();
                 Log.i("RCODE", responseString);
                 if (response.isSuccessful()) {
-                    ArrayList<GetVenta> ventas = response.body();
-                    for (int k = 0, j = ventas.size() - 1; k < j; k++) {
-                        ventas.add(k, ventas.remove(j));
+                    try {
+                        ArrayList<GetVenta> ventas = response.body();
+                        for (int k = 0, j = ventas.size() - 1; k < j; k++) {
+                            ventas.add(k, ventas.remove(j));
+                        }
+
+                        Ventas adapterlist = new Ventas(ventas, "");
+
+                        myAdapter = new SalesAdapter(getApplicationContext(), adapterlist);
+                        recyclerView.setAdapter(myAdapter);
+                        assert ventas != null;
+                        Log.i("ID OF LAST SALE", String.valueOf(ventas.get(ventas.size()-1).id));
+                    }catch (Exception e){
+                        Log.i("ERROR", "ERROR");
                     }
-
-                    Ventas adapterlist = new Ventas(ventas, "");
-
-                    myAdapter = new SalesAdapter(getApplicationContext(), adapterlist);
-                    recyclerView.setAdapter(myAdapter);
-                    assert ventas != null;
-                    Log.i("ID OF LAST SALE", String.valueOf(ventas.get(ventas.size()-1).id));
                 }
             }
             @Override
