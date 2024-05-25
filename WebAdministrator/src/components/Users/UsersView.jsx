@@ -696,9 +696,15 @@ const UsersView = () => {
           <FormGroup>
             <label>Tipo de Usuario:</label>
             <select className='form-control' name='is_superuser' onChange={handleChange} defaultValue=''>
-              <option value='' disabled>Selecciona una opción</option>
-              <option value='Administrador'>Administrador</option>
-              <option value='Vendedor'>Vendedor</option>
+              {parseInt(userId) === 1? (
+                <>
+                <option value='' disabled>Selecciona una opción</option>
+                <option value='Administrador'>Administrador</option>
+                <option value='Vendedor'>Vendedor</option>
+                </>
+              ) : (
+                <option value='Vendedor'>Vendedor</option>
+              )}
             </select>
           </FormGroup>
         </ModalBody>
@@ -731,14 +737,16 @@ const UsersView = () => {
           <FormGroup>
             <label>Tipo de Usuario:</label>
             <select className='form-control' name='is_superuser' onChange={handleChange} value={state.form.is_superuser ? 'Administrador' : 'Vendedor'}>
-              {state.form.id === parseInt(userId)? (
+              {state.form.id === parseInt(userId) ? (
                 <option value='Administrador'>Administrador</option>
-              ) : (
+              ) : (state.form.id !== parseInt(userId) && parseInt(userId) === 1)? (
                 <>
-                  <option value='' disabled>Selecciona una opción</option>
-                  <option value='Administrador'>Administrador</option>
-                  <option value='Vendedor'>Vendedor</option>
+                <option value='' disabled>Selecciona una opción</option>
+                <option value='Administrador'>Administrador</option>
+                <option value='Vendedor'>Vendedor</option>
                 </>
+              ) : (
+                <option value='Vendedor'>Vendedor</option>
               )}
             </select>
           </FormGroup>
