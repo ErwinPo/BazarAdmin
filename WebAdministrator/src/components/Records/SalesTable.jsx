@@ -170,7 +170,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                             </Dropdown.Item>
                         ))}
                     </DropdownButton>
-                    <p className={classes.paginationText}><strong>Total Results:&nbsp;&nbsp;</strong> {sales.length}</p>
+                    <p className={classes.paginationText}><strong>Ventas totales:&nbsp;&nbsp;</strong> {sales.length}</p>
                 </Col>
                 <Col className={classes.pagination}>
                     <PaginationComponent totalPages={totalPages} page={page} handlePageChange={handlePaginationChange} />
