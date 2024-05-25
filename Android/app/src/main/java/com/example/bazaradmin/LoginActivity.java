@@ -23,7 +23,7 @@ import  retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity{
-    Button login;
+    Button login, changepassword;
     EditText correologin, password;
     SharedPreferences sp;
     String correoStr, passStr;
@@ -41,12 +41,19 @@ public class LoginActivity extends AppCompatActivity{
         login = findViewById(R.id.ingresar);
         correologin = findViewById(R.id.correologin);
         password = findViewById(R.id.password);
+        changepassword = findViewById(R.id.recuperar);
 
         sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
         SharedPreferences sp2 = getApplicationContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
         String access = sp2.getString("access", "");
 
-
+        changepassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ResetActivity.class));
+                overridePendingTransition(0,0);
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +61,9 @@ public class LoginActivity extends AppCompatActivity{
                 correoStr = correologin.getText().toString();
                 passStr = password.getText().toString();
                 login(correoStr,passStr);
+                String access = sp2.getString("access", "");
                 Log.i("USER", access);
-                if(access != null) {
+                if(!access.equals("")) {
                     Toast.makeText(LoginActivity.this, "ACCESSED", Toast.LENGTH_LONG).show();
 
                     startActivity(new Intent(getApplicationContext(), RegistroActivity.class));
@@ -82,7 +90,11 @@ public class LoginActivity extends AppCompatActivity{
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("refresh", response.body().refresh);
                     editor.putString("access", response.body().access);
+                    editor.putLong("accesstime", System.currentTimeMillis());
                     editor.commit();
+
+                    startActivity(new Intent(getApplicationContext(), RegistroActivity.class));
+                    overridePendingTransition(0,0);
                 }
             }
             @Override

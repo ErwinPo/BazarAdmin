@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,6 @@ public class RegistroActivity extends AppCompatActivity{
     Button register, delete, logout;
     EditText monto, cantidad;
     TextView ventanumber, ventadate, ventaquantity, ventasale;
-    int user_id = 1;
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://3.146.65.111:8000/bazar/")
@@ -66,6 +66,7 @@ public class RegistroActivity extends AppCompatActivity{
         ventaquantity = findViewById(R.id.cantidadsmall);
         ventasale = findViewById(R.id.amount);
 
+
         getLastSale();
         //Log.i("LastSALE", String.valueOf(lastventa.sale_id));
         //ventanumber.setText(lastventa.sale_id);
@@ -74,7 +75,7 @@ public class RegistroActivity extends AppCompatActivity{
         //ventasale.setText(lastventa.amount);
 
         SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-
+        timeout(sp);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +91,7 @@ public class RegistroActivity extends AppCompatActivity{
             public void onClick(View view) {
 
                 try{
+                    timeout(sp);
                     createSale();
                     getLastSale();
                 } catch (Exception e) {
@@ -101,6 +103,7 @@ public class RegistroActivity extends AppCompatActivity{
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                timeout(sp);
                 Log.i("DELETE", "DELETING");
                 getLastSale();
                 Log.i("LASTSALE", String.valueOf(lastventa.id));
@@ -152,14 +155,31 @@ public class RegistroActivity extends AppCompatActivity{
         });
     }
 
+    private void timeout(SharedPreferences sp){
+        Long accesstime = sp.getLong("accesstime", 0);
+        Log.i("CURRENTTIME", String.valueOf(System.currentTimeMillis()));
+        Log.i("LOGINTIME", String.valueOf(sp.getLong("accesstime", 0)));
+        if (System.currentTimeMillis() > accesstime + 14400000){
+            sp.edit().remove("access").commit();
+            sp.edit().remove("refresh").commit();
+            Toast.makeText(RegistroActivity.this, "Sesion Timed Out", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            overridePendingTransition(0,0);
+        }
+    }
+
     private void createSale(){
+
+        SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+        String accesString = "Bearer " + sp.getString("access", "");
+
         int quantity = Integer.parseInt(cantidad.getText().toString());
         int amount = Integer.parseInt(monto.getText().toString());
 
-        Venta venta = new Venta(amount, quantity, user_id);
+        Venta venta = new Venta(amount, quantity);
         Gson gson = new Gson();
 
-        Call<Venta> call = service.createVenta(venta);
+        Call<Venta> call = service.postVenta(venta, accesString);
         Log.i("1","1");
         call.clone().enqueue(new Callback<Venta>() {
             @Override
@@ -180,7 +200,10 @@ public class RegistroActivity extends AppCompatActivity{
 
     private void getLastSale(){
 
-        Call<ArrayList<GetVenta>> call = service.getVentas();
+        SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+        String accesString = "Bearer " + sp.getString("access", "");
+
+        Call<ArrayList<GetVenta>> call = service.getVentasUser(accesString);
         Log.i("2","2");
         call.clone().enqueue(new Callback<ArrayList<GetVenta>>() {
             @Override

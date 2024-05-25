@@ -15,14 +15,17 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import kotlin.coroutines.jvm.internal.SuspendFunction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +55,8 @@ public class HistorialActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-
+        String accesString = "Bearer " + sp.getString("access", "");
+        timeout(sp);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,10 +98,25 @@ public class HistorialActivity extends AppCompatActivity {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+    private void timeout(SharedPreferences sp){
+        Long accesstime = sp.getLong("accesstime", 0);
+        Log.i("CURRENTTIME", String.valueOf(System.currentTimeMillis()));
+        Log.i("LOGINTIME", String.valueOf(sp.getLong("accesstime", 0)));
+        if (System.currentTimeMillis() > accesstime + 14400000){
+            sp.edit().remove("access").commit();
+            sp.edit().remove("refresh").commit();
+            Toast.makeText(HistorialActivity.this, "Sesion Timed Out", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            overridePendingTransition(0,0);
+        }
+    }
 
     private void SalesChangeListener() {
         ApiService service = retrofit.create(ApiService.class);
-        Call<ArrayList<GetVenta>> call = service.getVentas();
+        SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+        String accesString = "Bearer " + sp.getString("access", "");
+
+        Call<ArrayList<GetVenta>> call = service.getVentasUser(accesString);
         Log.i("2","2");
         call.clone().enqueue(new Callback<ArrayList<GetVenta>>() {
             @Override
@@ -106,6 +125,10 @@ public class HistorialActivity extends AppCompatActivity {
                 Log.i("RCODE", responseString);
                 if (response.isSuccessful()) {
                     ArrayList<GetVenta> ventas = response.body();
+                    for (int k = 0, j = ventas.size() - 1; k < j; k++) {
+                        ventas.add(k, ventas.remove(j));
+                    }
+
                     Ventas adapterlist = new Ventas(ventas, "");
 
                     myAdapter = new SalesAdapter(getApplicationContext(), adapterlist);

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -51,7 +52,7 @@ public class RankingActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         logout = findViewById(R.id.logout);
         SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-
+        timeout(sp);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +63,7 @@ public class RankingActivity extends AppCompatActivity {
             }
         });
 
-        RankingChangeListener();
+        RankingChangeListener(sp);
 
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -94,9 +95,24 @@ public class RankingActivity extends AppCompatActivity {
             .build();
 
 
-    private void RankingChangeListener() {
+    private void timeout(SharedPreferences sp){
+        Long accesstime = sp.getLong("accesstime", 0);
+        Log.i("CURRENTTIME", String.valueOf(System.currentTimeMillis()));
+        Log.i("LOGINTIME", String.valueOf(sp.getLong("accesstime", 0)));
+        if (System.currentTimeMillis() > accesstime + 14400000){
+            sp.edit().remove("access").commit();
+            sp.edit().remove("refresh").commit();
+            Toast.makeText(RankingActivity.this, "Sesion Timed Out", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            overridePendingTransition(0,0);
+        }
+    }
+
+    private void RankingChangeListener(SharedPreferences sp) {
         ApiService service = retrofit.create(ApiService.class);
-        Call<ArrayList<RankedUser>> call = service.getRanking();
+        String accesString = "Bearer " + sp.getString("access", "");
+
+        Call<ArrayList<RankedUser>> call = service.getRanking(accesString);
         Log.i("2","2");
         call.clone().enqueue(new Callback<ArrayList<RankedUser>>() {
             @Override

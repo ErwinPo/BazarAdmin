@@ -19,8 +19,18 @@
         app:layout_constraintVertical_bias="0.077"
         app:srcCompat="@drawable/logo" />
 
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/instrucciones"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:text="¿Se te olvido la contraseña? Ingresa tu correo y se enviará un correo electrónico con instrucciones para resetearla."/>
+
     <EditText
-        android:id="@+id/correologin"
+        android:id="@+id/correo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -35,71 +45,43 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/instrucciones"
         app:layout_constraintVertical_bias="0.17"
         tools:ignore="HardcodedText,TextContrastCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Usuario"
-        app:layout_constraintBottom_toTopOf="@id/correologin"
-        app:layout_constraintStart_toStartOf="@id/correologin"
+        android:text="Correo"
+        app:layout_constraintBottom_toTopOf="@id/correo"
+        app:layout_constraintStart_toStartOf="@id/correo"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
         android:textColor="#3F497F"
         android:textSize="20dp"/>
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:background="@drawable/round_corner"
-        android:backgroundTint="@color/lightgrey"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:minHeight="40dp"
-        android:textColor="#605858"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/correologin"
-        app:layout_constraintVertical_bias="0.185"
-        tools:ignore="HardcodedText,TextContrastCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contraseña"
-        app:layout_constraintBottom_toTopOf="@id/password"
-        app:layout_constraintStart_toStartOf="@id/password"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="#3F497F"
-        android:textSize="20dp"/>
 
     <Button
         android:id="@+id/ingresar"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="48dp"
         android:background="@drawable/ylwbtn"
-        android:text="Ingresar"
+        android:text="Mandar correo"
         android:fontFamily="sans-serif"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/correo"
         app:layout_constraintVertical_bias="0.269"
         tools:ignore="TextSizeCheck,TextContrastCheck" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recuperar contraseña"
+        android:text="Cancelar"
         app:layout_constraintTop_toBottomOf="@+id/ingresar"
         android:gravity="center"
         android:layout_margin="10dp"
