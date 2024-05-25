@@ -12,7 +12,7 @@ import PaginationComponent from './PaginationComponent';
 import { Button, ButtonGroup, Col, Dropdown, DropdownButton, Form, Image, Row, Table } from 'react-bootstrap';
 
 const RecentSalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAllChange, setPage, onRowSelect, selectedRows, toggleDeleteModal, setCurrentSaleIdDelete, toggleEditModal, setCurrentSaleEdit }) => {
-    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
     const [pageSales, setPageSales] = useState(sales.slice(0, itemsPerPage));
     const [checkedColumn, setCheckedColumn] = useState(columnCheck || false);
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'desc' });
