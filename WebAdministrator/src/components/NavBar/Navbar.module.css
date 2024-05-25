@@ -71,13 +71,14 @@ nav .menu span {
     padding: 15px 28px;
     color: #000000;
     outline: none;
-    border: none;
+    border: 1px solid black; /* Agregar un borde de 2px sólido de color negro */
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     align-self: center;
     margin: 0px 20px;
 }
+
 
 .logo_container {
     display: flex;
