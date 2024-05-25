@@ -143,7 +143,7 @@ class PasswordRestView(views.APIView):
 
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            reset_link = f"http://example.com/reset-password/{uid}/{token}/"
+            reset_link = f"http://3.146.65.111:5173/reset-password/{uid}/{token}/"
             send_mail(
                 'Password Rest',
                 f'Please click the following link to reset your password: {reset_link}',
