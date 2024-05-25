@@ -50,3 +50,8 @@
 	height: 20px;
 	width: auto;
 }
+
+.recordsTxt{
+    display: flex;
+    font-weight: bold;
+}
