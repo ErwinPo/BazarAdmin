@@ -5,10 +5,9 @@ from .utils import *
 from .models import *
 from .serializers import *
 from .permissions import *
-from datetime import time, datetime
-from django.core.files import File
-from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.db import transaction
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -140,17 +139,24 @@ class PasswordRestView(views.APIView):
                 user = User.objects.get(email=email)
             except Exception as e:
                 return Response({"error": f"Hubo un error: {e}"}, status=status.HTTP_400_BAD_REQUEST)
-
+            
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
             reset_link = f"http://3.146.65.111:5173/reset-password/{uid}/{token}/"
-            send_mail(
-                'Password Rest',
-                f'Please click the following link to reset your password: {reset_link}',
+            
+            html_content = render_to_string('password-reset-email.html', {'reset_link': reset_link})
+            text_content = f'Please click the following link to reset your password: {reset_link}'
+            
+            
+            email_message = EmailMultiAlternatives(
+                'Restablece Tu Contaseña',
+                text_content,
                 'from@example.com',
-                [email],
-                fail_silently=False
+                [email]
             )
+            
+            email_message.attach_alternative(html_content, "text/html")
+            email_message.send()
             
             return Response({"success":"Password reset email sent"}, status=status.HTTP_200_OK)
         else:
@@ -161,7 +167,7 @@ class ApplicationDownloadView(views.APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self, request):
-        file_path = os.path.join(os.getcwd(), 'APK_BHNP.apk')
+        file_path = os.path.join(os.getcwd(), 'APP_BHNP.apk')
         if os.path.exists(file_path):        
             response = FileResponse(open(file_path, 'rb'))
             response['Content-Disposition'] = 'attachment; filename="APK_BHNP.apk"'
