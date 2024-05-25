@@ -5,6 +5,7 @@ from .utils import *
 from .models import *
 from .serializers import *
 from .permissions import *
+from datetime import time, datetime
 from django.core.files import File
 from django.http import JsonResponse
 from django.db import transaction
@@ -70,7 +71,25 @@ class SalesViewSet(viewsets.ModelViewSet):
             obj['username'] = get_username(obj['user_id'])
 
         return Response(data)
+
+class SalesSummaryView(views.APIView):
+    permission_classes = [IsSuperuser]
     
+    def get(self, request):
+        last_five_sales = Sale.objects.all().order_by('-id')[:5]
+        
+        print(last_five_sales)
+        # Serializar los datos
+        serializer = SalesSerializer(last_five_sales, many=True)
+        
+        for obj in serializer.data:
+            obj['username'] = get_username(obj['user_id'])
+
+        # Devolver la respuesta con los datos serializados
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+        
 class PasswordResetConfirm(views.APIView):
     
     permission_classes = [permissions.AllowAny]
@@ -142,10 +161,10 @@ class ApplicationDownloadView(views.APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self, request):
-        file_path = os.path.join(os.getcwd(), 'APK.jpg')
+        file_path = os.path.join(os.getcwd(), 'APK_BHNP.apk')
         if os.path.exists(file_path):        
             response = FileResponse(open(file_path, 'rb'))
-            response['Content-Disposition'] = 'attachment; filename="AppHNP.apk"'
+            response['Content-Disposition'] = 'attachment; filename="APK_BHNP.apk"'
             return response
         else:
             raise Http404("Archivo No Encontrado")

@@ -24,7 +24,8 @@ urlpatterns = [
     path("is-superuser/", IsSuperuserView.as_view(), name="IsSuperuser"),
     path("user-data/", UserData.as_view(), name="UserData"),
     path("password-reset-confirm/<uidb64>/<token>/", PasswordResetConfirm.as_view(), name="PasswordResetConfirm"),
-    path("download-apk-hnp/", ApplicationDownloadView.as_view(), name="ApplicationDownload")
+    path("download-apk-hnp/", ApplicationDownloadView.as_view(), name="ApplicationDownload"),
+    path("sales/summary", SalesSummaryView.as_view(), name="SalesSummary")
 ]
 
 
