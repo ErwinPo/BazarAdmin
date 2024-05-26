@@ -5,7 +5,9 @@ import classes from "./Download.module.css";
 const Download = () => {
     return(
         <div>
-            <Navbar/>
+            {localStorage.getItem('access_token') && (
+                <Navbar/>
+            )}
             <br/>
             <h1 className={classes.header_title}>¡Descarga la Aplicacion Móvil!</h1>
             <h5 className={classes.text_under}>Disponible solo para dispositivos Android</h5>
