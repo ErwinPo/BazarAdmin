@@ -31,19 +31,7 @@ const Ventas = () => {
     });
 
 	useEffect(() => {
-        fetch("http://3.146.65.111:8000/bazar/sales//", {
-            method: "GET",
-			headers: {
-				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-				"Content-Type": "application/json"
-			}
-        })
-        .then((response) => response.json())
-        .then(data => {
-            setState({ ...state, sales: data ?? [] });
-            console.log(data);
-        })
-        .catch((error) => {console.log(error);});
+        getSales();
     }, []);
 
 	const filteredSales = state.sales.filter(sale =>
@@ -102,6 +90,22 @@ const Ventas = () => {
 	const handleDeleteSelected = async () => {
         deleteSelectedSales(state.selectedRows);
     };
+
+    const getSales = () => {
+        fetch("http://3.146.65.111:8000/bazar/summary-sales/", {
+            method: "GET",
+			headers: {
+				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+				"Content-Type": "application/json"
+			}
+        })
+        .then((response) => response.json())
+        .then(data => {
+            setState({ ...state, sales: data ?? [] });
+            console.log(data);
+        })
+        .catch((error) => {console.log(error);});
+    }
 
 	const deleteSale = (id) => {
         // console.log(id)
@@ -217,7 +221,9 @@ const Ventas = () => {
 					throw new Error("Error al registrar la venta.");
 				}
 
-				toast.success("Venta registrada con éxito!");
+                toast.success("Venta registrada con éxito!");
+                getSales();
+                
 
 				form.elements.formMonto.value = "";
 				form.elements.formCantidad.value = "";
