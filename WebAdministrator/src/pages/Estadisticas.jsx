@@ -6,6 +6,7 @@ import UsersDropdown from "../components/Statistics/UsersDropdown";
 import classes from "../components/Statistics/StatisticsDropdowns.module.css";
 import StatisticsCards from "../components/Statistics/StatisticsCards";
 import SalesGraph from "../components/Statistics/SalesGraph";
+import { toast } from 'react-toastify';
 
 
 const Estadisticas = () => {
@@ -75,27 +76,27 @@ const Estadisticas = () => {
         if(salesPercentage){
             
             setSalesDataPercentage(Math.round(salesPercentage[0].growth_rate) + '%')
-            console.log(Math.round(salesPercentage[0].growth_rate) + '%')
+            // console.log((salesPercentage[0].growth_rate))
         }
 
         if(itemsPercentage){
             
             setItemsPercentage(Math.round(itemsPercentage[0].growth_rate) + '%')
-            console.log(Math.round(itemsPercentage[0].growth_rate) + '%')
+            // console.log((itemsPercentage[0].growth_rate))
         }
         
 
         
     }, [salesData, itemsData]);
     
-
+    const access_token = localStorage.getItem('access_token');
 
     useEffect(() => {
         fetch('http://3.146.65.111:8000/bazar/ranking/', {
-            method: 'GET'
-            // headers: {
-            //'Authorization': `BEARER ${access_token}`
-            // }
+            method: 'GET',
+            headers: {
+            'Authorization': `Bearer ${access_token}`
+            }
         })
         .then(response => {
             if (!response.ok) {
@@ -137,7 +138,7 @@ const Estadisticas = () => {
                     </Col>
                 </Row>
 
-                <Row className={`${classes.statisticsCardsRow} justify-content-center`} noGutters>
+                <Row className={`${classes.statisticsCardsRow} justify-content-center`} >
                     <StatisticsCards title="Ingresos" data={totalSales} increasePercentage={salesDataPercentage} />
                     <StatisticsCards title="Ventas Totales" data={totalItems} increasePercentage={itemsDataPercentage} />
                     <StatisticsCards
