@@ -5,23 +5,23 @@
 import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 import classes from './ValueRangePicker.module.css';
-import "../index.css";
 
 const ValueRangePicker = ({ minValue, maxValue, handleMinValueChange, handleMaxValueChange }) => {
 
   const handleMinValueInputChange = (event) => {
-    const value = parseInt(event.target.value);
-    if (!isNaN(value)) {
-      handleMinValueChange(value);
+    const value = event.target.value.trim(); // Remove whitespace
+    if (value === "" || !isNaN(value)) {
+      handleMinValueChange(value === "" ? undefined : value);
     }
   };
-
+  
   const handleMaxValueInputChange = (event) => {
-    const value = parseInt(event.target.value);
-    if (!isNaN(value)) {
-      handleMaxValueChange(value);
+    const value = event.target.value.trim(); // Remove whitespace
+    if (value === "" || !isNaN(value)) {
+      handleMaxValueChange(value === "" ? undefined : value);
     }
   };
+  
 
 return (
   <Row className={classes.row}>

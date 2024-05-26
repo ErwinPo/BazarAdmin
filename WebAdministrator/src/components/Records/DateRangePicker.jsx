@@ -17,6 +17,7 @@ return (
       <Col className={classes.col}>
         <Form.Label className={classes.label}>Fecha Inferior</Form.Label>
         <DatePicker
+          maxDate={endDate}
           selected={startDate}
           onChange={handleStartDateChange}
           dateFormat="dd/MM/yyyy"
@@ -32,6 +33,7 @@ return (
       <Col>
         <Form.Label className={classes.label}>Fecha Superior</Form.Label>
         <DatePicker
+          minDate={startDate}
           selected={endDate}
           onChange={handleEndDateChange}
           dateFormat="dd/MM/yyyy"

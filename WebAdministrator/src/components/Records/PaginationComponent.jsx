@@ -2,13 +2,26 @@
  * File: PaginationComponent.jsx
  * Type: component */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './PaginationComponent.module.css';
 import { Pagination } from 'react-bootstrap';
 
 const PaginationComponent = ({ totalPages, page, handlePageChange }) => {
-  const isSmallScreen = window.innerWidth <= 768; // Check if screen is small
-  const maxPageItems = isSmallScreen ? 2 : 10; // Maximum number of page items
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 638);
+  const maxPageItems = isSmallScreen ? 2 : 10;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 638);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   
   let startPage = 1;
   if (totalPages > maxPageItems) {
@@ -17,7 +30,7 @@ const PaginationComponent = ({ totalPages, page, handlePageChange }) => {
   
   return (
     <div className={classes.paginationCover}>
-      <Pagination className={classes.pagination} size='md'>
+      <Pagination className={classes.pagination} size='sm'>
         <Pagination.First onClick={() => handlePageChange(1)} />
         <Pagination.Prev onClick={() => handlePageChange(page - 1)} disabled={page === 1} />
         {Array.from({ length: Math.min(totalPages, maxPageItems) }, (_, index) => {
