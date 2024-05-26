@@ -9,6 +9,7 @@ services:
       - "3307:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: trust
+    restart: always
 
   api:
     image: josafat/api-rest
@@ -19,3 +20,9 @@ services:
       - .:/api-rest-hnp
     ports:
       - "8000:8000"
+    
+  app-frontend:
+    image: josafat/bhnp
+    ports:
+      - "80:80"
+    restart: always
