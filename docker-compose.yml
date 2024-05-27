@@ -22,7 +22,7 @@ services:
       - "8000:8000"
     
   app-frontend:
-    image: josafat/bhnp
+    image: josafatgs/bhnp
     ports:
       - "80:80"
     restart: always
