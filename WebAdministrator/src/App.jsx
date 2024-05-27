@@ -1,11 +1,11 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Ventas from './pages/Ventas';
 import UsersView from './components/Users/UsersView';
 import Estadisticas from './pages/Estadisticas';
-import RecordsView from "./components/Records/RecordsView";
+import RecordsView from './components/Records/RecordsView';
 import Login from './components/Login/Login';
 import Download from './pages/Download';
 import ResetPassword from './pages/ResetPassword';
@@ -24,7 +24,7 @@ function App() {
             if (access_token && login_time) {
                 const now = new Date().getTime();
                 const timeElapsed = now - parseInt(login_time);
-                const time_ms = 4 * 60 * 60 * 1000;
+                const time_ms = 4 * 60 * 60 * 1000; // 4 horas en milisegundos
                 if (timeElapsed > time_ms) {
                     handleLogout("Su sesión ha expirado");
                 } else {
@@ -58,6 +58,10 @@ function App() {
         }
     }, [expirationMessage]);
 
+    const PrivateRoute = ({ children }) => {
+        return isLoggedIn ? children : <Navigate to="/" />;
+    };
+
     return (
         <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleLogout }}>
             <ToastContainer position="top-center" autoClose={3000} />
@@ -67,18 +71,27 @@ function App() {
                         <Route path="/" element={isLoggedIn ? <Navigate to="/Ventas" /> : <Login />} />
                         <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
                         <Route path="/Descarga" element={<Download />} />
-                        {isLoggedIn && (
-                            <>
-                                <Route path="/Ventas" element={<Ventas />} />
-                                <Route path="/Usuarios" element={<UsersView />} />
-                                <Route path="/Estadisticas" element={<Estadisticas />} />
-                                <Route path="/Registros" element={<RecordsView />} />
-                                <Route path="/*" element={<Navigate to="/Ventas" replace />} />
-                            </>
-                        )}
-                        {!isLoggedIn && (
-                            <Route path="/*" element={<Navigate to="/" />} />
-                        )}
+                        <Route path="/Ventas" element={
+                            <PrivateRoute>
+                                <Ventas />
+                            </PrivateRoute>
+                        } />
+                        <Route path="/Usuarios" element={
+                            <PrivateRoute>
+                                <UsersView />
+                            </PrivateRoute>
+                        } />
+                        <Route path="/Estadisticas" element={
+                            <PrivateRoute>
+                                <Estadisticas />
+                            </PrivateRoute>
+                        } />
+                        <Route path="/Registros" element={
+                            <PrivateRoute>
+                                <RecordsView />
+                            </PrivateRoute>
+                        } />
+                        <Route path="/*" element={<Navigate to={isLoggedIn ? "/Ventas" : "/"} />} />
                     </Routes>
                 </Router>
             )}
@@ -87,3 +100,4 @@ function App() {
 }
 
 export default App;
+
