@@ -160,15 +160,19 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                         key={'dropdown-items-per-page'}
                         id={'dropdown-items-per-page'}
                         title={`Ventas por página: ${itemsPerPage}`}
-                        onSelect={(eventKey) => setItemsPerPage(parseInt(eventKey))}
+                        onSelect={(eventKey) => setItemsPerPage(eventKey === 'all' ? sales.length : parseInt(eventKey))}
                         className={classes.drpBtn}
                         variant="warning"
                     >
-                        {[5, 10, 15, 20, 50, 100, sales.length].filter(option => option <= sales.length).map((perPage) => (
+                        {[5, 10, 15, 20, 50, 100].filter(option => option <= sales.length).map((perPage) => (
                             <Dropdown.Item key={perPage} eventKey={perPage}>
                                 {perPage}
                             </Dropdown.Item>
                         ))}
+                        <Dropdown.Divider />
+                        <Dropdown.Item key="all" eventKey="all">
+                            Todas
+                        </Dropdown.Item>
                     </DropdownButton>
                     <p className={classes.paginationText}><strong>Ventas totales:&nbsp;&nbsp;</strong> {sales.length}</p>
                 </Col>
