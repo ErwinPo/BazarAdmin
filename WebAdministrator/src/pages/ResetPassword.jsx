@@ -65,7 +65,7 @@ const ResetPassword = () => {
     return(
         <div className={classes.content}>
             <br/>
-            <h1 className={classes.header_title}>Reseteo de Contraseña</h1>
+            <h1 className={classes.header_title}>Restablecer Contraseña</h1>
             <br/>
             <Form noValidate validated={validated} onSubmit={handleChangePassword}>
                 <Form.Group className={classes.form_grp} controlId="passwordGrp">

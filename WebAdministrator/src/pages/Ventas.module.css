@@ -36,6 +36,12 @@
     margin: 0px 70px;
 }
 
+@media (max-width: 468px) {
+    .salesLog {
+        margin: 0px 6px;
+    }
+  }
+
 .buttonDeleteAll {
     display: inline-flex;
     justify-content: center;
