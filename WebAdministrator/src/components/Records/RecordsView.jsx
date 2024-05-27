@@ -50,7 +50,6 @@ const RecordsView = () => {
         { id: 25, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
     ];
 
-    const lowDate = moment().subtract(6, 'months').toDate();
     const highestAmount = 10000;
     const token = localStorage.getItem('access_token');
 
@@ -60,7 +59,7 @@ const RecordsView = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [state, setState] = useState({
         sales: [],
-        startDate: lowDate,
+        startDate: new Date(),
         endDate: new Date(),
         minValue: 0,
         maxValue: highestAmount,
