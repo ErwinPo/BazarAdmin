@@ -18,12 +18,10 @@ RUN ls -la /WebAdministrator/dist
 # Etapa 2: Servir la aplicación con Nginx
 FROM nginx:stable-perl
 
-WORKDIR /usr/share/nginx/html
-
-COPY --from=build /WebAdministrator/dist .
-
-# Copy the custom nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build /WebAdministrator/dist /usr/share/nginx/html
 
 EXPOSE 80
 
