@@ -50,7 +50,6 @@ const RecordsView = () => {
         { id: 25, date: '2024-04-04 1:22:33', amount: 180.00, quantity: 4, username: 'Eve Williams' },
     ];
 
-    const highestAmount = 10000;
     const token = localStorage.getItem('access_token');
 
     const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, username: 'John Doe' });
@@ -59,10 +58,10 @@ const RecordsView = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [state, setState] = useState({
         sales: [],
-        startDate: new Date(),
+        startDate: moment().subtract(6, 'months').toDate(),
         endDate: new Date(),
-        minValue: 0,
-        maxValue: highestAmount,
+        minValue: "",
+        maxValue: "",
         selectedRows: [],
         columnCheck: false,
         deleteSelectedModalOpen: false,
@@ -93,35 +92,51 @@ const RecordsView = () => {
         setState({ ...state, endDate: date, page: 1 });
     };
 
-    const handleMinValueChange = (value) => {
-        if (value === undefined) {
-            if (errorMessage == null) {
-                setErrorMessage("El monto inferior debe ser un número válido.");
-            }
-        } else if (value < 0) {
+    const handleMinValueChange = (receivedValue) => {
+        let value = receivedValue === "" ? "" : Number(receivedValue);
+    
+        if (value === "" || isNaN(value)) {
+            setState({ ...state, minValue: "", page: 1 });
+            setErrorMessage(null);
+            return;
+        }
+    
+        if (value < 0) {
             value = 0;
-        } else if (value > state.maxValue) {
-            setErrorMessage("El monto inferior debe ser un número válido y menor al monto superior.");
+        }
+    
+        if (state.maxValue !== "" && value > Number(state.maxValue)) {
+            setErrorMessage("El monto inferior debe ser menor al monto superior.");
         } else {
             setErrorMessage(null);
         }
+        
         setState({ ...state, minValue: value, page: 1 });
     };
     
-    const handleMaxValueChange = (value) => {
-        if (value === undefined) {
-            if (errorMessage == null) {
-                setErrorMessage("El monto superior debe ser un número válido.");
-            }
-        } else if (value < 0) {
+    
+    const handleMaxValueChange = (receivedValue) => {
+        let value = receivedValue === "" ? "" : Number(receivedValue);
+    
+        if (value === "" || isNaN(value)) {
+            setState({ ...state, maxValue: "", page: 1 });
+            setErrorMessage(null);
+            return;
+        }
+    
+        if (value < 0) {
             value = 0;
-        } else if (value < state.minValue) {
-            setErrorMessage("El monto superior debe ser un número válido y superior al monto inferior.");
+        }
+    
+        if (state.minValue !== "" && value < Number(state.minValue)) {
+            setErrorMessage("El monto superior debe ser superior al monto inferior.");
         } else {
             setErrorMessage(null);
         }
+        
         setState({ ...state, maxValue: value, page: 1 });
     };
+    
     
     const handlePageChange = () => {
         setState({ ...state, columnCheck: false, selectedRows: [] });
@@ -255,11 +270,25 @@ const RecordsView = () => {
         });
     };    
 
-    const filteredSales = state.sales.filter(sale =>
-        moment(sale.date).isSameOrAfter(state.startDate, 'day') &&
-        moment(sale.date).isSameOrBefore(state.endDate, 'day') &&
-        sale.amount >= state.minValue && sale.amount <= state.maxValue
-    );
+    const filteredSales = state.sales.filter(sale => {
+        const isWithinDateRange = moment(sale.date).isSameOrAfter(state.startDate, 'day') && 
+                                  moment(sale.date).isSameOrBefore(state.endDate, 'day');
+        
+        let isWithinAmountRange = false;
+    
+        if (state.minValue === "" && state.maxValue === "") {
+            isWithinAmountRange = true;
+        } else if (state.maxValue === "") {
+            isWithinAmountRange = sale.amount >= parseFloat(state.minValue);
+        } else if (state.minValue === "") {
+            isWithinAmountRange = sale.amount <= parseFloat(state.maxValue);
+        } else {
+            isWithinAmountRange = sale.amount >= parseFloat(state.minValue) && 
+                                  sale.amount <= parseFloat(state.maxValue);
+        }
+    
+        return isWithinDateRange && isWithinAmountRange;
+    });    
 
     const exportData = async () => {
         const workbook = new ExcelJS.Workbook();

@@ -15,7 +15,7 @@ const DateRangePicker = ({ startDate, endDate, handleStartDateChange, handleEndD
 return (
     <Row className={classes.row}>
       <Col className={classes.col}>
-        <Form.Label className={classes.label}>Fecha Inferior</Form.Label>
+        <Form.Label className={classes.label}>Fecha Inicio</Form.Label>
         <DatePicker
           maxDate={endDate}
           selected={startDate}
@@ -31,7 +31,7 @@ return (
         <span className={classes.dash}>-</span>
       </Col>
       <Col>
-        <Form.Label className={classes.label}>Fecha Superior</Form.Label>
+        <Form.Label className={classes.label}>Fecha Final</Form.Label>
         <DatePicker
           minDate={startDate}
           selected={endDate}

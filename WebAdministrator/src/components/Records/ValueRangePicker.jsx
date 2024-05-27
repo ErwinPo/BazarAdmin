@@ -9,11 +9,11 @@ import classes from './ValueRangePicker.module.css';
 const ValueRangePicker = ({ minValue, maxValue, handleMinValueChange, handleMaxValueChange }) => {
 
   const handleMinValueInputChange = (event) => {
-      handleMinValueChange(Number(event.target.value));
+      handleMinValueChange(event.target.value);
   };
   
   const handleMaxValueInputChange = (event) => {
-    handleMaxValueChange(Number(event.target.value))
+    handleMaxValueChange(event.target.value);
   };
   
 

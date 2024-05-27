@@ -106,7 +106,7 @@ const SalesTable = ({ columnCheck, sales, page, handlePageChange, handleSelectAl
                 <tbody>
                     {pageSales.length > 0 ? (
                         pageSales.map((sale, sale_index) => (
-                            <tr key={sale_index}>
+                            <tr key={sale.id}>
                                 <td>
                                     <Form.Check
                                         className={classes.checkBox}
