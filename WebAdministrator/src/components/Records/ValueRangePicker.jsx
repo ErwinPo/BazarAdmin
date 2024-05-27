@@ -9,17 +9,11 @@ import classes from './ValueRangePicker.module.css';
 const ValueRangePicker = ({ minValue, maxValue, handleMinValueChange, handleMaxValueChange }) => {
 
   const handleMinValueInputChange = (event) => {
-    const value = event.target.value.trim(); // Remove whitespace
-    if (value === "" || !isNaN(value)) {
-      handleMinValueChange(value === "" ? undefined : value);
-    }
+      handleMinValueChange(Number(event.target.value));
   };
   
   const handleMaxValueInputChange = (event) => {
-    const value = event.target.value.trim(); // Remove whitespace
-    if (value === "" || !isNaN(value)) {
-      handleMaxValueChange(value === "" ? undefined : value);
-    }
+    handleMaxValueChange(Number(event.target.value))
   };
   
 
