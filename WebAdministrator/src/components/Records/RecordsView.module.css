@@ -67,6 +67,11 @@ body {
     text-align: center;
 }
 
+.datesDropDown {
+  margin-top: 24px;
+  margin-left: 12px;
+}
+
 .rangePickers {
     display: inline-flex;
     flex-direction: row;
