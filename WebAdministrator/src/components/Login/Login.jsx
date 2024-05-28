@@ -68,7 +68,7 @@ export default function Login() {
                 localStorage.setItem('user_id', userData.user_id);
                 window.location.reload();
             } catch (error) {
-                toast.error(error.message);
+                toast.error("Error al cargar la página.");
                 setUser("");
                 setPassword("");
             }

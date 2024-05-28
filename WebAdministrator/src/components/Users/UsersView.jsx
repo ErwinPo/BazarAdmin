@@ -63,7 +63,6 @@ const UsersView = () => {
       setUsers(data);
     })
     .catch(error => {
-      console.error('Error:', error);
       toast.error("Error al cargar los datos del servidor");
     });
   }, [token]);
@@ -339,7 +338,6 @@ const UsersView = () => {
       toast.success("Usuario creado con éxito.");
     })
     .catch(error => {
-      console.error('Error:', error);
       toast.error("Error al crear el usuario");
     });
   };
@@ -398,7 +396,6 @@ const UsersView = () => {
       toast.success("Usuario editado con éxito.");
     })
     .catch(error => {
-      console.error('Error:', error);
       toast.error("Error al editar el usuario");
     });
   };
@@ -418,13 +415,11 @@ const UsersView = () => {
     })
     .then(response => {
       if (!response.ok) {
-        console.log(response.data.new_password);
         throw new Error('Error al cambiar la contraseña');
       }
       return response.json();
     })
     .then(data => {
-      console.log("Contraseña cambiada exitosamente:", data);
       toast.success("Contraseña cambiada exitosamente.");
       setState({
         ...state,
@@ -437,7 +432,6 @@ const UsersView = () => {
       });
     })
     .catch(error => {
-      console.error('Error:', error);
       toast.error("Error al cambiar la contraseña");
     });
   }
@@ -504,7 +498,6 @@ const UsersView = () => {
 
   const handleDeleteUsers = () => {
     const deletedUserIds = state.selectedUserIds;
-    console.log(deletedUserIds);
     fetch("http://3.146.65.111:8000/bazar/delete-users/", {
       method: "DELETE",
       headers: {
@@ -525,7 +518,6 @@ const UsersView = () => {
       });
     })
     .catch((error) => {
-      console.error("Error:", error);
       toast.error("Error al eliminar los usuarios seleccionados");
     });
   };
