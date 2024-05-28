@@ -1,0 +1,47 @@
+/* Copyright 2024 BitBrothers
+ * File: ValueRangePicker.module.css
+ * Type: css file */
+
+ .label {
+    margin-bottom: 0px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .row {
+    margin-top: 18px;
+    gap: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 4.6px 0px;
+  line-height: 1.5;
+  color: black;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 3px solid #F7C04A;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: none !important;
+}
+
+.input:focus {
+  border-color: #F7C04A;
+}
+  
+.dash {
+    display: none;
+}
+
+@media (min-width: 768px) {
+.dash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    font-size: large;
+}
+}
+
+  

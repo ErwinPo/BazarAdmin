@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 :root {
@@ -16,6 +17,17 @@
 
 body {
   margin: 0;
-  text-align: center;
+  text-align: left;
   color: #000000;
+}
+
+.form-check-input {
+  height: 25px;
+	width: 25px;
+  border-color: black;
+}
+
+.active{
+  color: #F7C04A !important;
+  font-weight: bold;
 }

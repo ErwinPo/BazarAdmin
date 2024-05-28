@@ -1,0 +1,64 @@
+.card {
+    border-color: #3F497F;
+    background-color: #E9E9E9;
+    font-weight: 700;
+    width: 45%;
+    height: 10rem;
+}
+
+.col {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    font-size: medium;
+    font-weight: bold;
+    text-align: left;
+}
+
+.text {
+    font-size: xx-large;
+    text-align: left;
+}
+
+.img {
+    padding-top: 1.5rem;
+    float: right;
+    font-size: 1.25rem;
+    display: flex;
+    color: #009641;
+    font-weight: bold;
+}
+
+.percentage {
+    float: right;
+}
+
+.arrowImg {
+    height: 30px;
+    width: 30px;
+    float: right;
+    font-size: 1.25rem;
+    text-align: center;
+    align-items: baseline;
+    justify-content: baseline;
+}
+
+@media (max-width: 1300px) {
+    .card {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    .col {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text {
+        font-size: large;
+    }
+}
