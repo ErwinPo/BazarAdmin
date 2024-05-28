@@ -135,7 +135,10 @@ public class RegistroActivity extends AppCompatActivity{
 
     private void deleteSale(){
 
-        Call<Venta> call = service.deleteVenta(lastventa.id);
+        SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
+        String accesString = "Bearer " + sp.getString("access", "");
+
+        Call<Venta> call = service.deleteVenta(lastventa.id, accesString);
         Log.i("1","1");
         call.clone().enqueue(new Callback<Venta>() {
             @Override

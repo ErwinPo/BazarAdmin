@@ -16,7 +16,7 @@ public interface ApiService{
     Call<Venta> postVenta(@Body Venta venta, @Header("Authorization") String access);
 
     @DELETE("sales//{id}/")
-    Call<Venta> deleteVenta(@Path("id") int id);
+    Call<Venta> deleteVenta(@Path("id") int id, @Header("Authorization") String access);
 
     @POST("api/login/")
     Call<User> login(@Body Login login);
