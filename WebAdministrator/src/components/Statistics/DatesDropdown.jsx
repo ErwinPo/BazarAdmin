@@ -61,8 +61,6 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
         onRangeOfDatesUpdate([currDate, endDate]);
         setSelectedOption(days);
 
-        console.log("temporality: ", temp);
-        console.log("endDate: ", endDate);
     };
 
     const handleApplyCustomDates = () => {
@@ -79,7 +77,6 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             setShowModal(false);
             setSelectedOption(null);
 
-            console.log("temporality: ", temp);
         }
     };
 
@@ -113,7 +110,6 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
                 onItemsDataUpdate(data);
             })
             .catch(error => {
-                console.error('Error:', error);
                 toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
             });
     
@@ -128,11 +124,8 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
                 onSalesDataUpdate(data);
             })
             .catch(error => {
-                console.error('Error:', error);
             });
     
-        console.log("Rango de fechas: ", daysFromHandleDropdownItem);
-        console.log("Temporalidad: ", temporality);
     }, [daysFromHandleDropdownItem, temporality, currentUserData]);
     
     return (
