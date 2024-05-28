@@ -45,9 +45,7 @@ const Estadisticas = () => {
     };
 
     useEffect(() => {
-        // Calculate total sales amount
 
-        // console.log(salesData)
 
         const sales = salesData.qty
         const salesPercentage = salesData.comp
@@ -60,7 +58,6 @@ const Estadisticas = () => {
             items.forEach(item => {
                 total += item.total_quantity
             })
-            // console.log("Total items: ",total)
             setTotalItems(total)
         }
         
@@ -76,13 +73,13 @@ const Estadisticas = () => {
         if(salesPercentage){
             
             setSalesDataPercentage(Math.round(salesPercentage[0].growth_rate) + '%')
-            // console.log((salesPercentage[0].growth_rate))
+         
         }
 
         if(itemsPercentage){
             
             setItemsPercentage(Math.round(itemsPercentage[0].growth_rate) + '%')
-            // console.log((itemsPercentage[0].growth_rate))
+      
         }
         
 
@@ -109,14 +106,11 @@ const Estadisticas = () => {
             setLoading(false);
         })
         .catch(error => {
-            console.error('Error:', error);
+           
         });
     }, []);
         
-    // if (bestSeller) {
-    //     console.log(true);
-    // } 
-    
+
 
     return (
         <div>

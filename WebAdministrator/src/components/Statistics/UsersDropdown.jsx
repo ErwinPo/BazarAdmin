@@ -29,7 +29,7 @@ const UsersDropdown = ({ onUserDataUpdate }) => {
             
         })
         .catch(error => {
-            console.error('Error:', error);
+        
         });
     }, []);
 
