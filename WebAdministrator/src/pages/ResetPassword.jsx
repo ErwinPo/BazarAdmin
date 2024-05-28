@@ -47,7 +47,6 @@ const ResetPassword = () => {
 
 				    if(!response.ok){
                         const responseData = await response.json();
-					    console.log(responseData);
 					    throw new Error(responseData.message || "Error al cambiar la contraseña");
 				    }
 
