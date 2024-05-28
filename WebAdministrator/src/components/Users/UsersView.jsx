@@ -547,10 +547,11 @@ const UsersView = () => {
   const sortUsers = (users) => {
     const userId = parseInt(localStorage.getItem('user_id'));
     const loggedInUser = users.find(user => parseInt(user.id) === userId);
-    const otherUsers = users.filter(user => parseInt(user.id) !== userId);
+    const otherUsers = users.filter(user => parseInt(user.id) !== userId && parseInt(user.id) !== 1);
     otherUsers.sort((a, b) => parseInt(a.id) - parseInt(b.id));
     return loggedInUser ? [loggedInUser, ...otherUsers] : users;
   };
+  
 
 
   const isLargeScreen = useMediaQuery({ maxWidth: 885 });
