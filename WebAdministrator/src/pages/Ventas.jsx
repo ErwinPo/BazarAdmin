@@ -102,13 +102,11 @@ const Ventas = () => {
         .then((response) => response.json())
         .then(data => {
             setState({ ...state, sales: data ?? [] });
-            console.log(data);
         })
         .catch((error) => {console.log(error);});
     }
 
 	const deleteSale = (id) => {
-        // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "DELETE",
 			headers: {
@@ -135,7 +133,6 @@ const Ventas = () => {
     };
 
 	const editSale = (amount, id, quantity, sale_index) => {
-        // console.log(id + ' amount: ' + amount + ' quantity: ' + quantity)
         fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
@@ -163,7 +160,6 @@ const Ventas = () => {
     };    
 
 	const deleteSelectedSales = (sale_ids) => {
-        // console.log(id)
         fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
             method: "DELETE",
             headers: {
@@ -174,7 +170,6 @@ const Ventas = () => {
         })
         .then(response => {
             if (response.ok) {
-                console.log(sale_ids)
                 const updatedSales = state.sales.filter(sale => !sale_ids.includes(sale.id));
                 setState({ ...state, sales: updatedSales, deleteSelectedModalOpen: false });
                 setPage(1);
@@ -217,7 +212,6 @@ const Ventas = () => {
 				});
 
 				if(!response.ok){
-					console.log(response);
 					throw new Error("Error al registrar la venta.");
 				}
 
@@ -235,7 +229,6 @@ const Ventas = () => {
 			}
              
 		}
-		//setValidated(true);
 	};
 
 	return (
