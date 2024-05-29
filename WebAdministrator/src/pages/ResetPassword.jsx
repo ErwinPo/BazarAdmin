@@ -35,7 +35,7 @@ const ResetPassword = () => {
             } else {
                 try {
 				    setValidated(true);
-				    const response = await fetch(`http://3.146.65.111:8000/bazar/password-reset-confirm/${uidb64}/${token}/`, {
+				    const response = await fetch(`http://localhost:8000/bazar/password-reset-confirm/${uidb64}/${token}/`, {
 					    method: "POST",
 					    headers: {
 						    'Content-Type' : 'application/json'

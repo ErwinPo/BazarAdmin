@@ -46,7 +46,7 @@ const UsersView = () => {
   const userId = localStorage.getItem('user_id');
 
   useEffect(() => {
-    fetch("http://3.146.65.111:8000/bazar/users//", {
+    fetch("http://localhost:8000/bazar/users//", {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -307,7 +307,7 @@ const UsersView = () => {
       password: password,
       is_superuser: is_superuser
     };
-    fetch("http://3.146.65.111:8000/bazar/users//", {
+    fetch("http://localhost:8000/bazar/users//", {
       method: "POST",
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -361,7 +361,7 @@ const UsersView = () => {
       email: email,
       is_superuser: is_superuser
     };
-    fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
+    fetch(`http://localhost:8000/bazar/users//${id}/`, {
       method: "PUT",
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -405,7 +405,7 @@ const UsersView = () => {
       return;
     }
     const { id, new_password } = state.form;
-    fetch(`http://3.146.65.111:8000/bazar/change-password/`, {
+    fetch(`http://localhost:8000/bazar/change-password/`, {
       method: "POST",
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -438,7 +438,7 @@ const UsersView = () => {
   
   const handleDeleteUser = () => {
     const { id } = state.form;
-    fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
+    fetch(`http://localhost:8000/bazar/users//${id}/`, {
       method: "DELETE",
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -465,7 +465,7 @@ const UsersView = () => {
 
   const handleDeleteSelf = () => {
     const { id } = state.form;
-    fetch(`http://3.146.65.111:8000/bazar/users//${id}/`, {
+    fetch(`http://localhost:8000/bazar/users//${id}/`, {
       method: "DELETE",
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -498,7 +498,7 @@ const UsersView = () => {
 
   const handleDeleteUsers = () => {
     const deletedUserIds = state.selectedUserIds;
-    fetch("http://3.146.65.111:8000/bazar/delete-users/", {
+    fetch("http://localhost:8000/bazar/delete-users/", {
       method: "DELETE",
       headers: {
         'Authorization': `Bearer ${token}`,

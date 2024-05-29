@@ -89,7 +89,7 @@ const Estadisticas = () => {
     const access_token = localStorage.getItem('access_token');
 
     useEffect(() => {
-        fetch('http://3.146.65.111:8000/bazar/ranking/', {
+        fetch('http://localhost:8000/bazar/ranking/', {
             method: 'GET',
             headers: {
             'Authorization': `Bearer ${access_token}`

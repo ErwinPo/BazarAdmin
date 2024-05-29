@@ -92,7 +92,7 @@ const Ventas = () => {
     };
 
     const getSales = () => {
-        fetch("http://3.146.65.111:8000/bazar/summary-sales/", {
+        fetch("http://localhost:8000/bazar/summary-sales/", {
             method: "GET",
 			headers: {
 				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
@@ -107,7 +107,7 @@ const Ventas = () => {
     }
 
 	const deleteSale = (id) => {
-        fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
+        fetch(`http://localhost:8000/bazar/sales//${id}/`, {
             method: "DELETE",
 			headers: {
 				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
@@ -133,7 +133,7 @@ const Ventas = () => {
     };
 
 	const editSale = (amount, id, quantity, sale_index) => {
-        fetch(`http://3.146.65.111:8000/bazar/sales//${id}/`, {
+        fetch(`http://localhost:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
 				'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
@@ -160,7 +160,7 @@ const Ventas = () => {
     };    
 
 	const deleteSelectedSales = (sale_ids) => {
-        fetch(`http://3.146.65.111:8000/bazar/delete-sales/`, {
+        fetch(`http://localhost:8000/bazar/delete-sales/`, {
             method: "DELETE",
             headers: {
                 'Content-Type' : 'application/json',
@@ -199,7 +199,7 @@ const Ventas = () => {
 		} else {
 			try {
 				setValidated(true);
-				const response = await fetch("http://3.146.65.111:8000/bazar/sales//", {
+				const response = await fetch("http://localhost:8000/bazar/sales//", {
 					method: "POST",
 					headers: {
 						'Content-Type' : 'application/json',

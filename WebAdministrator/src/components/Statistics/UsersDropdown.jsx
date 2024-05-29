@@ -11,7 +11,7 @@ const UsersDropdown = ({ onUserDataUpdate }) => {
 
 
     useEffect(() => {
-        fetch('http://3.146.65.111:8000/bazar/users//', {
+        fetch('http://localhost:8000/bazar/users//', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${access_token}`
