@@ -36,7 +36,6 @@ const ModalEdit = ({ sale, editModalOpen, handleEdit, toggleEditModal, setCurren
     
     return (
         <>
-            <ToastContainer position="top-center" autoClose={3000} />
             <Modal isOpen={editModalOpen}>
                 <ModalHeader className={classes.modal_header}>
                     <div>
