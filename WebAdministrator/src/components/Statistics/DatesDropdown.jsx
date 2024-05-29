@@ -84,12 +84,12 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
         const [startDate, endDate] = daysFromHandleDropdownItem;
         if (!startDate || !endDate || !temporality) return;
     
-        let itemsFetch = `http://localhost:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
-        let salesFetch = `http://localhost:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
+        let itemsFetch = `http://192.168.1.68:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
+        let salesFetch = `http://192.168.1.68:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
     
         if (currentUserData) {
-            itemsFetch = `http://localhost:8000/bazar/sales-date-range-quantity-seller/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}&id=${currentUserData.id}`;
-            salesFetch = `http://localhost:8000/bazar/sales-date-range-amount-seller/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}&id=${currentUserData.id}`;
+            itemsFetch = `http://192.168.1.68:8000/bazar/sales-date-range-quantity-seller/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}&id=${currentUserData.id}`;
+            salesFetch = `http://192.168.1.68:8000/bazar/sales-date-range-amount-seller/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}&id=${currentUserData.id}`;
         }
     
         const requestOptions = {

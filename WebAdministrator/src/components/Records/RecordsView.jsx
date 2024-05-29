@@ -70,7 +70,7 @@ const RecordsView = () => {
     });
 
     useEffect(() => {
-        fetch("http://localhost:8000/bazar/sales//", {
+        fetch("http://192.168.1.68:8000/bazar/sales//", {
             method: "GET",
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -198,7 +198,7 @@ const RecordsView = () => {
     };
 
     const deleteSale = (id) => {
-        fetch(`http://localhost:8000/bazar/sales//${id}/`, {
+        fetch(`http://192.168.1.68:8000/bazar/sales//${id}/`, {
             method: "DELETE",
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -224,7 +224,7 @@ const RecordsView = () => {
     };      
 
     const deleteSelectedSales = (sale_ids) => {
-        fetch(`http://localhost:8000/bazar/delete-sales/`, {
+        fetch(`http://192.168.1.68:8000/bazar/delete-sales/`, {
             method: "DELETE",
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -252,7 +252,7 @@ const RecordsView = () => {
     };      
 
     const editSale = (amount, id, quantity, sale_index) => {
-        fetch(`http://localhost:8000/bazar/sales//${id}/`, {
+        fetch(`http://192.168.1.68:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
               'Authorization': `Bearer ${token}`,
