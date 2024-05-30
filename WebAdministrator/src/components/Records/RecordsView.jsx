@@ -235,7 +235,7 @@ const RecordsView = () => {
         .then(response => {
             if (response.ok) {
                 const updatedSales = state.sales.filter(sale => !sale_ids.includes(sale.id));
-                setState({ ...state, sales: updatedSales, deleteSelectedModalOpen: false });
+                setState({ ...state, sales: updatedSales, columnCheck: false, deleteSelectedModalOpen: false });
                 setPage(1);
                 toast.success("Ventas seleccionadas eliminadas con éxito.");
             }
