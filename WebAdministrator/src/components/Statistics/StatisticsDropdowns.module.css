@@ -1,0 +1,37 @@
+
+
+.row{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    font-size: 1.75rem
+}
+
+.centered{
+    justify-content: center;
+}
+
+.col{
+    font-weight:700;
+    flex: 1;
+}
+
+
+@media (max-width: 1300px) {
+
+    .statisticsCardsRow{
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+@media (min-width: 750px) and (max-width: 1250px){
+    .row{
+        gap: 10rem;
+        flex-wrap: wrap;
+        justify-content: center; /* Centra los elementos en el eje principal */
+        gap: 2rem; /* Espaciado entre las columnas */
+    }
+}
+
