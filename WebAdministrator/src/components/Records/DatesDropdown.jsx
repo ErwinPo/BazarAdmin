@@ -5,7 +5,7 @@ import DateRangePicker from '../Records/DateRangePicker';
 import moment from "moment";
 
 const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
-    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([moment().subtract(1, 'days').toDate().toJSON().slice(0, 10), moment().subtract(1, 'days').toDate().toJSON().slice(0, 10)]);
+    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([new Date().toLocaleString().slice(0, 9), new Date().toLocaleString().slice(0, 9)]);
     const [selectedOption, setSelectedOption] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
@@ -18,7 +18,7 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
     const calculateStartDate = (currentDate, days) => {
         const endDate = new Date(currentDate);
         endDate.setDate(endDate.getDate() - days);
-        return endDate.toJSON().slice(0, 10);
+        return endDate.toLocaleString().slice(0, 9);
     };
 
     const handleDropdownItemClick = (days, selectedTitleDate) => {
@@ -31,8 +31,8 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
 
     const handleApplyCustomDates = () => {
         if (startDate && endDate) {
-            const formattedStartDate = moment(startDate).subtract(1, 'days').toDate().toJSON().slice(0, 10);
-            const formattedEndDate = moment(endDate).subtract(1, 'days').toJSON().slice(0, 10);
+            const formattedStartDate = startDate.toLocaleString().slice(0, 9)
+            const formattedEndDate = endDate.toLocaleString().slice(0, 9)
             setShowModal(false);
             setSelectedOption(null);
             setTitleDate(null)
