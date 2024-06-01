@@ -5,37 +5,37 @@ import DateRangePicker from '../Records/DateRangePicker';
 import moment from "moment";
 
 const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
-    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([new Date().toJSON().slice(0, 10), new Date().toJSON().slice(0, 10)]);
+    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([moment().subtract(1, 'days').toDate().toJSON().slice(0, 10), moment().subtract(1, 'days').toDate().toJSON().slice(0, 10)]);
     const [selectedOption, setSelectedOption] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
+    const [titleDate, setTitleDate] = useState('Hoy');
     const [endDate, setEndDate] = useState(new Date());
 
     const handleClose = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
-    const calculateStartDate = (startDate, days) => {
-        const endDate = new Date(startDate);
+    const calculateStartDate = (currentDate, days) => {
+        const endDate = new Date(currentDate);
         endDate.setDate(endDate.getDate() - days);
         return endDate.toJSON().slice(0, 10);
     };
 
-    const handleDropdownItemClick = (days) => {
-        const currentDate = new Date().toJSON().slice(0, 10);
-        const startDate = calculateStartDate(currentDate, days);
+    const handleDropdownItemClick = (days, selectedTitleDate) => {
 
+        setTitleDate(selectedTitleDate)
         setSelectedOption(days);
-        setDaysFromHandleDropdownItem([startDate, currentDate]);
-        handleStartDateChange(moment().subtract(days-1, 'days').toDate())
+        handleStartDateChange(moment().subtract(days, 'days').toDate())
         handleEndDateChange(new Date())
     };
 
     const handleApplyCustomDates = () => {
         if (startDate && endDate) {
-            const formattedStartDate = startDate.toJSON().slice(0, 10);
-            const formattedEndDate = endDate.toJSON().slice(0, 10);
+            const formattedStartDate = moment(startDate).subtract(1, 'days').toDate().toJSON().slice(0, 10);
+            const formattedEndDate = moment(endDate).subtract(1, 'days').toJSON().slice(0, 10);
             setShowModal(false);
             setSelectedOption(null);
+            setTitleDate(null)
 
             setDaysFromHandleDropdownItem([formattedStartDate, formattedEndDate]);
             handleStartDateChange(startDate)
@@ -47,25 +47,25 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
         <>
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    {daysFromHandleDropdownItem.length > 0 ? `${daysFromHandleDropdownItem[0]} - ${daysFromHandleDropdownItem[1]}` : 'Rango de Fechas'}
+                    {titleDate != null ? titleDate : `${daysFromHandleDropdownItem[0]} - ${daysFromHandleDropdownItem[1]}`}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(0)} className={selectedOption === 0 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(0, 'Hoy')} className={selectedOption === 0 ? classes.selectedOption : ""}>
                         Hoy
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(7)} className={selectedOption === 7 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(7, '1 Semana')} className={selectedOption === 7 ? classes.selectedOption : ""}>
                         Hace 1 Semana
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(15)} className={selectedOption === 15 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(15, '2 semanas')} className={selectedOption === 15 ? classes.selectedOption : ""}>
                         Hace 2 semanas
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(30)} className={selectedOption === 30 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(30, '1 mes')} className={selectedOption === 30 ? classes.selectedOption : ""}>
                         Hace 1 mes
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(180)} className={selectedOption === 180 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(180, '6 meses')} className={selectedOption === 180 ? classes.selectedOption : ""}>
                         Hace 6 meses
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(365)} className={selectedOption === 365 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(365, '1 año')} className={selectedOption === 365 ? classes.selectedOption : ""}>
                         Hace 1 año
                     </Dropdown.Item>
                     <Dropdown.Item onClick={handleShowModal} className={selectedOption === null ? classes.selectedOption : ""}>

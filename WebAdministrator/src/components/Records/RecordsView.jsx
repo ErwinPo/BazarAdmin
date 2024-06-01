@@ -23,15 +23,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const RecordsView = () => {      
     const dummySales = [
-        { id: 1, date: '2024-05-27T16:00:13.951281Z', amount: 1.00, quantity: 2, username: 'John Doe' },
-        { id: 2, date: '2024-04-03T16:00:13.951281Z', amount: 1.00, quantity: 3, username: 'Jane Smith' },
-        { id: 3, date: '2024-03-03T16:00:13.951281Z', amount: 200.69, quantity: 1, username: 'Alice Johnson' },
-        { id: 4, date: '2024-02-03T16:00:13.951281Z', amount: 120, quantity: 2, username: 'Bob Brown' },
-        { id: 5, date: '2024-01-03T16:00:13.951281Z', amount: 180.00, quantity: 4, username: 'Eve Williams' },
-        { id: 6, date: '2023-12-03T16:00:13.951281Z', amount: 100.00, quantity: 2, username: 'John Doe' },
-        { id: 7, date: '2023-11-03T16:00:13.951281Z', amount: 150.00, quantity: 3, username: 'Jane Smith' },
-        { id: 8, date: '2023-10-03T16:00:13.951281Z', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
-        { id: 9, date: '2023-09-03T16:00:13.951281Z', amount: 120.12, quantity: 2, username: 'Bob Brown' },
+        { id: 1, date: '2024-05-31T19:00:13.951281Z', amount: 1.00, quantity: 2, username: 'John Doe' },
+        { id: 2, date: '2024-05-25T16:00:13.951281Z', amount: 1.00, quantity: 3, username: 'Jane Smith' },
+        { id: 3, date: '2024-05-24T16:00:13.951281Z', amount: 200.69, quantity: 1, username: 'Alice Johnson' },
+        { id: 4, date: '2024-05-23T16:00:13.951281Z', amount: 120, quantity: 2, username: 'Bob Brown' },
+        { id: 5, date: '2024-01-31T16:00:13.951281Z', amount: 180.00, quantity: 4, username: 'Eve Williams' },
+        { id: 6, date: '2023-12-31T16:00:13.951281Z', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 7, date: '2023-11-31T16:00:13.951281Z', amount: 150.00, quantity: 3, username: 'Jane Smith' },
+        { id: 8, date: '2023-10-31T16:00:13.951281Z', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
+        { id: 9, date: '2023-09-31T16:00:13.951281Z', amount: 120.12, quantity: 2, username: 'Bob Brown' },
         { id: 10, date: '2023-08-03T16:00:13.951281Z', amount: 180.00, quantity: 4, username: 'Eve Williams' },
         { id: 11, date: '2023-07-03T16:00:13.951281Z', amount: 100.00, quantity: 2, username: 'John Doe' },
         { id: 12, date: '2023-06-03T16:00:13.951281Z', amount: 150.00, quantity: 3, username: 'Jane Smith' },
@@ -43,7 +43,7 @@ const RecordsView = () => {
         { id: 18, date: '2022-05-03T16:00:13.951281Z', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
         { id: 19, date: '2022-05-03T16:00:13.951281Z', amount: 120.00, quantity: 2, username: 'Bob Brown' },
         { id: 20, date: '2022-05-03T16:00:13.951281Z', amount: 180.00, quantity: 4, username: 'Eve Williams' },
-        { id: 21, date: '2022-05-03T16:00:13.951281Z', amount: 100.00, quantity: 2, username: 'John Doe' },
+        { id: 21, date: '2023-06-01T19:00:13.951281Z', amount: 100.00, quantity: 2, username: 'John Doe' },
         { id: 22, date: '2021-05-03T16:00:13.951281Z', amount: 150.00, quantity: 3, username: 'Jane Smith' },
         { id: 23, date: '2021-05-03T16:00:13.951281Z', amount: 200.00, quantity: 1, username: 'Alice Johnson' },
         { id: 24, date: '2021-05-03T16:00:13.951281Z', amount: 900.00, quantity: 2, username: 'Bob Brown' },
@@ -365,14 +365,16 @@ const RecordsView = () => {
             <Navbar />
             <div className={classes.salesLog}>
                 <Row className={classes.filters}>
-                    <Col lg={isLargeScreen ? 12 : 'auto'}>
-                        <Button className={classes.button} variant="warning" onClick={exportData} >
-                            <Image className={classes.image} src={iconExport} />
-                            <span>
-                                Exportar
-                            </span>
-                        </Button>
-                    </Col>
+                    {filteredSales.length > 0 &&
+                        <Col lg={isLargeScreen ? 12 : 'auto'}>
+                            <Button className={classes.button} variant="warning" onClick={exportData} >
+                                <Image className={classes.image} src={iconExport} />
+                                <span>
+                                    Exportar
+                                </span>
+                            </Button>
+                        </Col>
+                    }
                     <Col className={classes.pickers} md={12} lg={5}>
                         <ValueRangePicker
                             minValue={state.minValue}
