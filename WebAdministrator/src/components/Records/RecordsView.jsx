@@ -118,7 +118,7 @@ const RecordsView = () => {
         }
     
         if (state.minValue !== "" && value < Number(state.minValue)) {
-            setErrorMessage("El monto superior debe ser superior al monto inferior.");
+            setErrorMessage("El monto superior debe ser mayor al monto inferior.");
         } else {
             setErrorMessage(null);
         }
