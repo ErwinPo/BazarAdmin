@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import classes from './RecordsView.module.css';
 import DatesDropdown from './DatesDropdown';
+import ExcelJS from 'exceljs';
 import iconExport from '../../assets/images/icon_export.png';
 import iconTrash from '../../assets/images/icon_trash.png';
 import ModalDelete from './ModalDelete';
@@ -16,8 +17,8 @@ import SalesTable from "./SalesTable";
 import ValueRangePicker from "./ValueRangePicker";
 import { Button, Col, Image, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
-import ExcelJS from 'exceljs';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -26,8 +27,9 @@ const RecordsView = () => {
 
     const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, username: 'John Doe' });
     const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
-    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [page, setPage] = useState(1);
     const [state, setState] = useState({
         sales: [],
         startDate: new Date(),
@@ -42,6 +44,7 @@ const RecordsView = () => {
     });
 
     useEffect(() => {
+        setLoading(true);
         fetch("http://3.144.21.179:8000/bazar/sales//", {
             method: "GET",
             headers: {
@@ -53,7 +56,13 @@ const RecordsView = () => {
         .then(data => {
             setState({ ...state, sales: data ?? [] });
         })
-        .catch((error) => {console.error(error);});
+        .catch((error) => {
+            console.error(error);
+        })
+        .finally(() => {
+            setLoading(false);
+        });
+        
     }, []);
 
     const handleStartDateChange = (date) => {
@@ -336,62 +345,72 @@ const RecordsView = () => {
         <>
             <Navbar />
             <div className={classes.salesLog}>
-                <Row className={classes.filters}>
-                    {filteredSales.length > 0 &&
-                        <Col lg={isLargeScreen ? 12 : 'auto'}>
-                            <Button className={classes.button} variant="warning" onClick={exportData} >
-                                <Image className={classes.image} src={iconExport} />
+                {loading ? (
+                    <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    </div>
+                ) : (
+                    <>
+                        <Row className={classes.filters}>
+                            {filteredSales.length > 0 &&
+                                <Col lg={isLargeScreen ? 12 : 'auto'}>
+                                    <Button className={classes.button} variant="warning" onClick={exportData} >
+                                        <Image className={classes.image} src={iconExport} />
+                                        <span>
+                                            Exportar
+                                        </span>
+                                    </Button>
+                                </Col>
+                            }
+                            <Col className={classes.pickers} md={12} lg={5}>
+                                <ValueRangePicker
+                                    minValue={state.minValue}
+                                    maxValue={state.maxValue}
+                                    handleMinValueChange={handleMinValueChange}
+                                    handleMaxValueChange={handleMaxValueChange}
+                                />
+                            </Col>
+                            <Col className={classes.datesDropDown} md="auto">
+                                <DatesDropdown
+                                    handleStartDateChange={handleStartDateChange}
+                                    handleEndDateChange={handleEndDateChange}
+                                />
+                            </Col>
+                        </Row>
+                        {errorMessage && (
+                            <div className={classes.errorMessage}>
+                            <span>{errorMessage}</span>
+                            </div>
+                        )}
+                        {state.selectedRows.length > 0 && (
+                            <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteSelectedModal} >
+                                <Image className={classes.image} src={iconTrash} />
                                 <span>
-                                    Exportar
+                                    Eliminar Seleccionados
                                 </span>
                             </Button>
-                        </Col>
-                    }
-                    <Col className={classes.pickers} md={12} lg={5}>
-                        <ValueRangePicker
-                            minValue={state.minValue}
-                            maxValue={state.maxValue}
-                            handleMinValueChange={handleMinValueChange}
-                            handleMaxValueChange={handleMaxValueChange}
+                        )}
+                        <SalesTable 
+                            columnCheck={state.columnCheck}
+                            sales={filteredSales} 
+                            page={page}
+                            handlePageChange={handlePageChange}
+                            handleSelectAllChange={handleSelectAllChange}
+                            setPage={setPage} 
+                            onRowSelect={handleRowSelect}
+                            selectedRows={state.selectedRows}
+                            toggleDeleteModal={toggleDeleteModal}
+                            setCurrentSaleIdDelete={setCurrentSaleIdDelete}
+                            setCurrentSaleEdit={setCurrentSaleEdit}
+                            toggleEditModal={toggleEditModal}
                         />
-                    </Col>
-                    <Col className={classes.datesDropDown} md="auto">
-                        <DatesDropdown
-                            handleStartDateChange={handleStartDateChange}
-                            handleEndDateChange={handleEndDateChange}
-                        />
-                    </Col>
-                </Row>
-                {errorMessage && (
-                    <div className={classes.errorMessage}>
-                    <span>{errorMessage}</span>
-                    </div>
+                        <ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} setCurrentSaleEdit={setCurrentSaleEdit} />
+                        <ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
+                        <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
+                    </>
                 )}
-                {state.selectedRows.length > 0 && (
-                    <Button className={classes.buttonDeleteAll} variant="warning" onClick={toggleDeleteSelectedModal} >
-                        <Image className={classes.image} src={iconTrash} />
-                        <span>
-                            Eliminar Seleccionados
-                        </span>
-                    </Button>
-                )}
-                <SalesTable 
-                    columnCheck={state.columnCheck}
-                    sales={filteredSales} 
-                    page={page}
-                    handlePageChange={handlePageChange}
-                    handleSelectAllChange={handleSelectAllChange}
-                    setPage={setPage} 
-                    onRowSelect={handleRowSelect}
-                    selectedRows={state.selectedRows}
-                    toggleDeleteModal={toggleDeleteModal}
-                    setCurrentSaleIdDelete={setCurrentSaleIdDelete}
-                    setCurrentSaleEdit={setCurrentSaleEdit}
-                    toggleEditModal={toggleEditModal}
-                />
-                <ModalEdit sale = {currentSaleEdit} editModalOpen = {state.editModalOpen} handleEdit = {handleEdit} toggleEditModal={toggleEditModal} setCurrentSaleEdit={setCurrentSaleEdit} />
-                <ModalDelete sale_id = {currentSaleIdDelete} deleteModalOpen = {state.deleteModalOpen} handleDelete = {handleDelete} toggleDeleteModal={toggleDeleteModal} />
-                <ModalDeleteSelected deleteSelectedModalOpen = {state.deleteSelectedModalOpen} handleDeleteSelected = {handleDeleteSelected} toggleDeleteSelectedModal={toggleDeleteSelectedModal} />
             </div>
         </>
     );
