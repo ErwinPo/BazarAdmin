@@ -232,7 +232,7 @@ const RecordsView = () => {
         });
     };      
 
-    const editSale = (amount, id, quantity, sale_index) => {
+    const editSale = (amount, id, quantity) => {
         fetch(`http://3.144.21.179:8000/bazar/sales//${id}/`, {
             method: "PUT",
             headers: {
@@ -244,8 +244,14 @@ const RecordsView = () => {
         .then(response => {
             if (response.ok) {
                 const updatedSales = [...state.sales];
-                updatedSales[sale_index] = { ...updatedSales[sale_index], amount, quantity };
-                setState({ ...state, sales: updatedSales, editModalOpen: false }, toast.success("Venta seleccionada editada con éxito."));
+                const saleIndex = updatedSales.findIndex(sale => sale.id === id);
+                if (saleIndex !== -1) {
+                    updatedSales[saleIndex] = { ...updatedSales[saleIndex], amount, quantity };
+                    setState({ ...state, sales: updatedSales, editModalOpen: false }, toast.success("Venta seleccionada editada con éxito."));
+                } else {
+                    toast.error('Venta no encontrada.');
+                    setState({ ...state, editModalOpen: false });
+                }
             }
             else {
                 console.error(response)
