@@ -38,6 +38,7 @@
   .Login_form_name {
     text-align: left;
     font-size: 18px;
+    padding-left: 11px;
   }
 
   .Login_form_container .form_group input {
