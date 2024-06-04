@@ -72,7 +72,7 @@ const SalesGraph = ({ salesData, itemsData }) => {
             </Stack>
             <Box className="d-flex justify-content-end mt-3">
               <Button variant="contained" color="primary" style={{ textTransform: 'none' }} onClick={handleToggle}>
-                {isSales ? 'Ventas' : 'Objetos'}
+                {isSales ? 'Objetos' : 'Ventas'}
               </Button>
             </Box>
           </Card>

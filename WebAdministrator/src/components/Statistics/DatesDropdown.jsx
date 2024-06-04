@@ -168,11 +168,11 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                    <Button variant="primary" onClick={handleApplyCustomDates}>
+                    <Button variant="success" onClick={handleApplyCustomDates}>
                         Aplicar
+                    </Button>
+                    <Button variant="danger" onClick={handleClose}>
+                        Cancelar
                     </Button>
                 </Modal.Footer>
             </Modal>
