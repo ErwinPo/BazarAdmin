@@ -129,6 +129,8 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             .catch(error => {
                 toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
             });
+
+            console.log(...daysFromHandleDropdownItem)
     };
 
     useEffect(() => {
@@ -163,6 +165,9 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
                     </Dropdown.Item>
                     <Dropdown.Item onClick={() => handleDropdownItemClick(180, 'Hace 6 meses')} className={selectedOption === 180 ? classes.selectedOption : ""}>
                         Hace 6 meses
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(366, 'Hace 1 año')} className={selectedOption === 366 ? classes.selectedOption : ""}>
+                        Hace 1 año
                     </Dropdown.Item>
                     <Dropdown.Item onClick={handleShowModal} className={selectedOption === null ? classes.selectedOption : ""}>
                         Personalizar
