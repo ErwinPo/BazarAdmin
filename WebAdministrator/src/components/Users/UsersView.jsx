@@ -552,8 +552,6 @@ const UsersView = () => {
     return loggedInUser ? [loggedInUser, ...otherUsers] : users;
   };
   
-
-
   const isLargeScreen = useMediaQuery({ maxWidth: 885 });
 
   return (
