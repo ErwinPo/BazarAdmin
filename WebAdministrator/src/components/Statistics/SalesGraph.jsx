@@ -40,7 +40,7 @@ const SalesGraph = ({ salesData, itemsData }) => {
   const chartSetting = {
     yAxis: [
       {
-        label: isSales ? 'Ventas ($)' : 'Objetos vendidos',
+        label: isSales ? 'Ventas ($)' : 'Monto (cantidad)',
       },
     ],
     series: [{ dataKey: 'total_amount', label: isSales ? 'Ventas del Bazar' : 'Objetos del Bazar', valueFormatter: valueFormatter }],
