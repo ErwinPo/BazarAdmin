@@ -6,11 +6,13 @@ import { toast } from 'react-toastify';
 
 const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpdate, currentUserId, currentUserData }) => {
     const today = new Date();
-    const [selectedOption, setSelectedOption] = useState(null);
+    const formattedToday = today.toISOString().split('T')[0];  // Formatear la fecha como 'YYYY-MM-DD'
+    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([formattedToday, formattedToday]);
+    const [selectedOption, setSelectedOption] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
-    const [temporality, setTemporality] = useState(null);
+    const [temporality, setTemporality] = useState('daily');
     const [dropdownLabel, setDropdownLabel] = useState('Hoy');
 
     const access_token = localStorage.getItem('access_token');
@@ -25,11 +27,6 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
     const getEndDate = () => {
         return formatDateString(new Date());
     };
-    
-    const [daysFromHandleDropdownItem, setDaysFromHandleDropdownItem] = useState([getEndDate(), getEndDate()]);
-
-    // console.log(...daysFromHandleDropdownItem)
-
 
     const getCurrentDate = (endDate, days) => {
         const startDate = new Date(endDate);
@@ -89,10 +86,7 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
         }
     };
 
-    useEffect(() => {
-        const [startDate, endDate] = daysFromHandleDropdownItem;
-        if (!startDate || !endDate || !temporality) return;
-
+    const fetchData = (startDate, endDate) => {
         let itemsFetch = `http://3.144.21.179:8000/bazar/sales-date-range-quantity/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
         let salesFetch = `http://3.144.21.179:8000/bazar/sales-date-range-amount/?start-date=${startDate}&end-date=${endDate}&temporality=${temporality}`;
 
@@ -135,10 +129,18 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
             .catch(error => {
                 toast.error('Lo sentimos, ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
             });
+    };
 
-            console.log(...daysFromHandleDropdownItem)
+    useEffect(() => {
+        const [startDate, endDate] = daysFromHandleDropdownItem;
+        if (!startDate || !endDate || !temporality) return;
 
+        fetchData(startDate, endDate);
     }, [daysFromHandleDropdownItem, temporality, currentUserData]);
+
+    useEffect(() => {
+        handleDropdownItemClick(1, 'Hoy');
+    }, []);
 
     return (
         <>
@@ -147,7 +149,7 @@ const DatesDropdown = ({ onSalesDataUpdate, onRangeOfDatesUpdate, onItemsDataUpd
                     {dropdownLabel}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(0, 'Hoy')} className={selectedOption === 0 ? classes.selectedOption : ""}>
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(1, 'Hoy')} className={selectedOption === 1 ? classes.selectedOption : ""}>
                         Hoy
                     </Dropdown.Item>
                     <Dropdown.Item onClick={() => handleDropdownItemClick(7, 'Hace 1 semana')} className={selectedOption === 7 ? classes.selectedOption : ""}>
