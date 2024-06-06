@@ -42,7 +42,7 @@ public class RegistroActivity extends AppCompatActivity{
     TextView ventanumber, ventadate, ventaquantity, ventasale;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://3.146.65.111:8000/bazar/")
+            .baseUrl("http://3.144.21.179:8000/bazar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -75,7 +75,7 @@ public class RegistroActivity extends AppCompatActivity{
         //ventasale.setText(lastventa.amount);
 
         SharedPreferences sp = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE);
-        timeout(sp);
+        //timeout(sp);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
