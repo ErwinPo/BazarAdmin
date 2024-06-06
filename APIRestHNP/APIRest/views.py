@@ -167,7 +167,7 @@ class ApplicationDownloadView(views.APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self, request):
-        file_path = os.path.join(os.getcwd(), 'APP_BHNP.apk')
+        file_path = os.path.join(os.getcwd(), 'APK_BHNP.apk')
         if os.path.exists(file_path):        
             response = FileResponse(open(file_path, 'rb'))
             response['Content-Disposition'] = 'attachment; filename="APK_BHNP.apk"'
