@@ -1,56 +1,8 @@
  /* Copyright 2024 BitBrothers
  * File: Login.module.css
  * Type: css file */
- 
- .Login_form_container {
-    display: flex;
-    justify-content: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    width: 100vw;
-    height: 100vh;
-    background-color: #009641;
-  }
-  
-  .Login_form {
-    width: 420px;
-    height: max-content;
-    padding-top: 30px;
-    padding-bottom: 20px;
-    border-radius: 8px;
-    background-color: white;
-  }
-  
-  .Login_form_content {
-    padding-left: 12%;
-    padding-right: 12%;
-    font-family: 'Inter', sans-serif;
-    color: #3F497F;
-  }
-  
-  .Login_form_title {
-    text-align: center;
-    margin-bottom: 1em;
-    font-size: 24px;
-    font-weight: 600;
-  }
 
-  .Login_form_name {
-    text-align: left;
-    font-size: 18px;
-    padding-left: 11px;
-  }
-
-  .Login_form_container .form_group input {
-  background-color: #D9D9D9;
-  border-radius: 30px;
-  border: none;
-  padding: 8px;
-  padding-left: 18px;
-  padding-right: 18px;
-}
-
-.btn_login {
+ .btn_login {
   background-color: #F7C04A !important;
   font-size: 18px;
   border: none;
@@ -62,27 +14,95 @@
   width: 200px;
 }
 
-.button_container {
-  align-items: center;
-  justify-content: center;
-}
-
-.form_control {
-  width: 300px;
-}
-
-.logo_containerL {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logoL {
-    height: 200px;
-    width: auto;
+  .button_container {
     align-items: center;
-}
+    justify-content: center;
+  }
 
-.error_message{
-  color: red;
-}
+  .error_message{
+    color: red;
+  }
+
+  .form_control {
+    width: 300px;
+  }
+
+ .Login_form {
+  width: 420px;
+  height: max-content;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+  }
+ 
+ .Login_form_container {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 100vw;
+    height: 100vh;
+    background-color: #009641;
+  }
+  
+  .Login_form_content {
+    padding-left: 12%;
+    padding-right: 12%;
+    font-family: 'Inter', sans-serif;
+    color: #3F497F;
+  }
+
+  .Login_form_name {
+    text-align: left;
+    font-size: 18px;
+    padding-left: 11px;
+  }
+  
+  .Login_form_title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .Login_form_container .form_group input {
+    background-color: #D9D9D9;
+    border-radius: 30px;
+    border: none;
+    padding: 8px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .logo_containerL {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logoL {
+      height: 200px;
+      width: auto;
+      align-items: center;
+  }
+
+  .password_container {
+      position: relative;
+  }
+
+  .password_toggle_button {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .password_toggle_button .image {
+    width: 20px;
+    height: 20px;
+  }

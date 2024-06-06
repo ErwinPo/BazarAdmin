@@ -23,7 +23,7 @@ public class ResetActivity extends AppCompatActivity{
     String correoStr;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://3.146.65.111:8000/bazar/")
+            .baseUrl("http://3.144.21.179:8000/bazar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     ApiService service = retrofit.create(ApiService.class);
@@ -51,7 +51,6 @@ public class ResetActivity extends AppCompatActivity{
                 overridePendingTransition(0,0);
             }
         });
-
     }
 
     private void changepassword(String correoStr){
