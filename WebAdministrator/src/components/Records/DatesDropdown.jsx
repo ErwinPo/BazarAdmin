@@ -11,6 +11,7 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [titleDate, setTitleDate] = useState('Hoy');
     const [endDate, setEndDate] = useState(new Date());
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
     const handleClose = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
@@ -31,8 +32,8 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
 
     const handleApplyCustomDates = () => {
         if (startDate && endDate) {
-            const formattedStartDate = startDate.toLocaleString().slice(0, 9)
-            const formattedEndDate = endDate.toLocaleString().slice(0, 9)
+            const formattedStartDate = startDate.toLocaleString('es-MX', options);
+            const formattedEndDate = endDate.toLocaleString('es-MX', options);
             setShowModal(false);
             setSelectedOption(null);
             setTitleDate(null)
@@ -56,17 +57,17 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
                     <Dropdown.Item onClick={() => handleDropdownItemClick(7, '1 Semana')} className={selectedOption === 7 ? classes.selectedOption : ""}>
                         Hace 1 Semana
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(15, '2 semanas')} className={selectedOption === 15 ? classes.selectedOption : ""}>
-                        Hace 2 semanas
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(15, '2 Semanas')} className={selectedOption === 15 ? classes.selectedOption : ""}>
+                        Hace 2 Semanas
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(30, '1 mes')} className={selectedOption === 30 ? classes.selectedOption : ""}>
-                        Hace 1 mes
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(30, '1 Mes')} className={selectedOption === 30 ? classes.selectedOption : ""}>
+                        Hace 1 Mes
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(180, '6 meses')} className={selectedOption === 180 ? classes.selectedOption : ""}>
-                        Hace 6 meses
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(180, '6 Meses')} className={selectedOption === 180 ? classes.selectedOption : ""}>
+                        Hace 6 Meses
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDropdownItemClick(365, '1 año')} className={selectedOption === 365 ? classes.selectedOption : ""}>
-                        Hace 1 año
+                    <Dropdown.Item onClick={() => handleDropdownItemClick(365, '1 Año')} className={selectedOption === 365 ? classes.selectedOption : ""}>
+                        Hace 1 Año
                     </Dropdown.Item>
                     <Dropdown.Item onClick={handleShowModal} className={selectedOption === null ? classes.selectedOption : ""}>
                         Personalizar
@@ -86,11 +87,11 @@ const DatesDropdown = ({ handleStartDateChange, handleEndDateChange  }) => {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                    <Button variant="primary" onClick={handleApplyCustomDates}>
+                    <Button variant="success" onClick={handleApplyCustomDates}>
                         Aplicar
+                    </Button>
+                    <Button variant="danger" onClick={handleClose}>
+                        Cancelar
                     </Button>
                 </Modal.Footer>
             </Modal>

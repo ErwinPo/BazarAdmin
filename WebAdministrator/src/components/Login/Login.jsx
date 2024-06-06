@@ -1,16 +1,15 @@
-/* Copyright 2024 BitBrothers
- * File: Login.jsx
- * Type: component */
-
 import React, { useState, useEffect, useContext } from "react";
 import { toast } from 'react-toastify';
 import logo from "../../assets/images/LogoHNP1.png";
+import iconShow from '../../assets/images/eye_show.png';
+import iconHide from '../../assets/images/eye_hide.png';
 import classes from "./Login.module.css";
 import { AuthContext } from "../../App";
 
 export default function Login() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState(false);
     const { expirationMessage } = useContext(AuthContext);
 
@@ -27,7 +26,7 @@ export default function Login() {
             toast.error("Por favor, complete todos los campos.");
         } else {
             try {
-                const response = await fetch('http://192.168.1.68:8000/bazar/api/login/', {
+                const response = await fetch('http://3.144.21.179:8000/bazar/api/login/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -41,7 +40,7 @@ export default function Login() {
                     throw new Error('Usuario y/o contraseña incorrecto(s).');
                 }
                 const data = await response.json();
-                const isSuperuserResponse = await fetch('http://192.168.1.68:8000/bazar/is-superuser/', {
+                const isSuperuserResponse = await fetch('http://3.144.21.179:8000/bazar/is-superuser/', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${data.access}`
@@ -55,7 +54,7 @@ export default function Login() {
                 localStorage.setItem('access_token', data.access);
                 localStorage.setItem('refresh_token', data.refresh);
                 localStorage.setItem('login_time', now.toString());
-                const userDataResponse = await fetch('http://192.168.1.68:8000/bazar/user-data', {
+                const userDataResponse = await fetch('http://3.144.21.179:8000/bazar/user-data', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${data.access}`
@@ -85,6 +84,10 @@ export default function Login() {
         setLoginError(false);
     }
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <>
             <div className={classes.Login_form_container}>
@@ -105,12 +108,17 @@ export default function Login() {
                         </div>
                         <div className={`${classes.form_group} mt-3`}>
                             <h5 className={classes.Login_form_name}>Contraseña</h5>
-                            <input
-                                type="password"
-                                className={`${classes.form_control} mt-1`}
-                                value={password}
-                                onChange={handlePasswordChange}
-                            />
+                            <div className={classes.password_container}>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className={`${classes.form_control} mt-1`}
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                />
+                                <button type="button" onClick={togglePasswordVisibility} className={classes.password_toggle_button}>
+                                    <img className={classes.image} src={showPassword ? iconHide : iconShow} alt="Toggle Password Visibility" />
+                                </button>
+                            </div>
                         </div>
                         <br/>
                         <div className={`d-grid gap-2 mt-3 ${classes.button_container}`}>
