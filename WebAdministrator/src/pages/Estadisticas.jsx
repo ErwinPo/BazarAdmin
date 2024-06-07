@@ -137,7 +137,7 @@ const Estadisticas = () => {
                     <StatisticsCards title="Ventas Totales" data={totalItems} increasePercentage={itemsDataPercentage} />
                     <StatisticsCards
                         title="Mejor Vendedor"
-                        data={loading ? "NA" : bestSeller ? bestSeller[0].username : "NA"}
+                        data={loading ? "NA" : bestSeller.length > 0 ? bestSeller[0].username : "NA"}
                     />
                 </Row>
             </Container>

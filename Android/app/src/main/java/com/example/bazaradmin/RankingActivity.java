@@ -90,7 +90,7 @@ public class RankingActivity extends AppCompatActivity {
     }
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://3.146.65.111:8000/bazar/")
+            .baseUrl("http://3.144.21.179:8000/bazar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

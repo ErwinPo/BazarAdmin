@@ -12,17 +12,11 @@ import iconTrash from '../assets/images/icon_trash.png';
 
 const Ventas = () => {
 	const [validated, setValidated] = useState(false);
-	const lowDate = moment().subtract(6, 'months').toDate();
-	const highestAmount = 10000;
 	const [currentSaleEdit, setCurrentSaleEdit] = useState({ id: 1, date: '19/01/2024 - 01:22:33', amount: 100, quantity: 6, username: 'John Doe' });
 	const [currentSaleIdDelete, setCurrentSaleIdDelete] = useState(0);
 	const [page, setPage] = useState(1);
 	const [state, setState] = useState({
         sales: [],
-        startDate: lowDate,
-        endDate: new Date(),
-        minValue: 0,
-        maxValue: highestAmount,
         selectedRows: [],
         columnCheck: false,
         deleteSelectedModalOpen: false,
@@ -33,12 +27,6 @@ const Ventas = () => {
 	useEffect(() => {
         getSales();
     }, []);
-
-	const filteredSales = state.sales.filter(sale =>
-        moment(sale.date).isSameOrAfter(state.startDate, 'day') &&
-        moment(sale.date).isSameOrBefore(state.endDate, 'day') &&
-        sale.amount >= state.minValue && sale.amount <= state.maxValue
-    );
 
 	const handlePageChange = () => {
         setState({ ...state, columnCheck: false, selectedRows: [] });
@@ -264,7 +252,7 @@ const Ventas = () => {
                 )}
 				<RecentSalesTable 
                 	columnCheck={state.columnCheck}
-                	sales={filteredSales} 
+                	sales={state.sales} 
                 	page={page}
                 	handlePageChange={handlePageChange}
                 	handleSelectAllChange={handleSelectAllChange}
