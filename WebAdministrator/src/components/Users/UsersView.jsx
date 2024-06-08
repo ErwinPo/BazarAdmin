@@ -37,7 +37,6 @@ const UsersView = () => {
     editModal: false,
     changeModal: false,
     deleteModal: false,
-    deleteselfModal: false,
     deletesModal: false,
     filter: 'all'
   });
@@ -203,20 +202,11 @@ const UsersView = () => {
   };
 
   const showModalDelete = (user) => {
-    const idUser = parseInt(userId);
-    if (idUser === user.id) {
-      setState({ ...state, deleteselfModal: true, form: user });
-    } else {
-      setState({ ...state, deleteModal: true, form: user });
-    }
+    setState({ ...state, deleteModal: true, form: user });
   };
   
   const hideModalDelete = () => {
     setState({ ...state, deleteModal: false });
-  };
-
-  const hideModalDeleteSelf = () => {
-    setState({ ...state, deleteselfModal: false });
   };
 
   const showModalDeleteS = () => {
@@ -626,7 +616,7 @@ const UsersView = () => {
                         <Image className={classes.image} src={iconCPassword} />
                       </Button>
                     )}
-                    {(user.id !== 1) && (userId === '1' || !user.is_superuser || parseInt(user.id) === parseInt(userId)) ? (
+                    {(user.id !== 1) && (userId === '1' || !user.is_superuser) ? (
                       <Button variant="link" className={classes.noBorder} onClick={() => showModalDelete(user)}>
                         <Image className={classes.image} src={iconTrash} />
                       </Button>
@@ -809,23 +799,6 @@ const UsersView = () => {
         <ModalFooter>
           <Btn color='success' onClick={handleDeleteUser}>Confirmar</Btn>
           <Btn color='danger' onClick={hideModalDelete}>Cancelar</Btn>
-        </ModalFooter>
-      </Modal>
-
-      <Modal isOpen={state.deleteselfModal}>
-        <ModalHeader className={classes.modal_header}>
-          <div>
-            <h3>Eliminar Tu Usuario</h3>
-          </div>
-        </ModalHeader>
-        <ModalBody>
-          <FormGroup>
-            <label>¿Estás seguro que deseas eliminar tu propio usuario? Tu cuenta se eliminará de manera definitiva</label>
-          </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Btn color='success' onClick={handleDeleteSelf}>Confirmar</Btn>
-          <Btn color='danger' onClick={hideModalDeleteSelf }>Cancelar</Btn>
         </ModalFooter>
       </Modal>
 
