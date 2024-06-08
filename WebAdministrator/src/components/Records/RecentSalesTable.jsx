@@ -125,21 +125,21 @@ const RecentSalesTable = ({ columnCheck, sales, page, handlePageChange, handleSe
                                             variant="link"
                                             className={classes.noBorder}
                                             onClick={() => {
-                                                toggleDeleteModal();
-                                                setCurrentSaleIdDelete(sale.id);
-                                            }}
-                                        >
-                                            <Image className={classes.image} src={iconTrash} />
-                                        </Button>
-                                        <Button
-                                            variant="link"
-                                            className={classes.noBorder}
-                                            onClick={() => {
                                                 toggleEditModal();
                                                 setCurrentSaleEdit({ ...sale, sale_index });
                                             }}
                                         >
                                             <Image className={classes.image} src={iconPencil} />
+                                        </Button>
+                                        <Button
+                                            variant="link"
+                                            className={classes.noBorder}
+                                            onClick={() => {
+                                                toggleDeleteModal();
+                                                setCurrentSaleIdDelete(sale.id);
+                                            }}
+                                        >
+                                            <Image className={classes.image} src={iconTrash} />
                                         </Button>
                                     </ButtonGroup>
                                 </td>
