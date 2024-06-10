@@ -34,7 +34,7 @@ const ResetPassword = () => {
                 setValidated(false);
             } else {
                 try {
-				    setValidated(true);
+				    setValidated(false);
 				    const response = await fetch(`http://3.144.21.179:8000/bazar/password-reset-confirm/${uidb64}/${token}/`, {
 					    method: "POST",
 					    headers: {
@@ -69,13 +69,13 @@ const ResetPassword = () => {
             <Form noValidate validated={validated} onSubmit={handleChangePassword}>
                 <Form.Group className={classes.form_grp} controlId="passwordGrp">
                     <Form.Label>Nueva Contraseña</Form.Label>
-                    <Form.Control type="password" pattern={passwordPattern} className={classes.control_input} required />
+                    <Form.Control type="password" pattern={passwordPattern} className={classes.control_input} required data-testid="password-input" />
                     <Form.Control.Feedback type="invalid">La contraseña debe tener al menos 8 caracteres y al menos un número.</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className={classes.form_grp} controlId="passwordConGrp">
                     <Form.Label>Confirmación de Nueva Contraseña</Form.Label>
-                    <Form.Control type="password" pattern={passwordPattern} className={classes.control_input} required />
+                    <Form.Control type="password" pattern={passwordPattern} className={classes.control_input} required data-testid="confirm-password-input"/>
                     <Form.Control.Feedback type="invalid">La contraseña debe tener al menos 8 caracteres y al menos un número.</Form.Control.Feedback>
                 </Form.Group>
 

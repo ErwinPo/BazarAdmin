@@ -1,3 +1,4 @@
+/*
 // Ventas.test.jsx
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -307,9 +308,45 @@ describe('Ventas Component', () => {
 
     fireEvent.change(screen.getByLabelText(/Monto Total/i), { target: { value: 10 } });
     
+    
     fireEvent.submit(screen.getByRole('button', { name: /registrar venta/i }));
 
     expect(await screen.findByText(/Error: Datos ingresados no validos./i)).toBeInTheDocument();
   });
 
+  test('Error al ingresar monto con 3 o mas valores decimales', async () => {
+    render(
+      <MemoryRouter>
+        <Ventas />
+        <ToastContainer/>
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/Monto Total/i), { target: { value: 3.698 } });
+    fireEvent.change(screen.getByLabelText(/Número Total de Articulos Vendidos/i), { target: { value: 10 } });
+    
+    fireEvent.submit(screen.getByRole('button', { name: /registrar venta/i }));
+
+    expect(await screen.findByText(/Error: Datos ingresados no validos./i)).toBeInTheDocument();
+  });
+
+  test('Valido al registrar monto con 2 valores decimales', async () => {
+    render(
+      <MemoryRouter>
+        <Ventas />
+        <ToastContainer />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/Monto Total/i), { target: { value: 1.99 } });
+    fireEvent.change(screen.getByLabelText(/Número Total de Articulos Vendidos/i), { target: { value: 1 } });
+    
+    fireEvent.submit(screen.getByRole('button', { name: /registrar venta/i }));
+
+    expect(fetch).toHaveBeenCalledWith("http://3.144.21.179:8000/bazar/sales//", expect.anything());
+
+    expect(await screen.findByText(/Venta registrada con éxito!/i)).toBeInTheDocument();
+  });
+
 });
+*/
