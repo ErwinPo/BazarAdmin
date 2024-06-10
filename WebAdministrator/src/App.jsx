@@ -67,12 +67,14 @@ function App() {
                         <Route path="/" element={isLoggedIn ? <Navigate to="/Ventas" /> : <Login />} />
                         <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
                         <Route path="/Descarga" element={<Download />} />
+                        <Route path="/Ventas" element={<Ventas />} />
+                        <Route path="/Registros" element={<RecordsView />} />
                         {isLoggedIn && (
                             <>
-                                <Route path="/Ventas" element={<Ventas />} />
+                                
                                 <Route path="/Usuarios" element={<UsersView />} />
                                 <Route path="/Estadisticas" element={<Estadisticas />} />
-                                <Route path="/Registros" element={<RecordsView />} />
+                                
                                 <Route path="/*" element={<Navigate to="/Ventas" replace />} />
                             </>
                         )}
