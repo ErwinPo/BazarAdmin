@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import logo from "../../assets/images/LogoHNP1.png";
 import iconShow from '../../assets/images/eye_show.png';
 import iconHide from '../../assets/images/eye_hide.png';
+import { NavLink, useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
 import { AuthContext } from "../../App";
 
@@ -126,6 +127,11 @@ export default function Login() {
                                 Ingresar
                             </button>
                         </div>
+                        <br/>
+                        <h5 className={classes.download_title}>
+                                Descarga la aplicación móvil&nbsp;
+                                <NavLink to="/Descarga" className={classes.download_link}>aquí</NavLink>
+                            </h5>
                     </div>
                 </form>
             </div>

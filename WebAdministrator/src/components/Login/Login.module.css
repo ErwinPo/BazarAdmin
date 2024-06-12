@@ -19,6 +19,14 @@
     justify-content: center;
   }
 
+  .download_title {
+    text-align: center;
+    margin-top: 0.3em;
+    margin-bottom: 1em;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
   .error_message{
     color: red;
   }
