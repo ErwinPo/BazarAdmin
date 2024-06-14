@@ -1,16 +1,36 @@
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.test import TestCase
 from APIRest.models import User
+from faker import Faker
+
 
 class UserTestCase(TestCase):
 
     def setUp(self):
         
-        self.client = APIClient()
-       
+        faker = Faker()
         
+        self.client = APIClient()
+
+        # Generación de datos de usuario falsos
+        user_data = {
+            'username': faker.user_name(),
+            'email': faker.email(),
+            'password': faker.password(),
+        }
+
+        # Creación de un superusuario en la base de datos
+        user = User.objects.create_superuser(
+            username=user_data['username'],
+            password=user_data['password'],
+            email=user_data['email']
+        )
+        
+        refresh = RefreshToken.for_user(user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+       
         # Registro de Usuario Administrador
         self.user_admin = {
             "username": "usuario1",
