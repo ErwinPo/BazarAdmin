@@ -225,10 +225,7 @@ const UsersView = () => {
     const lowercaseMail = email.toLowerCase();
     const isUsernameExists = users.some(user => user.id !== id && user.username.toLowerCase() === lowercaseUsername);
     const isEmailExists = users.some(user => user.id !== id && user.email.toLowerCase() === lowercaseMail);
-    if (is_superuser === ''){
-      toast.error("Username");
-      return false;
-    } else if (!username || !email || !password || !passwordCon || is_superuser === '') {
+    if (!username || !email || !password || !passwordCon || is_superuser === '') {
       toast.error("Por favor, complete todos los campos.");
       return false;
     } else if (isUsernameExists) {

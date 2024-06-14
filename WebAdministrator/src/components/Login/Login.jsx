@@ -38,7 +38,8 @@ export default function Login() {
                     })
                 });
                 if (!response.ok) {
-                    throw new Error('Usuario y/o contraseña incorrecto(s).');
+                    toast.error("Usuario y/o contraseña incorrecto(s)");
+                    return false;
                 }
                 const data = await response.json();
                 const isSuperuserResponse = await fetch('http://3.144.21.179:8000/bazar/is-superuser/', {
@@ -49,7 +50,8 @@ export default function Login() {
                 });
                 const isSuperuserData = await isSuperuserResponse.json();
                 if (!isSuperuserResponse.ok || isSuperuserData.is_superuser !== true) {
-                    throw new Error('No tienes permiso para iniciar sesión.');
+                    toast.error("No tienes permiso para iniciar sesión");
+                    return false;
                 }
                 const now = new Date().getTime();
                 localStorage.setItem('access_token', data.access);
@@ -68,7 +70,6 @@ export default function Login() {
                 localStorage.setItem('user_id', userData.user_id);
                 window.location.reload();
             } catch (error) {
-                toast.error("Error al cargar la página.");
                 setUser("");
                 setPassword("");
             }
