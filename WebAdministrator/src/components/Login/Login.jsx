@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import logo from "../../assets/images/LogoHNP1.png";
 import iconShow from '../../assets/images/eye_show.png';
 import iconHide from '../../assets/images/eye_hide.png';
+import { NavLink, useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
 import { AuthContext } from "../../App";
 
@@ -37,7 +38,8 @@ export default function Login() {
                     })
                 });
                 if (!response.ok) {
-                    throw new Error('Usuario y/o contraseña incorrecto(s).');
+                    toast.error("Usuario y/o contraseña incorrecto(s)");
+                    return false;
                 }
                 const data = await response.json();
                 const isSuperuserResponse = await fetch('http://3.144.21.179:8000/bazar/is-superuser/', {
@@ -48,7 +50,8 @@ export default function Login() {
                 });
                 const isSuperuserData = await isSuperuserResponse.json();
                 if (!isSuperuserResponse.ok || isSuperuserData.is_superuser !== true) {
-                    throw new Error('No tienes permiso para iniciar sesión.');
+                    toast.error("No tienes permiso para iniciar sesión");
+                    return false;
                 }
                 const now = new Date().getTime();
                 localStorage.setItem('access_token', data.access);
@@ -67,7 +70,6 @@ export default function Login() {
                 localStorage.setItem('user_id', userData.user_id);
                 window.location.reload();
             } catch (error) {
-                toast.error("Error al cargar la página.");
                 setUser("");
                 setPassword("");
             }
@@ -126,6 +128,11 @@ export default function Login() {
                                 Ingresar
                             </button>
                         </div>
+                        <br/>
+                        <h5 className={classes.download_title}>
+                                Descarga la aplicación móvil&nbsp;
+                                <NavLink to="/Descarga" className={classes.download_link}>aquí</NavLink>
+                            </h5>
                     </div>
                 </form>
             </div>
