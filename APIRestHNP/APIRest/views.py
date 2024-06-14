@@ -21,14 +21,14 @@ from django.http import FileResponse, Http404
 
 
 class UserData(views.APIView):
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         return Response({"user_id": request.user.id, "username" : request.user.username} , status=status.HTTP_200_OK)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     serializer_class = UserSerializer
     
     def perform_create(self, serializer):
@@ -54,7 +54,7 @@ class UserViewSet(viewsets.ModelViewSet):
     
 class SalesViewSet(viewsets.ModelViewSet):
     queryset = Sale.objects.all()
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
     serializer_class = SalesSerializer
     
     def perform_create(self, serializer):
@@ -72,7 +72,7 @@ class SalesViewSet(viewsets.ModelViewSet):
         return Response(data)
 
 class SalesSummaryView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         last_five_sales = Sale.objects.all().order_by('-id')[:5]
@@ -113,7 +113,7 @@ class PasswordResetConfirm(views.APIView):
             return Response({"error": "The reset link is invalid or has expired."}, status=status.HTTP_400_BAD_REQUEST)
 
 class ChangePassword(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
@@ -142,7 +142,7 @@ class PasswordRestView(views.APIView):
             
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            reset_link = f"http://192.168.1.68:80/reset-password/{uid}/{token}"
+            reset_link = f"http://s3.144.21.179:80/reset-password/{uid}/{token}"
             
             html_content = render_to_string('password-reset-email.html', {'reset_link': reset_link})
             text_content = f'Please click the following link to reset your password: {reset_link}'
@@ -177,7 +177,7 @@ class ApplicationDownloadView(views.APIView):
         
 # ============= Delete Many Users =================
 class DeleteManyUsersView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -200,7 +200,7 @@ class DeleteManyUsersView(views.APIView):
 
 # ============= Delete Many Sales =================
 class DeleteManySalesView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def delete(self, request):
         date = json.loads(request.body)
@@ -223,7 +223,7 @@ class DeleteManySalesView(views.APIView):
 # ============= Sales Per User ====================
     
 class SalesPerUserView(views.APIView):
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
         
     def get(self, request):
         query_id = request.user.id
@@ -236,7 +236,7 @@ class SalesPerUserView(views.APIView):
 # ============= Ranking =========================
 
 class RankingView(views.APIView):
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self,request):
         
@@ -252,7 +252,7 @@ class RankingView(views.APIView):
 # =========== IsSuperuser =====================
 
 class IsSuperuserView(views.APIView):
-    permission_classes = [IsNotSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         return Response({"is_superuser":request.user.is_superuser}, status=status.HTTP_200_OK)    
@@ -267,7 +267,7 @@ class IsSuperuserView(views.APIView):
 # ==========  With Date (Start - End) =================        
     
 class SalesDateRangeQuantityView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -296,7 +296,7 @@ class SalesDateRangeQuantityView(views.APIView):
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
     
 class SalesDateRangeAmountView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         query_start_date = self.request.query_params.get('start-date')
@@ -325,7 +325,7 @@ class SalesDateRangeAmountView(views.APIView):
 # ==========  With Date (Start - End) & Seller ID =================
     
 class SalesDateRangeSellerQuantityView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         query_id = self.request.query_params.get('id')
@@ -352,7 +352,7 @@ class SalesDateRangeSellerQuantityView(views.APIView):
     
     
 class SalesDateRangeSellerAmountView(views.APIView):
-    permission_classes = [IsSuperuser]
+    permission_classes = [permissions.AllowAny]
     
     def get(self, request):
         print(request.user.id)

@@ -9,12 +9,6 @@ class UserTestCase(TestCase):
     def setUp(self):
         
         self.client = APIClient()
-        
-        self.user = User.objects.create(username='root', password='root', is_superuser=True, email="root@hnp.com")
-                
-        self.token = Token.objects.get_or_create(user=self.user)
-        
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token.key)
        
         
         # Registro de Usuario Administrador
@@ -107,49 +101,48 @@ class UserTestCase(TestCase):
         """
         
         response = self.client.post('/bazar/users//', self.user_admin)
-        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
     def test_salesman(self):
         """Ensure we can create a salesman user
         """
         
-        response = self.client.post('users/', self.user_salesman)
+        response = self.client.post('/bazar/users//', self.user_salesman)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
     def test_user_without_optional_values(self):
         """Ensure we can create a user without optional values
         """
         
-        response = self.client.post('users/', self.user_without_optional_values)
+        response = self.client.post('/bazar/users//', self.user_without_optional_values)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
     def test_user_optional_values(self):
         """Ensure we can create a user using optional values
         """
         
-        response = self.client.post('users/', self.user_optional_values)
+        response = self.client.post('/bazar/users//', self.user_optional_values)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
     def test_user_without_username(self):
         """Ensure we can't create a user without username
         """
         
-        response = self.client.post('users/', self.user_bad_one)
+        response = self.client.post('/bazar/users//', self.user_bad_one)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_user_without_password(self):
         """Ensure we can't create a user without password
         """
         
-        response = self.client.post('users/', self.user_bad_two)
+        response = self.client.post('/bazar/users//', self.user_bad_two)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_without_email(self):
         """Ensure we can't create a user without email
         """
         
-        response = self.client.post('users/', self.user_bad_three)
+        response = self.client.post('/bazar/users//', self.user_bad_three)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_with_duplicate_username(self):
@@ -157,26 +150,26 @@ class UserTestCase(TestCase):
         """
         
         
-        response = self.client.post('users/', self.user_bad_four)
+        response = self.client.post('/bazar/users//', self.user_bad_four)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_with_duplicate_email(self):
         """Ensure we can't create a user with a duplicate email
         """
         
-        response = self.client.post('users/', self.user_bad_five)
+        response = self.client.post('/bazar/users//', self.user_bad_five)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_with_invalid_email(self):
         """Ensure we can't create a user with an invalid email
         """
         
-        response = self.client.post('users/', self.user_bad_six)
+        response = self.client.post('/bazar/users//', self.user_bad_six)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_with_additional_fields(self):
         """Ensure we can't create a user with additional non-permitted fields
         """
         
-        response = self.client.post('users/', self.user_bad_seven)
+        response = self.client.post('/bazar/users//', self.user_bad_seven)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

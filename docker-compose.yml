@@ -20,6 +20,7 @@ services:
       - .:/api-rest-hnp
     ports:
       - "8000:8000"
+    restart: always
     
   app-frontend:
     image: josafatgs/bhnp
